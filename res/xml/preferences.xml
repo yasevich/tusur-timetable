@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:synergy="http://schemas.android.com/apk/res/com.synergy.android.timetable" >
+    
+    <PreferenceCategory android:title="@string/activity_settings_application">
+        <CheckBoxPreference
+            android:key="appEmpty"
+            android:title="@string/activity_settings_application_empty"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/activity_settings_notifications" >
+        
+        <CheckBoxPreference
+            android:key="notificationsEnabled"
+            android:title="@string/activity_settings_notifications_enabled"
+            android:defaultValue="true" />
+        
+        <com.synergy.android.gui.preference.NumberPickerPreference
+            android:key="notificationsTime"
+            android:title="@string/activity_settings_notifications_time"
+            android:defaultValue="4"
+            android:dependency="notificationsEnabled"
+            synergy:minValue="1"
+            synergy:maxValue="7"
+            synergy:displayedValues="@array/time" />
+        
+    </PreferenceCategory>
+    
+</PreferenceScreen>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="menuActionUpdate" format="reference" />
+    <attr name="menuActionGroup" format="reference" />
+    <attr name="menuActionSettings" format="reference" />
+</resources>
