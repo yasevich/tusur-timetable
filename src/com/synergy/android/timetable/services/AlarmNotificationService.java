@@ -13,9 +13,9 @@ import com.synergy.android.timetable.plain.Lesson;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.utils.AndroidUtils;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 public class AlarmNotificationService extends IntentService {
     public AlarmNotificationService() {
@@ -36,7 +36,7 @@ public class AlarmNotificationService extends IntentService {
         
         int week = intent.getIntExtra(TimetableApplication.EXTRA_WEEK, 0);
         int day = intent.getIntExtra(TimetableApplication.EXTRA_DAY, 0);
-        Set<String> lessons = getLessons(week, day);
+        List<String> lessons = getLessons(week, day);
         
         NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
         style.setBigContentTitle(getString(R.string.notification_content_inbox_title_alarm));
@@ -50,13 +50,15 @@ public class AlarmNotificationService extends IntentService {
                 builder.build());
     }
     
-    private Set<String> getLessons(int week, int day) {
+    private List<String> getLessons(int week, int day) {
+        TimetableApplication app = (TimetableApplication) getApplication();
         CachedDataProvider provider = CachedDataProvider.getInstance(this);
-        Set<String> lessons = new HashSet<String>();
+        List<String> lessons = new ArrayList<String>();
         for (int i = 0; i < TimetableApplication.NUMBER_OF_LESSONS; ++i) {
             Lesson l = provider.getLesson(week, day, i);
             if (l.subject != null) {
-                lessons.add(l.subject);
+                lessons.add(app.getBeginTimes()[i] + " " + l.subjectShort + " (" +
+                        l.classroomShort + ") - " + l.kindShort);
             }
         }
         return lessons;
