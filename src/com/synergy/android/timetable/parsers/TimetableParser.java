@@ -12,10 +12,13 @@ public class TimetableParser extends WebDataParser<Week[]> {
     private static final Pattern DAY_PATTERN = compilePattern(
             "<td class=\"day_(\\d).*?\">(.*?)</td>");
     private static final Pattern DATA_PATTERN = compilePattern(
-            "<div class=\"hidden for_print\">\\s+?<p class=\"discipline\">" +
-            "(<abbr rel=\"tipsy\" title=\")?(.*?)(\">.*?</abbr>)?</p>\\s+?<p class=\"kind\">" +
-            "(.*?)</p>\\s+?<p class=\"auditoriums\">(.*?)</p>\\s+?<p class=\"group\">(.*?)" +
-            "</p>\\s+?(<p class=\"note\">(.+?)</p>\\s+?)?</div>");
+            "<div class=\"exist_training \\S*?\">\\s+?<p class=\"discipline\">(.*?)</p>\\s+?" +
+            "<p class=\"kind\">(.*?)</p>\\s+?<p class=\"auditoriums\">(.*?)</p>\\s+?" +
+            "<p class=\"group\">(.*?)</p>\\s+?" +
+            "(<span class=\"note\" rel=\"tipsy\" title=\"(.*?)\">(.*?)</span>\\s+?)?" +
+            "</div>");
+    private static final Pattern ABBR_PATTERN = compilePattern(
+            "<abbr rel=\"tipsy\" title=\"(.*?)\">(.*?)</abbr>");
     
     @Override
     public Week[] parse(String pageData) {
@@ -33,11 +36,48 @@ public class TimetableParser extends WebDataParser<Week[]> {
                     week.days[day - 1].isEmpty = false;
                     week.days[day - 1].firstLesson = hour - 1;
                     Lesson lesson = week.days[day - 1].lessons[hour - 1];
-                    lesson.subject = dataMatcher.group(2);
-                    lesson.kind = dataMatcher.group(4);
-                    lesson.classroom = dataMatcher.group(5);
-                    lesson.teacher = dataMatcher.group(6);
-                    lesson.note = dataMatcher.group(8);
+                    
+                    String data = dataMatcher.group(1);
+                    Matcher abbrMatcher = ABBR_PATTERN.matcher(data);
+                    if (abbrMatcher.find()) {
+                        lesson.subject = abbrMatcher.group(1);
+                        lesson.subjectShort = abbrMatcher.group(2);
+                    } else {
+                        lesson.subject = data;
+                        lesson.subjectShort = data;
+                    }
+                    
+                    data = dataMatcher.group(2);
+                    abbrMatcher = ABBR_PATTERN.matcher(data);
+                    if (abbrMatcher.find()) {
+                        lesson.kind = abbrMatcher.group(1);
+                        lesson.kindShort = abbrMatcher.group(2);
+                    } else {
+                        lesson.kind = data;
+                        lesson.kindShort = data;
+                    }
+                    
+                    data = dataMatcher.group(3);
+                    abbrMatcher = ABBR_PATTERN.matcher(data);
+                    if (abbrMatcher.find()) {
+                        lesson.classroom = abbrMatcher.group(1);
+                        lesson.classroomShort = abbrMatcher.group(2);
+                    } else {
+                        lesson.classroom = data;
+                        lesson.classroomShort = data;
+                    }
+                    
+                    data = dataMatcher.group(4);
+                    abbrMatcher = ABBR_PATTERN.matcher(data);
+                    if (abbrMatcher.find()) {
+                        lesson.teacher = abbrMatcher.group(1);
+                        lesson.teacherShort = abbrMatcher.group(2);
+                    } else {
+                        lesson.teacher = data;
+                        lesson.teacherShort = data;
+                    }
+                    
+                    lesson.note = dataMatcher.group(6);
                 }
             }
             
