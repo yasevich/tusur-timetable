@@ -14,7 +14,6 @@ import com.synergy.android.timetable.adapters.MainFragmentPagerAdapter;
 
 public class WeekFragment extends Fragment {
     private int weekIndex;
-    private String[] weekDays;
     private int currentDay;
     
     @Override
@@ -22,7 +21,6 @@ public class WeekFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         weekIndex = args.getInt(TimetableApplication.EXTRA_WEEK);
-        weekDays = args.getStringArray(TimetableApplication.EXTRA_WEEK_DAYS);
         currentDay = args.getInt(TimetableApplication.EXTRA_DAY);
     }
     
@@ -35,7 +33,7 @@ public class WeekFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FragmentPagerAdapter adapter = new MainFragmentPagerAdapter(this, weekIndex, weekDays);
+        FragmentPagerAdapter adapter = new MainFragmentPagerAdapter(this, weekIndex);
         ViewPager pager = (ViewPager) getView().findViewById(R.id.activityMainViewPager);
         pager.setAdapter(adapter);
         if (currentDay != -1) {

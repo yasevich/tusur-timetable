@@ -44,6 +44,7 @@ public class TimetableApplication extends Application {
     
     private Calendar timestamp;
     private Week[] weeks;
+    private String[] weekDays;
     private String[] beginTimes;
     private String[] endTimes;
     private CachedDataProvider provider;
@@ -72,6 +73,10 @@ public class TimetableApplication extends Application {
     public synchronized Week getWeek(int id) {
         if (weeks == null) return null;
         return weeks[id];
+    }
+    
+    public String[] getWeekDays() {
+        return weekDays;
     }
     
     public String[] getBeginTimes() {
@@ -140,6 +145,7 @@ public class TimetableApplication extends Application {
     private void initResources() {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         timestamp = new GregorianCalendar();
+        weekDays = getResources().getStringArray(R.array.weekDays);
         beginTimes = getResources().getStringArray(R.array.beginTimes);
         endTimes = getResources().getStringArray(R.array.endTimes);
         provider = CachedDataProvider.getInstance(this);

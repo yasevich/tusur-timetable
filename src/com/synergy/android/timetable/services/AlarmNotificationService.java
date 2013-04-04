@@ -58,7 +58,7 @@ public class AlarmNotificationService extends IntentService {
             Lesson l = provider.getLesson(week, day, i);
             if (l.subject != null) {
                 lessons.add(app.getBeginTimes()[i] + " " + l.subjectShort + " (" +
-                        l.classroomShort + ") - " + l.kindShort);
+                        l.kindShort + ")");
             }
         }
         return lessons;

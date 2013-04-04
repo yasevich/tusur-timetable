@@ -73,8 +73,7 @@ public class MainActivity extends FragmentActivity {
         
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
-
-        String[] weekDays = getResources().getStringArray(R.array.weekDays);
+        
         TimetableApplication app = (TimetableApplication) getApplication();
         int weekIndex = NumberUtils.isOdd(app.getTimestamp().get(Calendar.WEEK_OF_YEAR)) ?
                 TimetableApplication.WEEK_ODD : TimetableApplication.WEEK_EVEN;
@@ -89,15 +88,15 @@ public class MainActivity extends FragmentActivity {
         
         if (weekIndex == TimetableApplication.WEEK_ODD) {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
-                    TimetableApplication.WEEK_ODD, currentDay, weekDays);
+                    TimetableApplication.WEEK_ODD, currentDay);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
-                    TimetableApplication.WEEK_EVEN, -1, weekDays);
+                    TimetableApplication.WEEK_EVEN, -1);
             tabHost.setCurrentTab(TimetableApplication.WEEK_ODD);
         } else {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
-                    TimetableApplication.WEEK_ODD, -1, weekDays);
+                    TimetableApplication.WEEK_ODD, -1);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
-                    TimetableApplication.WEEK_EVEN, currentDay, weekDays);
+                    TimetableApplication.WEEK_EVEN, currentDay);
             tabHost.setCurrentTab(TimetableApplication.WEEK_EVEN);
         }
         
@@ -117,11 +116,10 @@ public class MainActivity extends FragmentActivity {
     }
     
     private static void addTabSpec(FragmentTabHost tabHost, String tag, int weekIndex,
-            int currentDay, String[] weekDays) {
+            int currentDay) {
         Bundle bundle = new Bundle();
         bundle.putInt(TimetableApplication.EXTRA_WEEK, weekIndex);
         bundle.putInt(TimetableApplication.EXTRA_DAY, currentDay);
-        bundle.putStringArray(TimetableApplication.EXTRA_WEEK_DAYS, weekDays);
         tabHost.addTab(tabHost.newTabSpec(tag).setIndicator(tag), WeekFragment.class, bundle);
     }
 }
