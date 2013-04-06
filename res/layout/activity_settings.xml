@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <com.google.ads.AdView xmlns:googleads="http://schemas.android.com/apk/lib/com.google.ads"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        googleads:adSize="SMART_BANNER"
-        googleads:adUnitId="@string/admob_id"
-        googleads:loadAdOnCreate="true"
-        googleads:testDevices="TEST_EMULATOR" />
-    
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"

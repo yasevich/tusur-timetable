@@ -23,7 +23,7 @@ public class TimetableParser extends WebDataParser<Week[]> {
     @Override
     public Week[] parse(String pageData) {
         Week[] weeks = Week.initTwoWeeks();
-        Week week = weeks[0];
+        int week = 0;
         Matcher hourMatcher = HOUR_PATTERN.matcher(pageData);
         while (hourMatcher.find()) {
             int hour = Integer.parseInt(hourMatcher.group(1));
@@ -32,10 +32,11 @@ public class TimetableParser extends WebDataParser<Week[]> {
                 int day = Integer.parseInt(dayMatcher.group(1));
                 Matcher dataMatcher = DATA_PATTERN.matcher(dayMatcher.group(2));
                 if (dataMatcher.find()) {
-                    week.isEmpty = false;
-                    week.days[day - 1].isEmpty = false;
-                    week.days[day - 1].firstLesson = hour - 1;
-                    Lesson lesson = week.days[day - 1].lessons[hour - 1];
+                    weeks[week].isEmpty = false;
+                    weeks[week].days[day - 1].isEmpty = false;
+                    weeks[week].days[day - 1].firstLesson = hour - 1;
+                    
+                    Lesson lesson = weeks[week].days[day - 1].lessons[hour - 1];
                     
                     String data = dataMatcher.group(1);
                     Matcher abbrMatcher = ABBR_PATTERN.matcher(data);
@@ -82,7 +83,7 @@ public class TimetableParser extends WebDataParser<Week[]> {
             }
             
             if (hour == 7) {
-                week = weeks[1];
+                week = 1;
             }
         }
         return weeks;

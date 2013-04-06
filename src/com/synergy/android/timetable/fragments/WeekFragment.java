@@ -34,7 +34,7 @@ public class WeekFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         FragmentPagerAdapter adapter = new MainFragmentPagerAdapter(this, weekIndex);
-        ViewPager pager = (ViewPager) getView().findViewById(R.id.activityMainViewPager);
+        ViewPager pager = (ViewPager) getView().findViewById(R.id.fragmentWeekViewPager);
         pager.setAdapter(adapter);
         if (currentDay != -1) {
             pager.setCurrentItem(currentDay);

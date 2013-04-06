@@ -54,7 +54,7 @@ public class DayListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         registerDateLoadedBroadcastReceiver();
-        if (app.getWeek(weekIndex) != null) {
+        if (app.getWeeks() != null) {
             day = app.getWeek(weekIndex).days[dayIndex];
             populateData();
         }
@@ -88,7 +88,7 @@ public class DayListFragment extends ListFragment {
             if (action.equals(TimetableApplication.ACTION_DATA_LOADING)) {
                 progressView.setVisibility(View.VISIBLE);
             } else if (action.equals(TimetableApplication.ACTION_DATA_LOADED) &&
-                    app.getWeek(weekIndex) != null) {
+                    app.getWeeks() != null) {
                 day = app.getWeek(weekIndex).days[dayIndex];
                 populateData();
             }

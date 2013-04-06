@@ -5,12 +5,12 @@ public class Day {
     public int firstLesson;
     public Lesson[] lessons;
     
-    public Day() {
+    public Day(int week, int day) {
         isEmpty = true;
         firstLesson = -1;
         lessons = new Lesson[7];
-        for (int i = 0; i < lessons.length; ++i) {
-            lessons[i] = new Lesson();
+        for (int lesson = 0; lesson < lessons.length; ++lesson) {
+            lessons[lesson] = new Lesson(new Lesson.PrimaryKey(week, day, lesson));
         }
     }
 }

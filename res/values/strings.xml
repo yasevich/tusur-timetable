@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- General -->
     <string name="app_name">Timetable</string>
-    <string name="admob_id" tools:ignore="MissingTranslation">a151543f76f2f6e</string>
     <string name="error_connection">Server not avaiable, try again later</string>
     
     <!-- Group activity -->

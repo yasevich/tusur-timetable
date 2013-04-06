@@ -71,8 +71,6 @@ public class SettingsActivity extends PreferenceActivity
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     private void initViews() {
-        Validator.validate(this);
-        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }

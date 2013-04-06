@@ -69,8 +69,6 @@ public class MainActivity extends FragmentActivity {
     }
     
     private void initViews() {
-        Validator.validate(this);
-        
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
         

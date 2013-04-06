@@ -63,8 +63,6 @@ public class GroupActivity extends Activity {
     
     @SuppressLint("NewApi")
     private void initViews() {
-        Validator.validate(this);
-        
         if (!StringUtils.isNullOrEmpty(settings.getGroup()) &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

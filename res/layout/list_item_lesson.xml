@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content" >
     
     <LinearLayout
+        android:id="@+id/listItemLessonTimeLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerVertical="true"
         android:orientation="vertical" >
     
 	    <TextView
@@ -36,7 +36,8 @@
         android:id="@+id/listItemLessonExistsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/listItemLessonTimeLinearLayout"
         android:orientation="vertical" >
 	    
 	    <TextView
@@ -105,10 +106,12 @@
     <TextView
         android:id="@+id/listItemLessonEmptyTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/listItemLessonTimeLinearLayout"
         android:visibility="gone"
         android:gravity="center"
         android:text="@string/list_item_lesson_empty"
         android:textColor="@color/data_empty" />
     
-</LinearLayout>
+</RelativeLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
+import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.plain.Day;
 import com.synergy.android.timetable.plain.Lesson;
 import com.synergy.android.timetable.utils.StringUtils;
@@ -92,22 +93,26 @@ public class LessonAdapter extends BaseAdapter {
                 viewHolder.exists.setVisibility(View.GONE);
                 viewHolder.empty.setVisibility(View.VISIBLE);
             } else {
-                int color = getBgColor(lesson.kind);
+                int color = TimetableApplication.getBgColor(lesson.kind);
                 if (color != -1) {
-                    view.setBackgroundResource(getBgColor(lesson.kind));
+                    view.setBackgroundResource(color);
                 }
+                
                 viewHolder.subject.setText(lesson.subject);
                 viewHolder.kind.setText(lesson.kind);
+                
                 if (StringUtils.isNullOrEmpty(lesson.classroom)) {
                     viewHolder.classroom.setVisibility(View.GONE);
                 } else {
                     viewHolder.classroom.setText(lesson.classroom);
                 }
+                
                 if (StringUtils.isNullOrEmpty(lesson.teacher)) {
                     viewHolder.teacher.setVisibility(View.GONE);
                 } else {
                     viewHolder.teacher.setText(lesson.teacher);
                 }
+                
                 if (StringUtils.isNullOrEmpty(lesson.note)) {
                     viewHolder.note.setVisibility(View.GONE);
                 } else {
@@ -121,8 +126,6 @@ public class LessonAdapter extends BaseAdapter {
         private void initViews() {
             viewHolder.exists = (LinearLayout) view.findViewById(
                     R.id.listItemLessonExistsLinearLayout);
-            viewHolder.empty = (TextView) view.findViewById(
-                    R.id.listItemLessonEmptyTextView);
             viewHolder.beginTime = (TextView) view.findViewById(
                     R.id.listItemLessonBeginTimeTextView);
             viewHolder.endTime = (TextView) view.findViewById(
@@ -137,31 +140,13 @@ public class LessonAdapter extends BaseAdapter {
                     R.id.listItemLessonTeacherTextView);
             viewHolder.note = (TextView) view.findViewById(
                     R.id.listItemLessonNoteTextView);
-        }
-        
-        private static int getBgColor(String kind) {
-            if (kind.startsWith("Лек")) {
-                return R.color.class_type_lecture;
-            } else if (kind.startsWith("Пра")) {
-                return R.color.class_type_practice;
-            } else if (kind.startsWith("Лаб")) {
-                return R.color.class_type_lab;
-            } else if (kind.startsWith("Курсовая")) {
-                return R.color.class_type_coursework;
-            } else if (kind.startsWith("Курсовое")) {
-                return R.color.class_type_courseproject;
-            } else if (kind.startsWith("Экзамен")) {
-                return R.color.class_type_finalexam;
-            } else if (kind.startsWith("Зачет")) {
-                return R.color.class_type_passfailexam;
-            }
-            return -1;
+            viewHolder.empty = (TextView) view.findViewById(
+                    R.id.listItemLessonEmptyTextView);
         }
     }
     
     private static class ViewHolder {
         private LinearLayout exists;
-        private TextView empty;
         private TextView beginTime;
         private TextView endTime;
         private TextView subject;
@@ -169,5 +154,6 @@ public class LessonAdapter extends BaseAdapter {
         private TextView classroom;
         private TextView teacher;
         private TextView note;
+        private TextView empty;
     }
 }

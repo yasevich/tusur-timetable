@@ -1,5 +1,6 @@
 package com.synergy.android.timetable.providers;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +25,8 @@ import java.util.List;
 public class CachedDataProvider extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "timetable";
     private static final int DATABASE_VERSION = 2;
+    
+    private static final String TABLE_LESSON = Lesson.class.getSimpleName();
     
     private static final String KEY_ID = "ID";
     private static final String KEY_SUBJECT = "SUBJECT";
@@ -71,22 +74,22 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         columns.add(new SqlColumnInfo(KEY_ENABLED, SqlDataType.INTEGER, false));
         columns.add(new SqlColumnInfo(KEY_ORIGINAL, SqlDataType.INTEGER, false));
         columns.add(new SqlColumnInfo(KEY_IS_NEW, SqlDataType.INTEGER, false));
-        db.execSQL(SqlQueryHelper.createTable(Lesson.class.getSimpleName(), columns));
+        db.execSQL(SqlQueryHelper.createTable(TABLE_LESSON, columns));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
         case 1:
-            db.execSQL(SqlQueryHelper.alterTableAddColumn(Lesson.class.getSimpleName(),
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_SUBJECT_SHORT, SqlDataType.TEXT, false)));
-            db.execSQL(SqlQueryHelper.alterTableAddColumn(Lesson.class.getSimpleName(),
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_KIND_SHORT, SqlDataType.TEXT, false)));
-            db.execSQL(SqlQueryHelper.alterTableAddColumn(Lesson.class.getSimpleName(),
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_CLASSROOM_SHORT, SqlDataType.TEXT, false)));
-            db.execSQL(SqlQueryHelper.alterTableAddColumn(Lesson.class.getSimpleName(),
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_TEACHER_SHORT, SqlDataType.TEXT, false)));
-            db.execSQL(SqlQueryHelper.alterTableAddColumn(Lesson.class.getSimpleName(),
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_IS_NEW, SqlDataType.INTEGER, false)));
             ApplicationSettings settings = ApplicationSettings.getInstance(context);
             try {
@@ -99,59 +102,67 @@ public class CachedDataProvider extends SQLiteOpenHelper {
             }
             break;
         default:
-            db.execSQL(SqlQueryHelper.dropTableIfExists(Lesson.class.getSimpleName()));
+            db.execSQL(SqlQueryHelper.dropTableIfExists(TABLE_LESSON));
             onCreate(db);
         }
     }
     
     public synchronized Week[] getWeeks() {
         SQLiteDatabase db = getReadableDatabase();
-        String sql = SqlQueryHelper.selectAll(Lesson.class.getSimpleName());
+        String sql = SqlQueryHelper.selectAll(TABLE_LESSON);
+        Week[] result = null;
+        
         Cursor cursor = db.rawQuery(sql, null);
-        Week[] result = getWeeksFromCursor(cursor);
-        cursor.close();
+        try {
+            result = getWeeksFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+        
         db.close();
         return result;
     }
     
     public synchronized Lesson getLesson(int week, int day, int lesson) {
         SQLiteDatabase db = getReadableDatabase();
-        String sql = SqlQueryHelper.selectAll(Lesson.class.getSimpleName()) + " WHERE " +
-                KEY_ID + " = " + buildPrimaryKey(week, day, lesson);
-        Cursor cursor = db.rawQuery(sql, null);
+        String sql = SqlQueryHelper.selectAll(TABLE_LESSON) + " WHERE " +
+                KEY_ID + " = " + Lesson.PrimaryKey.buildPrimaryKey(week, day, lesson);
         
-        Lesson result = new Lesson();
-        if (cursor.moveToFirst()) {
-            final int indexSubject = cursor.getColumnIndex(KEY_SUBJECT);
-            final int indexSubjectShort = cursor.getColumnIndex(KEY_SUBJECT_SHORT);
-            final int indexKind = cursor.getColumnIndex(KEY_KIND);
-            final int indexKindShort = cursor.getColumnIndex(KEY_KIND_SHORT);
-            final int indexClassroom = cursor.getColumnIndex(KEY_CLASSROOM);
-            final int indexClassroomShort = cursor.getColumnIndex(KEY_CLASSROOM_SHORT);
-            final int indexTeacher = cursor.getColumnIndex(KEY_TEACHER);
-            final int indexTeacherShort = cursor.getColumnIndex(KEY_TEACHER_SHORT);
-            final int indexNote = cursor.getColumnIndex(KEY_NOTE);
-            final int indexEnabled = cursor.getColumnIndex(KEY_ENABLED);
-            final int indexOriginal = cursor.getColumnIndex(KEY_ORIGINAL);
-            final int indexIsNew = cursor.getColumnIndex(KEY_IS_NEW);
-            
-            result.subject = getNullableString(cursor.getString(indexSubject));
-            result.subjectShort = getNullableString(cursor.getString(indexSubjectShort));
-            result.kind = getNullableString(cursor.getString(indexKind));
-            result.kindShort = getNullableString(cursor.getString(indexKindShort));
-            result.classroom = getNullableString(cursor.getString(indexClassroom));
-            result.classroomShort = getNullableString(cursor.getString(indexClassroomShort));
-            result.teacher = getNullableString(cursor.getString(indexTeacher));
-            result.teacherShort = getNullableString(cursor.getString(indexTeacherShort));
-            result.note = getNullableString(cursor.getString(indexNote));
-            result.enabled = NumberUtils.intToBoolean(cursor.getInt(indexEnabled));
-            result.original = NumberUtils.intToBoolean(cursor.getInt(indexOriginal));
-            result.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
-        } else {
-            result = null;
+        Cursor cursor = db.rawQuery(sql, null);
+        Lesson result = null;
+        try {
+            if (cursor.moveToFirst()) {
+                final int indexSubject = cursor.getColumnIndex(KEY_SUBJECT);
+                final int indexSubjectShort = cursor.getColumnIndex(KEY_SUBJECT_SHORT);
+                final int indexKind = cursor.getColumnIndex(KEY_KIND);
+                final int indexKindShort = cursor.getColumnIndex(KEY_KIND_SHORT);
+                final int indexClassroom = cursor.getColumnIndex(KEY_CLASSROOM);
+                final int indexClassroomShort = cursor.getColumnIndex(KEY_CLASSROOM_SHORT);
+                final int indexTeacher = cursor.getColumnIndex(KEY_TEACHER);
+                final int indexTeacherShort = cursor.getColumnIndex(KEY_TEACHER_SHORT);
+                final int indexNote = cursor.getColumnIndex(KEY_NOTE);
+                final int indexEnabled = cursor.getColumnIndex(KEY_ENABLED);
+                final int indexOriginal = cursor.getColumnIndex(KEY_ORIGINAL);
+                final int indexIsNew = cursor.getColumnIndex(KEY_IS_NEW);
+                
+                result = new Lesson(new Lesson.PrimaryKey(week, day, lesson));
+                result.subject = getNullableString(cursor.getString(indexSubject));
+                result.subjectShort = getNullableString(cursor.getString(indexSubjectShort));
+                result.kind = getNullableString(cursor.getString(indexKind));
+                result.kindShort = getNullableString(cursor.getString(indexKindShort));
+                result.classroom = getNullableString(cursor.getString(indexClassroom));
+                result.classroomShort = getNullableString(cursor.getString(indexClassroomShort));
+                result.teacher = getNullableString(cursor.getString(indexTeacher));
+                result.teacherShort = getNullableString(cursor.getString(indexTeacherShort));
+                result.note = getNullableString(cursor.getString(indexNote));
+                result.enabled = NumberUtils.intToBoolean(cursor.getInt(indexEnabled));
+                result.original = NumberUtils.intToBoolean(cursor.getInt(indexOriginal));
+                result.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
+            }
+        } finally {
+            cursor.close();
         }
         
-        cursor.close();
         db.close();
         return result;
     }
@@ -159,6 +170,14 @@ public class CachedDataProvider extends SQLiteOpenHelper {
     public synchronized void insertOrUpdateWeeks(Week[] weeks) {
         SQLiteDatabase db = getWritableDatabase();
         insertOrUpdateWeeks(db, weeks);
+        db.close();
+    }
+    
+    public synchronized void updateLesson(Lesson lesson) {
+        ContentValues values = buildContentValues(lesson);
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_LESSON, values, KEY_ID + " = ?",
+                new String[] { lesson.getPrimaryKey().toString() });
         db.close();
     }
     
@@ -171,7 +190,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                     Lesson lesson = day.lessons[k];
                     List<String> columns = getDefaultColumnsList();
                     List<String> values =  getDefaultValuesArray(i, j, k, lesson);
-                    String sql = SqlQueryHelper.insertOrReplace(Lesson.class.getSimpleName(),
+                    String sql = SqlQueryHelper.insertOrReplace(TABLE_LESSON,
                             columns, values);
                     db.execSQL(sql);
                 }
@@ -198,11 +217,9 @@ public class CachedDataProvider extends SQLiteOpenHelper {
             
             do {
                 int id = cursor.getInt(indexId);
-                int weekIndex = id / 100 - 1;
-                int dayIndex = (id / 10) % 10 - 1;
-                int lessonIndex = id % 10 - 1;
-                Day day = weeks[weekIndex].days[dayIndex];
-                Lesson lesson = day.lessons[lessonIndex];
+                Lesson.PrimaryKey pk = Lesson.PrimaryKey.getPrimaryKey(id);
+                Day day = weeks[pk.getWeek()].days[pk.getDay()];
+                Lesson lesson = day.lessons[pk.getLesson()];
                 lesson.subject = getNullableString(cursor.getString(indexSubject));
                 lesson.subjectShort = getNullableString(cursor.getString(indexSubjectShort));
                 lesson.kind = getNullableString(cursor.getString(indexKind));
@@ -217,9 +234,9 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                 lesson.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
                 if (lesson.subject != null) {
                     day.isEmpty = false;
-                    weeks[weekIndex].isEmpty = false;
-                    if (day.firstLesson == -1 || day.firstLesson > lessonIndex) {
-                        day.firstLesson = lessonIndex;
+                    weeks[pk.getWeek()].isEmpty = false;
+                    if (day.firstLesson == -1 || day.firstLesson > pk.getLesson()) {
+                        day.firstLesson = pk.getLesson();
                     }
                 }
             } while (cursor.moveToNext());
@@ -256,7 +273,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
     
     private static List<String> getDefaultValuesArray(int week, int day, int lesson, Lesson data) {
         List<String> list = new ArrayList<String>();
-        list.add(buildPrimaryKey(week, day, lesson));
+        list.add(Lesson.PrimaryKey.buildPrimaryKey(week, day, lesson));
         list.add(getQuotedString(data.subject));
         list.add(getQuotedString(data.subjectShort));
         list.add(getQuotedString(data.kind));
@@ -272,18 +289,24 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         return list;
     }
     
-    private static String buildPrimaryKey(int week, int day, int lesson) {
-        if (week > 8 || day > 8 || lesson > 8) {
-            throw new IllegalArgumentException("Unable to build primary key");
-        }
-        StringBuilder stringBuilder = new StringBuilder()
-                .append(week + 1)
-                .append(day + 1)
-                .append(lesson + 1);
-        return stringBuilder.toString();
-    }
-    
     private static String getQuotedString(String str) {
         return "\"" + str + "\"";
+    }
+    
+    private static ContentValues buildContentValues(Lesson lesson) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_SUBJECT, lesson.subject);
+        values.put(KEY_SUBJECT_SHORT, lesson.subjectShort);
+        values.put(KEY_KIND, lesson.kind);
+        values.put(KEY_KIND_SHORT, lesson.kindShort);
+        values.put(KEY_CLASSROOM, lesson.classroom);
+        values.put(KEY_CLASSROOM_SHORT, lesson.classroomShort);
+        values.put(KEY_TEACHER, lesson.teacher);
+        values.put(KEY_TEACHER_SHORT, lesson.teacherShort);
+        values.put(KEY_NOTE, lesson.note);
+        values.put(KEY_ENABLED, Integer.toString(NumberUtils.booleanToInt(lesson.enabled)));
+        values.put(KEY_ORIGINAL, Integer.toString(NumberUtils.booleanToInt(lesson.original)));
+        values.put(KEY_IS_NEW, Integer.toString(NumberUtils.booleanToInt(lesson.isNew)));
+        return values;
     }
 }

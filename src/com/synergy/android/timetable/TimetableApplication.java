@@ -70,6 +70,10 @@ public class TimetableApplication extends Application {
         return timestamp;
     }
     
+    public Week[] getWeeks() {
+        return weeks;
+    }
+    
     public synchronized Week getWeek(int id) {
         if (weeks == null) return null;
         return weeks[id];
@@ -140,6 +144,25 @@ public class TimetableApplication extends Application {
             }
         });
         pageLoader.execute(url);
+    }
+    
+    public static int getBgColor(String kind) {
+        if (kind.startsWith("Лек")) {
+            return R.color.class_type_lecture;
+        } else if (kind.startsWith("Пра")) {
+            return R.color.class_type_practice;
+        } else if (kind.startsWith("Лаб")) {
+            return R.color.class_type_lab;
+        } else if (kind.startsWith("Курсовая")) {
+            return R.color.class_type_coursework;
+        } else if (kind.startsWith("Курсовое")) {
+            return R.color.class_type_courseproject;
+        } else if (kind.startsWith("Экз")) {
+            return R.color.class_type_finalexam;
+        } else if (kind.startsWith("Зач")) {
+            return R.color.class_type_passfailexam;
+        }
+        return -1;
     }
     
     private void initResources() {
