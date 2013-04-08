@@ -1,5 +1,7 @@
 package com.synergy.android.timetable.utils;
 
+import java.util.regex.Pattern;
+
 public class StringUtils {
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.length() == 0;
@@ -20,5 +22,9 @@ public class StringUtils {
             result.append(Character.toUpperCase(input.charAt(i)));
         }
         return result.toString();
+    }
+    
+    public static Pattern compilePattern(String regex) {
+        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
     }
 }

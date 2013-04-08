@@ -2,22 +2,24 @@ package com.synergy.android.timetable.parsers;
 
 import com.synergy.android.timetable.plain.Lesson;
 import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.utils.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Deprecated
 public class TimetableParser extends WebDataParser<Week[]> {
-    private static final Pattern HOUR_PATTERN = compilePattern(
+    private static final Pattern HOUR_PATTERN = StringUtils.compilePattern(
             "<tr class=\"lesson_(\\d)\">(.*?)</tr>");
-    private static final Pattern DAY_PATTERN = compilePattern(
+    private static final Pattern DAY_PATTERN = StringUtils.compilePattern(
             "<td class=\"day_(\\d).*?\">(.*?)</td>");
-    private static final Pattern DATA_PATTERN = compilePattern(
+    private static final Pattern DATA_PATTERN = StringUtils.compilePattern(
             "<div class=\"exist_training \\S*?\">\\s+?<p class=\"discipline\">(.*?)</p>\\s+?" +
             "<p class=\"kind\">(.*?)</p>\\s+?<p class=\"auditoriums\">(.*?)</p>\\s+?" +
             "<p class=\"group\">(.*?)</p>\\s+?" +
             "(<span class=\"note\" rel=\"tipsy\" title=\"(.*?)\">(.*?)</span>\\s+?)?" +
             "</div>");
-    private static final Pattern ABBR_PATTERN = compilePattern(
+    private static final Pattern ABBR_PATTERN = StringUtils.compilePattern(
             "<abbr rel=\"tipsy\" title=\"(.*?)\">(.*?)</abbr>");
     
     @Override

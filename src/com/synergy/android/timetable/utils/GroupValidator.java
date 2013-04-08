@@ -1,6 +1,13 @@
-package com.synergy.android.timetable.parsers;
+package com.synergy.android.timetable.utils;
 
-public class GroupParser {
+import com.synergy.android.timetable.plain.Group;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class GroupValidator {
     private static final String URL_FACULTY_PATTERN = "http://timetable.tusur.ru/faculties/%1$s";
     private static final String FACULTY_RTF = "rtf";
     private static final String FACULTY_RKF = "rkf";
@@ -14,6 +21,7 @@ public class GroupParser {
     private static final String FACULTY_FMS = "fms";
     private static final String FACULTY_VF = "vf";
     
+    @Deprecated
     public static String getFacultyUrlByGroup(String group) {
         String url = null;
         if (group.endsWith("В")) {
@@ -42,5 +50,28 @@ public class GroupParser {
             }
         }
         return url;
+    }
+    
+    public static String getGroupNumber(List<Group> groups, String group) {
+        group = getGroupFormatString(group);
+        Pattern pattern = StringUtils.compilePattern(group);
+        Iterator<Group> iterator = groups.iterator();
+        while (iterator.hasNext()) {
+            Matcher matcher = pattern.matcher(iterator.next().number);
+            if (matcher.find()) {
+                return matcher.group();
+            }
+        }
+        return null;
+    }
+    
+    public static String getGroupFormatString(String group) {
+        char[] chars = group.toCharArray();
+        StringBuilder result = new StringBuilder()
+                .append(chars[0]);
+        for (int i = 1; i < chars.length; ++i) {
+            result.append("(-)?").append(chars[i]);
+        }
+        return result.toString();
     }
 }
