@@ -42,8 +42,20 @@ public class Lesson {
         return subject + " (" + subjectShort + ")";
     }
     
+    public void setPrimaryKey(PrimaryKey primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+    
     public PrimaryKey getPrimaryKey() {
         return primaryKey;
+    }
+    
+    public static Lesson[] initLessonsArray(final int size) {
+        Lesson[] lessons = new Lesson[size];
+        for (int i = 0; i < size; ++i) {
+            lessons[i] = new Lesson(null);
+        }
+        return lessons;
     }
     
     public static class PrimaryKey {

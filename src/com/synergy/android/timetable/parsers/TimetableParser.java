@@ -24,7 +24,7 @@ public class TimetableParser extends WebDataParser<Week[]> {
     
     @Override
     public Week[] parse(String pageData) {
-        Week[] weeks = Week.initTwoWeeks();
+        Week[] weeks = Week.initWeeksArray(2);
         int week = 0;
         Matcher hourMatcher = HOUR_PATTERN.matcher(pageData);
         while (hourMatcher.find()) {

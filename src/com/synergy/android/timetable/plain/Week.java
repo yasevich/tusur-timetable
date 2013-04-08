@@ -11,9 +11,9 @@ public class Week {
         }
     }
     
-    public static Week[] initTwoWeeks() {
-        Week[] weeks = new Week[2];
-        for (int week = 0; week < weeks.length; ++week) {
+    public static Week[] initWeeksArray(final int size) {
+        Week[] weeks = new Week[size];
+        for (int week = 0; week < size; ++week) {
             weeks[week] = new Week(week);
         }
         return weeks;

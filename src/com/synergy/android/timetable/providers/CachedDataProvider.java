@@ -199,7 +199,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
     }
     
     private static Week[] getWeeksFromCursor(Cursor cursor) {
-        Week[] weeks = Week.initTwoWeeks();
+        Week[] weeks = Week.initWeeksArray(2);
         if (cursor.moveToFirst()) {
             final int indexId = cursor.getColumnIndex(KEY_ID);
             final int indexSubject = cursor.getColumnIndex(KEY_SUBJECT);
