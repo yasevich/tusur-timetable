@@ -1,21 +1,22 @@
 package com.synergy.android.timetable.parsers;
 
-import com.synergy.android.timetable.TimetableApplication;
+import com.synergy.android.timetable.plain.Day;
 import com.synergy.android.timetable.plain.Lesson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LessonsParser extends WebDataParser<Lesson[]> {
+public class LessonsParser extends WebDataParser<Day> {
     @Override
-    public Lesson[] parse(String pageData) {
-        Lesson[] result = Lesson.initLessonsArray(TimetableApplication.NUMBER_OF_LESSONS);
+    public Day parse(String pageData) {
+        Day day = new Day();
         try {
             JSONArray lessons = new JSONObject(pageData).getJSONArray("lessons");
             for (int i = 0; i < lessons.length(); ++i) {
                 JSONObject lesson = lessons.getJSONObject(i);
-                Lesson l = result[lesson.getInt("lesson_number") - 1];
+                int index = lesson.getInt("lesson_number") - 1;
+                Lesson l = day.lessons[index];
                 l.classroom = lesson.getString("classroom").trim();
                 l.classroomShort = shortenString(l.classroom);
                 
@@ -42,8 +43,13 @@ public class LessonsParser extends WebDataParser<Lesson[]> {
                 }
                 
                 l.note = lesson.getString("note");
+                
+                day.isEmpty = false;
+                if (day.firstLesson == -1 || day.firstLesson > index) {
+                    day.firstLesson = index;
+                }
             }
-            return result;
+            return day;
         } catch (JSONException e) {
             return null;
         }

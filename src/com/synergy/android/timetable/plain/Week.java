@@ -1,12 +1,14 @@
 package com.synergy.android.timetable.plain;
 
+import com.synergy.android.timetable.TimetableApplication;
+
 public class Week {
     public boolean isEmpty;
     public Day[] days;
     
     public Week(int week) {
-        days = new Day[6];
-        for (int day = 0; day < days.length; ++day) {
+        days = new Day[TimetableApplication.NUMBER_OF_DAYS];
+        for (int day = 0; day < TimetableApplication.NUMBER_OF_DAYS; ++day) {
             days[day] = new Day(week, day);
         }
     }

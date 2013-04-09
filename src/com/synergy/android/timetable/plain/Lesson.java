@@ -50,14 +50,6 @@ public class Lesson {
         return primaryKey;
     }
     
-    public static Lesson[] initLessonsArray(final int size) {
-        Lesson[] lessons = new Lesson[size];
-        for (int i = 0; i < size; ++i) {
-            lessons[i] = new Lesson(null);
-        }
-        return lessons;
-    }
-    
     public static class PrimaryKey {
         private int week;
         private int day;
