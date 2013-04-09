@@ -45,6 +45,7 @@ public class TimetableMonitoringService extends IntentService {
                 boolean isEqual = compareData(cache, weeks);
                 if (!isEqual) {
                     cacheProvider.insertOrUpdateWeeks(weeks);
+                    // TODO review this code - notifications can be false
                     NotificationCompat.Builder builder = AndroidUtils.buildNotification(this,
                             MainActivity.class,
                             R.drawable.ic_notification, R.string.notification_content_title,
