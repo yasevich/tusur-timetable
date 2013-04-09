@@ -3,13 +3,9 @@ package com.synergy.android.timetable.plain;
 import com.synergy.android.timetable.TimetableApplication;
 
 public class Day {
-    public boolean isEmpty;
-    public int firstLesson;
     public Lesson[] lessons;
     
     public Day() {
-        isEmpty = true;
-        firstLesson = -1;
         lessons = new Lesson[TimetableApplication.NUMBER_OF_LESSONS];
         for (int lesson = 0; lesson < TimetableApplication.NUMBER_OF_LESSONS; ++lesson) {
             lessons[lesson] = new Lesson(null);
@@ -17,11 +13,27 @@ public class Day {
     }
     
     public Day(int week, int day) {
-        isEmpty = true;
-        firstLesson = -1;
         lessons = new Lesson[TimetableApplication.NUMBER_OF_LESSONS];
         for (int lesson = 0; lesson < TimetableApplication.NUMBER_OF_LESSONS; ++lesson) {
             lessons[lesson] = new Lesson(new Lesson.PrimaryKey(week, day, lesson));
         }
+    }
+    
+    public boolean isEmpty() {
+        for (int i = 0; i < lessons.length; ++i) {
+            if (lessons[i].subject != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public int getFirstLessonIndex() {
+        for (int i = 0; i < lessons.length; ++i) {
+            if (lessons[i].subject != null) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

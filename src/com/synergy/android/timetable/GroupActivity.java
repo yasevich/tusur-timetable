@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.synergy.android.timetable.parsers.GroupsParser;
+import com.synergy.android.timetable.parsers.LessonsParser;
 import com.synergy.android.timetable.plain.Group;
 import com.synergy.android.timetable.utils.GroupValidator;
 import com.synergy.android.timetable.utils.StringUtils;
@@ -132,13 +133,14 @@ public class GroupActivity extends Activity {
                     if (group == null) {
                         showError(R.string.activity_group_error_notfound);
                     } else {
-                        url = "http://timetable.tusur.ru/api/v1/lessons/" + group + "/";
+                        viewHolder.group.setText(group);
+                        url = String.format(LessonsParser.URL_FORMAT, group);
                         submitSettings();
                     }
                     viewHolder.progressBar.setVisibility(View.GONE);
                 }
             });
-            loader.execute("http://timetable.tusur.ru/api/v1/groups");
+            loader.execute(GroupsParser.URL);
         }
         
         private void showError(int resId) {
@@ -148,10 +150,9 @@ public class GroupActivity extends Activity {
     }
     
     private void submitSettings() {
-        // TODO uncomment
-//        settings.setGroup(group);
-//        settings.setUrl(url);
-//        setResult(RESULT_OK);
+        settings.setGroup(group);
+        settings.setUrl(url);
+        setResult(RESULT_OK);
         finish();
     }
 }

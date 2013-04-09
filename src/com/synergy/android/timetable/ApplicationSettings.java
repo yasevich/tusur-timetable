@@ -6,6 +6,8 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
+import com.synergy.android.timetable.parsers.LessonsParser;
+
 public class ApplicationSettings {
     public static final String APP_EMPTY = "appEmpty";
     public static final String NOTIFICATIONS_TIME = "notificationsTime";
@@ -29,6 +31,12 @@ public class ApplicationSettings {
     public static synchronized ApplicationSettings getInstance(Context context) {
         if (instance == null) {
             instance = new ApplicationSettings(context);
+        }
+        String url = instance.getUrl();
+        if (url != null && url.startsWith("http://timetable.tusur.ru/faculties/")) {
+            int index = url.lastIndexOf('/');
+            url = String.format(LessonsParser.URL_FORMAT, url.substring(index + 1));
+            instance.setUrl(url);
         }
         return instance;
     }

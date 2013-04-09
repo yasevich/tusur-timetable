@@ -34,10 +34,6 @@ public class TimetableParser extends WebDataParser<Week[]> {
                 int day = Integer.parseInt(dayMatcher.group(1));
                 Matcher dataMatcher = DATA_PATTERN.matcher(dayMatcher.group(2));
                 if (dataMatcher.find()) {
-                    weeks[week].isEmpty = false;
-                    weeks[week].days[day - 1].isEmpty = false;
-                    weeks[week].days[day - 1].firstLesson = hour - 1;
-                    
                     Lesson lesson = weeks[week].days[day - 1].lessons[hour - 1];
                     
                     String data = dataMatcher.group(1);

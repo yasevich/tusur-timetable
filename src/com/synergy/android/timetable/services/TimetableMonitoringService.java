@@ -8,11 +8,11 @@ import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.MainActivity;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
-import com.synergy.android.timetable.parsers.TimetableParser;
 import com.synergy.android.timetable.plain.Day;
 import com.synergy.android.timetable.plain.Lesson;
 import com.synergy.android.timetable.plain.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
+import com.synergy.android.timetable.providers.WebDataProvider;
 import com.synergy.android.timetable.utils.AndroidUtils;
 import com.synergy.android.timetable.web.WebPageUtils;
 
@@ -36,15 +36,15 @@ public class TimetableMonitoringService extends IntentService {
         try {
             String pageData = WebPageUtils.readPage(url);
             if (pageData != null) {
-                CachedDataProvider provider = CachedDataProvider.getInstance(this);
-                Week[] cache = provider.getWeeks();
-                Week[] weeks = parsePageData(pageData);
-                if (weeks[0].isEmpty && weeks[1].isEmpty) {
-                    return;
-                }
+                CachedDataProvider cacheProvider = CachedDataProvider.getInstance(this);
+                WebDataProvider webProvider = new WebDataProvider(this);
+                
+                Week[] cache = cacheProvider.getWeeks();
+                Week[] weeks = webProvider.getWeeks();
+                
                 boolean isEqual = compareData(cache, weeks);
                 if (!isEqual) {
-                    provider.insertOrUpdateWeeks(weeks);
+                    cacheProvider.insertOrUpdateWeeks(weeks);
                     NotificationCompat.Builder builder = AndroidUtils.buildNotification(this,
                             MainActivity.class,
                             R.drawable.ic_notification, R.string.notification_content_title,
@@ -56,11 +56,6 @@ public class TimetableMonitoringService extends IntentService {
         } catch (IOException e) {
             // do nothing
         }
-    }
-    
-    private Week[] parsePageData(String pageData) {
-        TimetableParser parser = new TimetableParser();
-        return parser.parse(pageData);
     }
     
     private static boolean compareData(Week[] cache, Week[] weeks) {

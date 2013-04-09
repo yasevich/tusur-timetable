@@ -34,7 +34,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
                     Context.ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC,
                     System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR,
-                    AlarmManager.INTERVAL_HALF_DAY, operation);
+                    AlarmManager.INTERVAL_DAY, operation);
         }
     }
     
@@ -107,7 +107,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         
         for (int i = 0; i < 12; ++i) {
             Day d = weeks[time.week].days[time.day];
-            if (d.isEmpty || lesson > d.firstLesson) {
+            if (d.isEmpty() || lesson > d.getFirstLessonIndex()) {
                 lesson = -1;
                 time.day++;
                 dayOffset++;
@@ -117,7 +117,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
                     time.week ^= 1;
                 }
             } else {
-                lesson = d.firstLesson;
+                lesson = d.getFirstLessonIndex();
                 break;
             }
         }

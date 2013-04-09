@@ -3,7 +3,6 @@ package com.synergy.android.timetable.plain;
 import com.synergy.android.timetable.TimetableApplication;
 
 public class Week {
-    public boolean isEmpty;
     public Day[] days;
     
     public Week(int week) {
@@ -11,6 +10,15 @@ public class Week {
         for (int day = 0; day < TimetableApplication.NUMBER_OF_DAYS; ++day) {
             days[day] = new Day(week, day);
         }
+    }
+    
+    public boolean isEmpty() {
+        for (int i = 0; i < days.length; ++i) {
+            if (!days[i].isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
     
     public static Week[] initWeeksArray(final int size) {

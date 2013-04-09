@@ -6,19 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.synergy.android.timetable.ApplicationSettings;
-import com.synergy.android.timetable.parsers.TimetableParser;
-import com.synergy.android.timetable.parsers.WebDataParser;
 import com.synergy.android.timetable.plain.Day;
 import com.synergy.android.timetable.plain.Lesson;
 import com.synergy.android.timetable.plain.Week;
 import com.synergy.android.timetable.utils.NumberUtils;
-import com.synergy.android.timetable.web.WebPageUtils;
 import com.synergy.sql.SqlColumnInfo;
 import com.synergy.sql.SqlDataType;
 import com.synergy.sql.SqlQueryHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,14 +86,10 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                     new SqlColumnInfo(KEY_TEACHER_SHORT, SqlDataType.TEXT, false)));
             db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_IS_NEW, SqlDataType.INTEGER, false)));
-            ApplicationSettings settings = ApplicationSettings.getInstance(context);
-            try {
-                String pageData = WebPageUtils.readPage(settings.getUrl());
-                WebDataParser<Week[]> parser = new TimetableParser();
-                Week[] weeks = parser.parse(pageData);
+            WebDataProvider provider = new WebDataProvider(context);
+            Week[] weeks = provider.getWeeks();
+            if (weeks != null) {
                 insertOrUpdateWeeks(db, weeks);
-            } catch (IOException e) {
-                // do nothing
             }
             break;
         default:
@@ -232,13 +223,6 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                 lesson.enabled = NumberUtils.intToBoolean(cursor.getInt(indexEnabled));
                 lesson.original = NumberUtils.intToBoolean(cursor.getInt(indexOriginal));
                 lesson.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
-                if (lesson.subject != null) {
-                    day.isEmpty = false;
-                    weeks[pk.getWeek()].isEmpty = false;
-                    if (day.firstLesson == -1 || day.firstLesson > pk.getLesson()) {
-                        day.firstLesson = pk.getLesson();
-                    }
-                }
             } while (cursor.moveToNext());
         } else {
             weeks = null;

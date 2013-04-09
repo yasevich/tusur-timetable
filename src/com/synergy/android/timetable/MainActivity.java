@@ -1,7 +1,6 @@
 package com.synergy.android.timetable;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -117,12 +116,11 @@ public class MainActivity extends FragmentActivity {
     
     private void addTabSpec(FragmentTabHost tabHost, String tag, int weekIndex,
             int currentDay, int orientation) {
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             addWeekTabSpec(tabHost, tag, weekIndex, currentDay);
-        } else {
-            //addWeekTableTabSpec(tabHost, tag, weekIndex);
-            addWeekTabSpec(tabHost, tag, weekIndex, currentDay);
-        }
+//        } else {
+//            addWeekTableTabSpec(tabHost, tag, weekIndex);
+//        }
     }
     
     private static void addWeekTabSpec(FragmentTabHost tabHost, String tag, int weekIndex,

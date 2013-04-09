@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LessonsParser extends WebDataParser<Day> {
+    public static final String URL_FORMAT = "http://timetable.tusur.ru/api/v1/lessons/%1$s/";
+    
     @Override
     public Day parse(String pageData) {
         Day day = new Day();
@@ -43,11 +45,6 @@ public class LessonsParser extends WebDataParser<Day> {
                 }
                 
                 l.note = lesson.getString("note");
-                
-                day.isEmpty = false;
-                if (day.firstLesson == -1 || day.firstLesson > index) {
-                    day.firstLesson = index;
-                }
             }
             return day;
         } catch (JSONException e) {

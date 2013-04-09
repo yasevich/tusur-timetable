@@ -6,12 +6,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.synergy.android.timetable.parsers.TimetableParser;
-import com.synergy.android.timetable.parsers.WebDataParser;
 import com.synergy.android.timetable.plain.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
-import com.synergy.android.timetable.web.OnPageLoaderListener;
-import com.synergy.android.timetable.web.PageLoader;
+import com.synergy.android.timetable.providers.WebDataProvider;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -116,34 +113,40 @@ public class TimetableApplication extends Application {
     }
     
     public synchronized void loadWebData() {
-        String url = ApplicationSettings.getInstance(this).getUrl();
-        PageLoader pageLoader = new PageLoader(new OnPageLoaderListener() {
+        AsyncTask<WebDataProvider, Void, Week[]> task =
+                new AsyncTask<WebDataProvider, Void, Week[]>() {
             @Override
             public void onPreExecute() {
                 sendBroadcast(new Intent(ACTION_DATA_LOADING));
             }
             
             @Override
-            public void onPostExecute(String pageData) {
-                if (pageData != null) {
-                    WebDataParser<Week[]> parser = new TimetableParser();
-                    weeks = parser.parse(pageData);
-                    backgroundExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            provider.insertOrUpdateWeeks(weeks);
-                            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
-                                    TimetableApplication.this);
-                        }
-                    });
-                    sendBroadcast(new Intent(ACTION_DATA_LOADED));
-                } else {
+            protected Week[] doInBackground(WebDataProvider... params) {
+                return params[0].getWeeks();
+            }
+            
+            @Override
+            protected void onPostExecute(Week[] result) {
+                if (result == null) {
                     Toast.makeText(TimetableApplication.this, getString(R.string.error_connection),
                             Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                
+                weeks = result;
+                backgroundExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        provider.insertOrUpdateWeeks(weeks);
+                        ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
+                                TimetableApplication.this);
+                    }
+                });
+                
+                sendBroadcast(new Intent(ACTION_DATA_LOADED));
             }
-        });
-        pageLoader.execute(url);
+        };
+        task.execute(new WebDataProvider(this));
     }
     
     public static int getBgColor(String kind) {

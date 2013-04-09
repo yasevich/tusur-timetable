@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupsParser extends WebDataParser<List<Group>> {
+    public static final String URL = "http://timetable.tusur.ru/api/v1/groups";
+    
     @Override
     public List<Group> parse(String pageData) {
         try {

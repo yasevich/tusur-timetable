@@ -26,7 +26,7 @@ public class LessonAdapter extends BaseAdapter {
     
     public LessonAdapter(Context context, Day day, String[] begins, String[] ends) {
         this.context = context;
-        this.lessons = day.isEmpty ? null : day.lessons;
+        this.lessons = day.isEmpty() ? null : day.lessons;
         this.begins = begins;
         this.ends = ends;
         prepareArrays();
