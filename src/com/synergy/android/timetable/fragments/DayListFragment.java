@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.adapters.LessonAdapter;
-import com.synergy.android.timetable.plain.Day;
+import com.synergy.android.timetable.domains.Day;
 
 public class DayListFragment extends ListFragment {
     private int weekIndex;

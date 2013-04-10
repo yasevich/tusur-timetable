@@ -7,10 +7,11 @@ import android.support.v4.app.NotificationCompat;
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.MainActivity;
 import com.synergy.android.timetable.R;
+import com.synergy.android.timetable.ScheduleBroadcastReceiver;
 import com.synergy.android.timetable.TimetableApplication;
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Lesson;
-import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
 import com.synergy.android.timetable.utils.AndroidUtils;
@@ -19,6 +20,8 @@ import com.synergy.android.timetable.web.WebPageUtils;
 import java.io.IOException;
 
 public class TimetableMonitoringService extends IntentService {
+    private boolean isNotificationNeeded = false;
+    
     public TimetableMonitoringService() {
         super(TimetableMonitoringService.class.getSimpleName());
     }
@@ -45,13 +48,15 @@ public class TimetableMonitoringService extends IntentService {
                 boolean isEqual = compareData(cache, weeks);
                 if (!isEqual) {
                     cacheProvider.insertOrUpdateWeeks(weeks);
-                    // TODO review this code - notifications can be false
-                    NotificationCompat.Builder builder = AndroidUtils.buildNotification(this,
-                            MainActivity.class,
-                            R.drawable.ic_notification, R.string.notification_content_title,
-                            R.string.notification_content_text_newtimetable);
-                    AndroidUtils.sendNotification(this,
-                            TimetableApplication.MONITORING_NOTIFICATION_ID, builder.build());
+                    ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+                    if (isNotificationNeeded) {
+                        NotificationCompat.Builder builder = AndroidUtils.buildNotification(this,
+                                MainActivity.class,
+                                R.drawable.ic_notification, R.string.notification_content_title,
+                                R.string.notification_content_text_newtimetable);
+                        AndroidUtils.sendNotification(this,
+                                TimetableApplication.MONITORING_NOTIFICATION_ID, builder.build());
+                    }
                 }
             }
         } catch (IOException e) {
@@ -59,7 +64,8 @@ public class TimetableMonitoringService extends IntentService {
         }
     }
     
-    private static boolean compareData(Week[] cache, Week[] weeks) {
+    private boolean compareData(Week[] cache, Week[] weeks) {
+        boolean isEqual = true;
         for (int i = 0; i < cache.length; ++i) {
             Week w1 = cache[i];
             Week w2 = weeks[i];
@@ -70,11 +76,14 @@ public class TimetableMonitoringService extends IntentService {
                     Lesson l1 = d1.lessons[k];
                     Lesson l2 = d2.lessons[k];
                     if (!l1.equals(l2)) {
-                        return false;
+                        isEqual = false;
                     }
+                }
+                if (!isEqual && !d2.isEmpty()) {
+                    isNotificationNeeded = true;
                 }
             }
         }
-        return true;
+        return isEqual;
     }
 }

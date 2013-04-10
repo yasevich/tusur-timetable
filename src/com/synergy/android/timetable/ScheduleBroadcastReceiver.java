@@ -6,8 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.services.AlarmNotificationService;
 import com.synergy.android.timetable.services.TimetableMonitoringService;

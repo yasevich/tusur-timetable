@@ -1,7 +1,7 @@
 package com.synergy.android.timetable.parsers;
 
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Lesson;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
 
 import org.json.JSONArray;
 import org.json.JSONException;

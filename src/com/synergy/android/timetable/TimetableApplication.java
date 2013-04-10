@@ -6,7 +6,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
 
@@ -37,6 +38,8 @@ public class TimetableApplication extends Application {
     public static final int MONITORING_NOTIFICATION_ID = 101;
     public static final int ALARM_NOTIFICATION_ID = 102;
     
+    private static TimetableApplication instance;
+    
     private ExecutorService backgroundExecutor;
     
     private Calendar timestamp;
@@ -61,6 +64,8 @@ public class TimetableApplication extends Application {
                         TimetableApplication.this);
             } 
         });
+        
+        instance = this;
     }
     
     public Calendar getTimestamp() {
@@ -90,6 +95,10 @@ public class TimetableApplication extends Application {
     
     public ExecutorService getBackgroundExecutor() {
         return backgroundExecutor;
+    }
+    
+    public void updateLesson(Lesson lesson) {
+        provider.updateLesson(lesson);
     }
     
     public synchronized void loadCache() {
@@ -147,6 +156,10 @@ public class TimetableApplication extends Application {
             }
         };
         task.execute(new WebDataProvider(this));
+    }
+    
+    public static TimetableApplication getInstance() {
+        return instance;
     }
     
     public static int getBgColor(String kind) {

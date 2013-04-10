@@ -5,10 +5,10 @@ import android.util.Log;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.TimetableApplication;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.parsers.LessonsParser;
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Lesson;
-import com.synergy.android.timetable.plain.Week;
 import com.synergy.android.timetable.utils.NumberUtils;
 import com.synergy.android.timetable.web.WebPageUtils;
 

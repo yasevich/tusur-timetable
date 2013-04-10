@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
-import com.synergy.android.timetable.plain.Lesson;
+import com.synergy.android.timetable.domains.Lesson;
 
 public class CellFragment extends Fragment {
     private ViewHolder viewHolder;

@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Lesson;
-import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.utils.NumberUtils;
 import com.synergy.sql.SqlColumnInfo;
 import com.synergy.sql.SqlDataType;

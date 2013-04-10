@@ -16,9 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.synergy.android.timetable.domains.Group;
 import com.synergy.android.timetable.parsers.GroupsParser;
 import com.synergy.android.timetable.parsers.LessonsParser;
-import com.synergy.android.timetable.plain.Group;
 import com.synergy.android.timetable.utils.GroupValidator;
 import com.synergy.android.timetable.utils.StringUtils;
 import com.synergy.android.timetable.web.OnPageLoaderListener;

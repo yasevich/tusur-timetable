@@ -1,4 +1,4 @@
-package com.synergy.android.timetable.plain;
+package com.synergy.android.timetable.domains;
 
 import com.synergy.android.timetable.utils.StringUtils;
 
@@ -64,6 +64,11 @@ public class Lesson {
         @Override
         public String toString() {
             return buildPrimaryKey(week, day, lesson);
+        }
+        
+        @Override
+        public int hashCode() {
+            return (week + 1) * 100 + (day + 1) * 10 + (lesson + 1);
         }
         
         public int getWeek() {

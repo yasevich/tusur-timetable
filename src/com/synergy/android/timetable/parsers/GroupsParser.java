@@ -1,6 +1,6 @@
 package com.synergy.android.timetable.parsers;
 
-import com.synergy.android.timetable.plain.Group;
+import com.synergy.android.timetable.domains.Group;
 
 import org.json.JSONArray;
 import org.json.JSONException;

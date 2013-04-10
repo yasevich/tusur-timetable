@@ -1,7 +1,7 @@
 package com.synergy.android.timetable.parsers;
 
-import com.synergy.android.timetable.plain.Lesson;
-import com.synergy.android.timetable.plain.Week;
+import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.utils.StringUtils;
 
 import java.util.regex.Matcher;

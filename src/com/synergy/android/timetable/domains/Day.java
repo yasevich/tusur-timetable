@@ -1,4 +1,4 @@
-package com.synergy.android.timetable.plain;
+package com.synergy.android.timetable.domains;
 
 import com.synergy.android.timetable.TimetableApplication;
 

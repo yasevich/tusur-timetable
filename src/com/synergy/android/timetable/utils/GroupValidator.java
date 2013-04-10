@@ -1,6 +1,6 @@
 package com.synergy.android.timetable.utils;
 
-import com.synergy.android.timetable.plain.Group;
+import com.synergy.android.timetable.domains.Group;
 
 import java.util.Iterator;
 import java.util.List;

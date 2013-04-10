@@ -3,6 +3,7 @@ package com.synergy.android.timetable.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
-import com.synergy.android.timetable.plain.Day;
-import com.synergy.android.timetable.plain.Lesson;
+import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class LessonAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return lessons[position].getPrimaryKey().hashCode();
     }
 
     @Override
@@ -90,9 +91,12 @@ public class LessonAdapter extends BaseAdapter {
             viewHolder.endTime.setText(endTime);
             
             if (lesson.subject == null) {
+                view.setOnClickListener(null);
                 viewHolder.exists.setVisibility(View.GONE);
                 viewHolder.empty.setVisibility(View.VISIBLE);
             } else {
+                view.setOnClickListener(new ItemOnClickListener(lesson, viewHolder));
+                
                 int color = TimetableApplication.getBgColor(lesson.kind);
                 if (color != -1) {
                     view.setBackgroundResource(color);
@@ -100,6 +104,10 @@ public class LessonAdapter extends BaseAdapter {
                 
                 viewHolder.subject.setText(lesson.subject);
                 viewHolder.kind.setText(lesson.kind);
+                if (!lesson.enabled) {
+                    color = view.getContext().getResources().getColor(R.color.data_empty);
+                    switchTextColors(viewHolder, color);
+                }
                 
                 if (StringUtils.isNullOrEmpty(lesson.classroom)) {
                     viewHolder.classroom.setVisibility(View.GONE);
@@ -142,6 +150,7 @@ public class LessonAdapter extends BaseAdapter {
                     R.id.listItemLessonNoteTextView);
             viewHolder.empty = (TextView) view.findViewById(
                     R.id.listItemLessonEmptyTextView);
+            viewHolder.defaultTextColor = viewHolder.subject.getCurrentTextColor();
         }
     }
     
@@ -155,5 +164,48 @@ public class LessonAdapter extends BaseAdapter {
         private TextView teacher;
         private TextView note;
         private TextView empty;
+        private int defaultTextColor;
+    }
+    
+    private static void switchTextColors(ViewHolder viewHolder, int color) {
+        if (color == -1) {
+            color = viewHolder.defaultTextColor;
+        }
+        viewHolder.beginTime.setTextColor(color);
+        viewHolder.endTime.setTextColor(color);
+        viewHolder.subject.setTextColor(color);
+        viewHolder.kind.setTextColor(color);
+        viewHolder.classroom.setTextColor(color);
+        viewHolder.teacher.setTextColor(color);
+        viewHolder.note.setTextColor(color);
+    }
+    
+    private static class ItemOnClickListener implements OnClickListener {
+        private Lesson lesson;
+        private ViewHolder viewHolder;
+        
+        public ItemOnClickListener(Lesson lesson, ViewHolder viewHolder) {
+            this.lesson = lesson;
+            this.viewHolder = viewHolder;
+        }
+        
+        @Override
+        public void onClick(View v) {
+            if (!lesson.enabled) {
+                switchTextColors(viewHolder, -1);
+            } else {
+                int color = v.getContext().getResources().getColor(R.color.data_empty);
+                switchTextColors(viewHolder, color);
+            }
+            
+            final TimetableApplication app = TimetableApplication.getInstance();
+            app.getBackgroundExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    lesson.enabled = !lesson.enabled;
+                    app.updateLesson(lesson);
+                }
+            });
+        }
     }
 }
