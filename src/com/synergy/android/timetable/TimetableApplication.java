@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
@@ -142,15 +143,17 @@ public class TimetableApplication extends Application {
                     return;
                 }
                 
-                weeks = result;
-                backgroundExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        provider.insertOrUpdateWeeks(weeks);
-                        ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
-                                TimetableApplication.this);
-                    }
-                });
+                if (!compareData(weeks, result)) {
+                    weeks = result;
+                    backgroundExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            provider.insertOrUpdateWeeks(weeks);
+                            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
+                                    TimetableApplication.this);
+                        }
+                    });
+                }
                 
                 sendBroadcast(new Intent(ACTION_DATA_LOADED));
             }
@@ -188,5 +191,27 @@ public class TimetableApplication extends Application {
         beginTimes = getResources().getStringArray(R.array.beginTimes);
         endTimes = getResources().getStringArray(R.array.endTimes);
         provider = CachedDataProvider.getInstance(this);
+    }
+    
+    private boolean compareData(Week[] cache, Week[] weeks) {
+        boolean isEqual = true;
+        for (int i = 0; i < cache.length; ++i) {
+            Week w1 = cache[i];
+            Week w2 = weeks[i];
+            for (int j = 0; j < w1.days.length; ++j) {
+                Day d1 = w1.days[j];
+                Day d2 = w2.days[j];
+                for (int k = 0; k < d1.lessons.length; ++k) {
+                    Lesson l1 = d1.lessons[k];
+                    Lesson l2 = d2.lessons[k];
+                    if (l1.equals(l2)) {
+                        l2.enabled = l1.enabled;
+                    } else {
+                        isEqual = false;
+                    }
+                }
+            }
+        }
+        return isEqual;
     }
 }

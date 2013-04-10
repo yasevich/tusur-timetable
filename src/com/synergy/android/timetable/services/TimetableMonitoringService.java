@@ -75,7 +75,9 @@ public class TimetableMonitoringService extends IntentService {
                 for (int k = 0; k < d1.lessons.length; ++k) {
                     Lesson l1 = d1.lessons[k];
                     Lesson l2 = d2.lessons[k];
-                    if (!l1.equals(l2)) {
+                    if (l1.equals(l2)) {
+                        l2.enabled = l1.enabled;
+                    } else {
                         isEqual = false;
                     }
                 }
