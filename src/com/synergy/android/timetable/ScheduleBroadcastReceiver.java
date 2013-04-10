@@ -107,7 +107,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         
         for (int i = 0; i < 12; ++i) {
             Day d = weeks[time.week].days[time.day];
-            if (d.isEmpty() || lesson > d.getFirstLessonIndex()) {
+            if (d.getFirstLessonIndex() == -1 || lesson > d.getFirstLessonIndex()) {
                 lesson = -1;
                 time.day++;
                 dayOffset++;

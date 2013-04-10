@@ -56,7 +56,7 @@ public class AlarmNotificationService extends IntentService {
         List<String> lessons = new ArrayList<String>();
         for (int i = 0; i < TimetableApplication.NUMBER_OF_LESSONS; ++i) {
             Lesson l = provider.getLesson(week, day, i);
-            if (l.subject != null) {
+            if (l.subject != null && l.enabled) {
                 lessons.add(app.getBeginTimes()[i] + " " + l.subjectShort + " (" +
                         l.kindShort + ")");
             }

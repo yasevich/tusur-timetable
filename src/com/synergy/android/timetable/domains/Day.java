@@ -30,7 +30,7 @@ public class Day {
     
     public int getFirstLessonIndex() {
         for (int i = 0; i < lessons.length; ++i) {
-            if (lessons[i].subject != null) {
+            if (lessons[i].subject != null && lessons[i].enabled) {
                 return i;
             }
         }
