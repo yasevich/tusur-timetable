@@ -16,6 +16,8 @@
     <string name="activity_settings_name">Настройки</string>
     <string name="activity_settings_application">Приложение</string>
     <string name="activity_settings_application_empty">Показывать пары без занятий</string>
+    <string name="activity_settings_application_silentmode">Отключить звук</string>
+    <string name="activity_settings_application_silentmode_summary">во время занятий</string>
     <string name="activity_settings_notifications">Уведомления</string>
     <string name="activity_settings_notifications_enabled">Включить уведомления</string>
     <string name="activity_settings_notifications_time">Уведомлять за</string>
@@ -41,4 +43,6 @@
     <string name="notification_content_text_newtimetable">Доступно новое расписание</string>
     <string name="notification_content_text_alarm">Через %1$s начнутся занятия</string>
     <string name="notification_content_inbox_title_alarm">Сегодня</string>
+    <string name="notification_content_silentmode_title">Звук отключен</string>
+    <string name="notification_content_silentmode_text">Нажмите, чтобы включить</string>
 </resources>

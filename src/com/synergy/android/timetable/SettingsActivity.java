@@ -11,6 +11,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
 
+import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
+
 public class SettingsActivity extends PreferenceActivity
         implements OnSharedPreferenceChangeListener {
     public static final int REQUEST_CODE = 102;
@@ -53,9 +55,13 @@ public class SettingsActivity extends PreferenceActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(ApplicationSettings.APP_EMPTY)) {
             setResult(RESULT_EMPTY_CHANGED);
+        } else if (key.equals(ApplicationSettings.NOTIFICATIONS_ENABLED)) {
+            scheduleAlarmNotificationService();
         } else if (key.equals(ApplicationSettings.NOTIFICATIONS_TIME)) {
             notificationsTime.setSummary(settings.getNotificationsTimeSummary());
-            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+            scheduleAlarmNotificationService();
+        } else if (key.equals(ApplicationSettings.SILENT_MODE_ENABLED)) {
+            scheduleRingerModeService();
         }
     }
     
@@ -77,5 +83,22 @@ public class SettingsActivity extends PreferenceActivity
         
         notificationsTime = findPreference(ApplicationSettings.NOTIFICATIONS_TIME);
         notificationsTime.setSummary(settings.getNotificationsTimeSummary());
+    }
+    
+    private void scheduleAlarmNotificationService() {
+        if (settings.isNotificationsEnabled()) {
+            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+        } else {
+            ScheduleBroadcastReceiver.cancelAlarmNotificationService(this);
+        }
+    }
+    
+    private void scheduleRingerModeService() {
+        if (settings.isSilentModeEnabled()) {
+            ScheduleBroadcastReceiver.scheduleRingerModeService(this,
+                    TimetableApplication.ACTION_RINGER_MODE_SILENT);
+        } else {
+            ScheduleBroadcastReceiver.cancelRingerModeService(this);
+        }
     }
 }

@@ -31,8 +31,8 @@ public class AndroidUtils {
                 .setContentTitle(context.getString(title))
                 .setContentText(text)
                 .setAutoCancel(true)
-                .setTicker(text)
-                .setSound(sound);
+                .setSound(sound)
+                .setTicker(text);
         Intent intent = new Intent(context, cls);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context)
                 .addParentStack(cls)

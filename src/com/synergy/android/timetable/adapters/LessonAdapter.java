@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
-import com.synergy.android.timetable.ScheduleBroadcastReceiver;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
@@ -203,7 +202,7 @@ public class LessonAdapter extends BaseAdapter {
                 public void run() {
                     lesson.enabled = !lesson.enabled;
                     app.updateLesson(lesson);
-                    ScheduleBroadcastReceiver.scheduleAlarmNotificationService(app);
+                    TimetableApplication.onDataUpdated(app);
                 }
             });
         }

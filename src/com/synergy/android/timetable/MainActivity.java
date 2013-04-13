@@ -9,10 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.synergy.android.timetable.fragments.WeekFragment;
-import com.synergy.android.timetable.utils.NumberUtils;
 import com.synergy.android.timetable.utils.StringUtils;
-
-import java.util.Calendar;
 
 public class MainActivity extends FragmentActivity {
     private ApplicationSettings settings;
@@ -85,22 +82,13 @@ public class MainActivity extends FragmentActivity {
     private void initViews(int orientation) {
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
-        
+
         TimetableApplication app = (TimetableApplication) getApplication();
-        int weekIndex = NumberUtils.isOdd(app.getTimestamp().get(Calendar.WEEK_OF_YEAR)) ?
-                TimetableApplication.WEEK_ODD : TimetableApplication.WEEK_EVEN;
+        TimeStruct time = new TimeStruct(app.getTimestamp());
         
-        int currentDay = app.getTimestamp().get(Calendar.DAY_OF_WEEK);
-        if (currentDay == Calendar.SUNDAY) {
-            currentDay = 0;
-            weekIndex ^= 1;
-        } else {
-            currentDay -= 2;
-        }
-        
-        if (weekIndex == TimetableApplication.WEEK_ODD) {
+        if (time.week == TimetableApplication.WEEK_ODD) {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
-                    TimetableApplication.WEEK_ODD, currentDay, orientation);
+                    TimetableApplication.WEEK_ODD, time.day, orientation);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
                     TimetableApplication.WEEK_EVEN, -1, orientation);
             tabHost.setCurrentTab(TimetableApplication.WEEK_ODD);
@@ -108,7 +96,7 @@ public class MainActivity extends FragmentActivity {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
                     TimetableApplication.WEEK_ODD, -1, orientation);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
-                    TimetableApplication.WEEK_EVEN, currentDay, orientation);
+                    TimetableApplication.WEEK_EVEN, time.day, orientation);
             tabHost.setCurrentTab(TimetableApplication.WEEK_EVEN);
         }
     }

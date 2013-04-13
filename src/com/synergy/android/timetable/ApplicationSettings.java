@@ -10,11 +10,13 @@ import com.synergy.android.timetable.parsers.LessonsParser;
 
 public class ApplicationSettings {
     public static final String APP_EMPTY = "appEmpty";
+    public static final String SILENT_MODE_ENABLED = "silentModeEnabled";
+    public static final String NOTIFICATIONS_ENABLED = "notificationsEnabled";
     public static final String NOTIFICATIONS_TIME = "notificationsTime";
     
     private static final String GENERAL_GROUP = "generalGroup";
     private static final String GENERAL_URL = "generalUrl";
-    private static final String NOTIFICATIONS_ENABLED = "notificationsEnabled";
+    private static final String PREVOIUS_RINGER_MODE = "previousRingerMode";
     
     private static ApplicationSettings instance;
     
@@ -71,7 +73,7 @@ public class ApplicationSettings {
         return preferences.getBoolean(APP_EMPTY, true);
     }
     
-    public synchronized boolean getNotificationsEnabled() {
+    public synchronized boolean isNotificationsEnabled() {
         return preferences.getBoolean(NOTIFICATIONS_ENABLED, true);
     }
     
@@ -109,9 +111,26 @@ public class ApplicationSettings {
         return String.format(format, getNotificationsTimeAsString());
     }
     
+    public synchronized boolean isSilentModeEnabled() {
+        return preferences.getBoolean(SILENT_MODE_ENABLED, false);
+    }
+    
+    public synchronized void setPreviousRingerMode(int ringerMode) {
+        putInt(PREVOIUS_RINGER_MODE, ringerMode);
+    }
+    
+    public synchronized int getPreviousRingerMode() {
+        return preferences.getInt(PREVOIUS_RINGER_MODE, -1);
+    }
+    
     private synchronized void putString(String key, String value) {
         Editor editor = preferences.edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+    private synchronized void putInt(String key, int value) {
+        Editor editor = preferences.edit();
+        editor.putInt(key, value);
         editor.commit();
     }
 }

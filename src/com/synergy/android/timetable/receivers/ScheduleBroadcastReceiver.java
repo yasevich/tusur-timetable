@@ -1,4 +1,4 @@
-package com.synergy.android.timetable;
+package com.synergy.android.timetable.receivers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,12 +6,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.synergy.android.timetable.ApplicationSettings;
+import com.synergy.android.timetable.TimeStruct;
+import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.services.AlarmNotificationService;
+import com.synergy.android.timetable.services.RingerModeService;
 import com.synergy.android.timetable.services.TimetableMonitoringService;
-import com.synergy.android.timetable.utils.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +27,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         scheduleTimetableMonitoringService(context);
         scheduleAlarmNotificationService(context);
+        scheduleRingerModeService(context, TimetableApplication.ACTION_RINGER_MODE_SILENT);
     }
     
     public static void scheduleTimetableMonitoringService(Context context) {
@@ -39,8 +44,8 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     }
     
     public static void scheduleAlarmNotificationService(Context context) {
-        TimeStruct time = getNextTriggerMillis(context,
-                - ApplicationSettings.getInstance(context).getNotificationsTimeInMinutes());
+        TimeStruct time = getNextTriggerTime(context,
+                - ApplicationSettings.getInstance(context).getNotificationsTimeInMinutes(), true);
         Intent intent = new Intent(context, AlarmNotificationService.class);
         intent.setAction(TimetableApplication.ACTION_ALARM_NOTIFICATION);
         intent.putExtra(TimetableApplication.EXTRA_WEEK, time.week);
@@ -50,52 +55,72 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
                 PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(
                 Context.ALARM_SERVICE);
-        ApplicationSettings settings = ApplicationSettings.getInstance(context);
-        if (settings.getNotificationsEnabled() && time.inMillis != -1L) {
+        if (time.inMillis != -1L) {
             alarmManager.set(AlarmManager.RTC_WAKEUP, time.inMillis, operation);
-        } else {
-            alarmManager.cancel(operation);
         }
     }
     
-    public static TimeStruct getNextTriggerMillis(Context context, int minuteOffset) {
-        TimeStruct time = new TimeStruct();
-        Calendar calendar = new GregorianCalendar();
-        time.week = NumberUtils.isOdd(calendar.get(Calendar.WEEK_OF_YEAR)) ?
-                TimetableApplication.WEEK_ODD : TimetableApplication.WEEK_EVEN;
-        time.day = calendar.get(Calendar.DAY_OF_WEEK);
-        int dayOffset = 0;
-        if (time.day == Calendar.SUNDAY) {
-            time.day = 0;
-            dayOffset++;
-            time.week ^= 1;
-        } else {
-            time.day -= 2;
+    public static void cancelAlarmNotificationService(Context context) {
+        cancelScheduledIntent(context, AlarmNotificationService.class,
+                TimetableApplication.ACTION_ALARM_NOTIFICATION);
+    }
+    
+    public static void scheduleRingerModeService(Context context, String action) {
+        int timeOffset = 0;
+        if (action.equals(TimetableApplication.ACTION_RESET_RINGER_MODE)) {
+            timeOffset = TimetableApplication.MINUTES_IN_LESSON;
         }
         
-        int lesson = -1;
+        Intent intent = new Intent(context, RingerModeService.class);
+        intent.setAction(action);
+        PendingIntent operation = PendingIntent.getService(context, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+        TimeStruct time = getNextTriggerTime(context, timeOffset, false);
+        if (time.inMillis != -1L) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time.inMillis, operation);
+        }
+    }
+    
+    public static void cancelRingerModeService(Context context) {
+        cancelScheduledIntent(context, RingerModeService.class,
+                TimetableApplication.ACTION_RESET_RINGER_MODE);
+        cancelScheduledIntent(context, RingerModeService.class,
+                TimetableApplication.ACTION_RINGER_MODE_SILENT);
+        RingerModeService.resetRingerMode(context);
+    }
+    
+    private static void cancelScheduledIntent(Context context, Class<?> cls, String action) {
+        Intent intent = new Intent(context, cls);
+        intent.setAction(action);
+        PendingIntent operation = PendingIntent.getService(context, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+        alarmManager.cancel(operation);
+    }
+    
+    public static TimeStruct getNextTriggerTime(Context context, int minuteOffset,
+            boolean firstLessonOnly) {
+        Calendar calendar = new GregorianCalendar();
+        TimeStruct time = new TimeStruct(calendar);
+        
         List<Calendar> candidates = prepareTimeCandidates(context, minuteOffset);
         for (int i = 0; i < candidates.size(); ++i) {
             Calendar candidate = candidates.get(i);
             candidate.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
             candidate.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
             candidate.set(Calendar.DATE, calendar.get(Calendar.DATE));
-            candidate.add(Calendar.DATE, dayOffset);
+            candidate.add(Calendar.DATE, time.dayOffset);
             
             if (calendar.compareTo(candidate) == -1) {
-                lesson = i;
+                time.lesson = i;
                 break;
             }
         }
         
-        if (lesson == -1) {
-            time.day++;
-            dayOffset++;
-            if (time.day == 6) {
-                time.day = 0;
-                dayOffset++;
-                time.week ^= 1;
-            }
+        if (time.lesson == -1) {
+            time.nextDay();
         }
 
         CachedDataProvider provider = CachedDataProvider.getInstance(context);
@@ -106,27 +131,46 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         
         for (int i = 0; i < 12; ++i) {
             Day d = weeks[time.week].days[time.day];
-            if (d.getFirstLessonIndex() == -1 || lesson > d.getFirstLessonIndex()) {
-                lesson = -1;
-                time.day++;
-                dayOffset++;
-                if (time.day == 6) {
-                    time.day = 0;
-                    dayOffset++;
-                    time.week ^= 1;
+            if (firstLessonOnly) {
+                int firstLessonIndex = d.getFirstLessonIndex();
+                if (firstLessonIndex == -1 || time.lesson > firstLessonIndex) {
+                    time.nextDay();
+                } else {
+                    time.lesson = firstLessonIndex;
+                    break;
                 }
             } else {
-                lesson = d.getFirstLessonIndex();
-                break;
+                if (d.getFirstLessonIndex() == -1) {
+                    time.nextDay();
+                } else {
+                    int firstLessonIndex = d.getFirstLessonIndex();
+                    if (time.lesson <= firstLessonIndex) {
+                        time.lesson = firstLessonIndex;
+                        break;
+                    }
+                    int lastLessonIndex = d.getLastLessonIndex();
+                    if (time.lesson > lastLessonIndex) {
+                        time.nextDay();
+                        continue;
+                    }
+                    for (int j = time.lesson; j <= lastLessonIndex; ++j) {
+                        Lesson l = d.lessons[j];
+                        if (l.subject != null && l.enabled) {
+                            time.lesson = j;
+                            break;
+                        }
+                    }
+                    break;
+                }
             }
         }
         
-        if (lesson == -1) {
+        if (time.lesson == -1) {
             return time;
         }
         
-        Calendar result = candidates.get(lesson);
-        result.add(Calendar.DATE, dayOffset);
+        Calendar result = candidates.get(time.lesson);
+        result.add(Calendar.DATE, time.dayOffset);
         time.inMillis = result.getTimeInMillis();
         return time;
     }
@@ -173,11 +217,5 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         times.get(6).set(Calendar.SECOND, 0);
         times.get(6).set(Calendar.MILLISECOND, 0);
         return times;
-    }
-    
-    private static class TimeStruct {
-        public int week;
-        public int day;
-        public long inMillis = -1L;
     }
 }

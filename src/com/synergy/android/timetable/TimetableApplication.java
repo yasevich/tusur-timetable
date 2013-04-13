@@ -1,6 +1,7 @@
 package com.synergy.android.timetable;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
+import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -30,6 +32,10 @@ public class TimetableApplication extends Application {
             "com.synergy.android.timetable.intent.action.MONITOR_TIMETABLE";
     public static final String ACTION_ALARM_NOTIFICATION =
             "com.synergy.android.timetable.intent.action.ALARM_NOTIFICATION";
+    public static final String ACTION_RINGER_MODE_SILENT =
+            "com.synergy.android.timetable.intent.action.RINGER_MODE_SILENT";
+    public static final String ACTION_RESET_RINGER_MODE =
+            "com.synergy.android.timetable.intent.action.RESET_RINGER_MODE";
     
     public static final String EXTRA_WEEK =
             "com.synergy.android.timetable.intent.extra.WEEK";
@@ -40,12 +46,14 @@ public class TimetableApplication extends Application {
 
     public static final int NUMBER_OF_DAYS = 6;
     public static final int NUMBER_OF_LESSONS = 7;
+    public static final int MINUTES_IN_LESSON = 95;
     
     public static final int WEEK_ODD = 0;
     public static final int WEEK_EVEN = 1;
 
     public static final int MONITORING_NOTIFICATION_ID = 101;
     public static final int ALARM_NOTIFICATION_ID = 102;
+    public static final int RINGER_MODE_NOTIFICATION_ID = 103;
     
     private static TimetableApplication instance;
     
@@ -71,6 +79,8 @@ public class TimetableApplication extends Application {
                         TimetableApplication.this);
                 ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
                         TimetableApplication.this);
+                ScheduleBroadcastReceiver.scheduleRingerModeService(TimetableApplication.this,
+                        ACTION_RINGER_MODE_SILENT);
             } 
         });
         
@@ -158,8 +168,7 @@ public class TimetableApplication extends Application {
                         @Override
                         public void run() {
                             provider.insertOrUpdateWeeks(weeks);
-                            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
-                                    TimetableApplication.this);
+                            onDataUpdated(TimetableApplication.this);
                         }
                     });
                 }
@@ -191,6 +200,11 @@ public class TimetableApplication extends Application {
             return R.color.class_type_passfailexam;
         }
         return -1;
+    }
+    
+    public static void onDataUpdated(Context context) {
+        ScheduleBroadcastReceiver.scheduleAlarmNotificationService(context);
+        ScheduleBroadcastReceiver.scheduleRingerModeService(context, ACTION_RINGER_MODE_SILENT);
     }
     
     private void initResources() {

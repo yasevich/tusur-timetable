@@ -36,4 +36,13 @@ public class Day {
         }
         return -1;
     }
+    
+    public int getLastLessonIndex() {
+        for (int i = lessons.length - 1; i >= 0; --i) {
+            if (lessons[i].subject != null && lessons[i].enabled) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

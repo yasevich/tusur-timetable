@@ -8,10 +8,10 @@ import android.support.v4.app.NotificationCompat;
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.MainActivity;
 import com.synergy.android.timetable.R;
-import com.synergy.android.timetable.ScheduleBroadcastReceiver;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.providers.CachedDataProvider;
+import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
 import com.synergy.android.timetable.utils.AndroidUtils;
 
 import java.util.ArrayList;

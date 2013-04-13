@@ -7,6 +7,11 @@
             android:key="appEmpty"
             android:title="@string/activity_settings_application_empty"
             android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="silentModeEnabled"
+            android:title="@string/activity_settings_application_silentmode"
+            android:summary="@string/activity_settings_application_silentmode_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/activity_settings_notifications" >

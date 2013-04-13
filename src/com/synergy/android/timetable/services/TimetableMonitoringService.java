@@ -7,7 +7,6 @@ import android.support.v4.app.NotificationCompat;
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.MainActivity;
 import com.synergy.android.timetable.R;
-import com.synergy.android.timetable.ScheduleBroadcastReceiver;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
@@ -48,7 +47,7 @@ public class TimetableMonitoringService extends IntentService {
                 boolean isEqual = compareData(cache, weeks);
                 if (!isEqual) {
                     cacheProvider.insertOrUpdateWeeks(weeks);
-                    ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+                    TimetableApplication.onDataUpdated(this);
                     if (isNotificationNeeded) {
                         NotificationCompat.Builder builder = AndroidUtils.buildNotification(this,
                                 MainActivity.class,
