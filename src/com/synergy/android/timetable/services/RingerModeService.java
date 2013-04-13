@@ -75,8 +75,7 @@ public class RingerModeService extends Service {
     private void showNotification(NotificationManager notificationManager) {
         Intent intent = new Intent(this, RingerModeService.class);
         intent.setAction(ACTION_RESET_MODE);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_silentmode)
