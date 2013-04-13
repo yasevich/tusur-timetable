@@ -21,6 +21,7 @@ public class CellFragment extends Fragment {
     
     private TimetableApplication app;
     private Lesson.PrimaryKey primaryKey;
+    private int lessonIndex;
     private BroadcastReceiver receiver;
     
     @Override
@@ -35,7 +36,12 @@ public class CellFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         app = (TimetableApplication) activity.getApplication();
-        primaryKey = Lesson.PrimaryKey.getPrimaryKey(getTag());
+        String tag = getTag();
+        if (tag.contains("h")) {
+            lessonIndex = Integer.parseInt(tag.substring(2)) - 1;
+        } else {
+            primaryKey = Lesson.PrimaryKey.getPrimaryKey(tag);
+        }
     }
     
     @Override
@@ -49,9 +55,9 @@ public class CellFragment extends Fragment {
     
     private ViewHolder initViews(View root) {
         ViewHolder result = new ViewHolder(root);
-        result.subjectShort = (TextView) result.findViewById(R.id.fragmentCellSubjectShortTextView);
-        result.classroomShort = (TextView) result.findViewById(
-                R.id.fragmentCellClassroomShortTextView);
+        result.line1 = (TextView) result.findViewById(R.id.fragmentCellLine1TextView);
+        result.line2 = (TextView) result.findViewById(R.id.fragmentCellLine2TextView);
+        result.defaultTextColor = result.line1.getCurrentTextColor();
         return result;
     }
     
@@ -70,25 +76,45 @@ public class CellFragment extends Fragment {
     }
     
     private void populateData() {
-        if (primaryKey != null) {
+        if (primaryKey == null) {
+            viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
+            viewHolder.line2.setText(app.getEndTimes()[lessonIndex]);
+        } else {
             Lesson l = app.getWeek(primaryKey.getWeek()).days[primaryKey.getDay()]
                     .lessons[primaryKey.getLesson()];
             if (l.subject != null) {
-                viewHolder.subjectShort.setText(l.subjectShort);
-                viewHolder.classroomShort.setText(l.classroomShort);
+                viewHolder.line1.setText(l.subjectShort);
+                viewHolder.line2.setText(l.classroomShort);
                 
-                int color = TimetableApplication.getBgColor(l.kind);
-                if (color != -1) {
-                    viewHolder.root.setBackgroundResource(color);
+                if (!l.enabled) {
+                    switchTextColors(viewHolder, viewHolder.root.getContext().getResources()
+                            .getColor(R.color.data_empty));
                 }
+                
+                int shape = TimetableApplication.getLessonTypeIndex(l.kind);
+                if (shape != -1) {
+                    shape = TimetableApplication.LESSON_SHAPES[shape];
+                    viewHolder.root.setBackgroundResource(shape);
+                }
+            } else {
+                viewHolder.root.setBackgroundResource(R.drawable.cell_borders);
             }
         }
     }
     
+    private static void switchTextColors(ViewHolder viewHolder, int color) {
+        if (color == -1) {
+            color = viewHolder.defaultTextColor;
+        }
+        viewHolder.line1.setTextColor(color);
+        viewHolder.line2.setTextColor(color);
+    }
+    
     private static class ViewHolder {
         private View root;
-        private TextView subjectShort;
-        private TextView classroomShort;
+        private TextView line1;
+        private TextView line2;
+        private int defaultTextColor;
         
         public ViewHolder(View root) {
             this.root = root;

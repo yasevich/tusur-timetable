@@ -27,6 +27,14 @@
     <string name="fragment_week_odd">Нечетная</string>
     <string name="fragment_week_even">Четная</string>
     
+    <!-- Fragment week table -->
+    <string name="fragment_weektable_monday">ПН</string>
+    <string name="fragment_weektable_tuesday">ВТ</string>
+    <string name="fragment_weektable_wednesday">СР</string>
+    <string name="fragment_weektable_thursday">ЧТ</string>
+    <string name="fragment_weektable_friday">ПТ</string>
+    <string name="fragment_weektable_saturday">СБ</string>
+    
     <!-- Fragment day -->
     <string name="fragment_day_empty">Нет занятий</string>
     

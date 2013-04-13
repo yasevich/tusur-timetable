@@ -2,6 +2,7 @@
 <resources>
     <color name="data_empty">#ffaaaaaa</color>
     <color name="error_critical">#ffee0000</color>
+    <color name="border_color">#ffaaaaaa</color>
     
     <color name="class_type_lecture">#ffe5ffd5</color>
     <color name="class_type_practice">#ffd5f6ff</color>

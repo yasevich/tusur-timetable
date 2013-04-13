@@ -97,8 +97,9 @@ public class LessonAdapter extends BaseAdapter {
             } else {
                 view.setOnClickListener(new ItemOnClickListener(lesson, viewHolder));
                 
-                int color = TimetableApplication.getBgColor(lesson.kind);
+                int color = TimetableApplication.getLessonTypeIndex(lesson.kind);
                 if (color != -1) {
+                    color = TimetableApplication.LESSON_COLORS[color];
                     view.setBackgroundResource(color);
                 }
                 

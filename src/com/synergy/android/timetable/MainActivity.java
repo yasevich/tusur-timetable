@@ -19,15 +19,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        initViews(getResources().getConfiguration().orientation);
+        initViews();
         loadData();
     }
-    
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        initViews(newConfig.orientation);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,7 +73,7 @@ public class MainActivity extends FragmentActivity {
         context.startActivity(intent);
     }
     
-    private void initViews(int orientation) {
+    private void initViews() {
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
 
@@ -88,15 +82,15 @@ public class MainActivity extends FragmentActivity {
         
         if (time.week == TimetableApplication.WEEK_ODD) {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
-                    TimetableApplication.WEEK_ODD, time.day, orientation);
+                    TimetableApplication.WEEK_ODD, time.day);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
-                    TimetableApplication.WEEK_EVEN, -1, orientation);
+                    TimetableApplication.WEEK_EVEN, -1);
             tabHost.setCurrentTab(TimetableApplication.WEEK_ODD);
         } else {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
-                    TimetableApplication.WEEK_ODD, -1, orientation);
+                    TimetableApplication.WEEK_ODD, -1);
             addTabSpec(tabHost, getString(R.string.fragment_week_even),
-                    TimetableApplication.WEEK_EVEN, time.day, orientation);
+                    TimetableApplication.WEEK_EVEN, time.day);
             tabHost.setCurrentTab(TimetableApplication.WEEK_EVEN);
         }
     }
@@ -112,26 +106,10 @@ public class MainActivity extends FragmentActivity {
         }
     }
     
-    private void addTabSpec(FragmentTabHost tabHost, String tag, int weekIndex,
-            int currentDay, int orientation) {
-//        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            addWeekTabSpec(tabHost, tag, weekIndex, currentDay);
-//        } else {
-//            addWeekTableTabSpec(tabHost, tag, weekIndex);
-//        }
-    }
-    
-    private static void addWeekTabSpec(FragmentTabHost tabHost, String tag, int weekIndex,
-            int currentDay) {
+    private void addTabSpec(FragmentTabHost tabHost, String tag, int weekIndex, int currentDay) {
         Bundle bundle = new Bundle();
         bundle.putInt(TimetableApplication.EXTRA_WEEK, weekIndex);
         bundle.putInt(TimetableApplication.EXTRA_DAY, currentDay);
         tabHost.addTab(tabHost.newTabSpec(tag).setIndicator(tag), WeekFragment.class, bundle);
     }
-    
-//    private static void addWeekTableTabSpec(FragmentTabHost tabHost, String tag, int weekIndex) {
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(TimetableApplication.EXTRA_WEEK, weekIndex);
-//        tabHost.addTab(tabHost.newTabSpec(tag).setIndicator(tag), WeekTableFragment.class, bundle);
-//    }
 }

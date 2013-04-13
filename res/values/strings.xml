@@ -27,6 +27,14 @@
     <string name="fragment_week_odd">Odd</string>
     <string name="fragment_week_even">Even</string>
     
+    <!-- Fragment week table -->
+    <string name="fragment_weektable_monday">Mon.</string>
+    <string name="fragment_weektable_tuesday">Tue.</string>
+    <string name="fragment_weektable_wednesday">Wed.</string>
+    <string name="fragment_weektable_thursday">Thu.</string>
+    <string name="fragment_weektable_friday">Fri.</string>
+    <string name="fragment_weektable_saturday">Sat.</string>
+    
     <!-- Fragment day -->
     <string name="fragment_day_empty">No classes today</string>
     

@@ -55,6 +55,26 @@ public class TimetableApplication extends Application {
     public static final int ALARM_NOTIFICATION_ID = 102;
     public static final int RINGER_MODE_NOTIFICATION_ID = 103;
     
+    public static final int[] LESSON_COLORS = new int[] {
+        R.color.class_type_lecture,
+        R.color.class_type_practice,
+        R.color.class_type_lab,
+        R.color.class_type_coursework,
+        R.color.class_type_courseproject,
+        R.color.class_type_finalexam,
+        R.color.class_type_passfailexam
+    };
+    
+    public static final int[] LESSON_SHAPES = new int[] {
+        R.drawable.cell_type_lecture,
+        R.drawable.cell_type_practice,
+        R.drawable.cell_type_lab,
+        R.drawable.cell_type_coursework,
+        R.drawable.cell_type_courseproject,
+        R.drawable.cell_type_finalexam,
+        R.drawable.cell_type_passfailexam,
+    };
+    
     private static TimetableApplication instance;
     
     private ExecutorService backgroundExecutor;
@@ -183,21 +203,21 @@ public class TimetableApplication extends Application {
         return instance;
     }
     
-    public static int getBgColor(String kind) {
+    public static int getLessonTypeIndex(String kind) {
         if (kind.startsWith("Лек")) {
-            return R.color.class_type_lecture;
+            return 0;
         } else if (kind.startsWith("Пра")) {
-            return R.color.class_type_practice;
+            return 1;
         } else if (kind.startsWith("Лаб")) {
-            return R.color.class_type_lab;
+            return 2;
         } else if (kind.startsWith("Курсовая")) {
-            return R.color.class_type_coursework;
+            return 3;
         } else if (kind.startsWith("Курсовое")) {
-            return R.color.class_type_courseproject;
+            return 4;
         } else if (kind.startsWith("Экз")) {
-            return R.color.class_type_finalexam;
+            return 5;
         } else if (kind.startsWith("Зач")) {
-            return R.color.class_type_passfailexam;
+            return 6;
         }
         return -1;
     }
