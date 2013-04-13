@@ -22,6 +22,14 @@ public class TimetableApplication extends Application {
             "com.synergy.android.timetable.intent.action.DATA_LOADING";
     public static final String ACTION_DATA_LOADED =
             "com.synergy.android.timetable.intent.action.DATA_LOADED";
+    public static final String ACTION_DISMISS =
+            "com.synergy.android.timetable.intent.action.DISMISS";
+    public static final String ACTION_OPEN =
+            "com.synergy.android.timetable.intent.action.OPEN";
+    public static final String ACTION_MONITOR_TIMETABLE =
+            "com.synergy.android.timetable.intent.action.MONITOR_TIMETABLE";
+    public static final String ACTION_ALARM_NOTIFICATION =
+            "com.synergy.android.timetable.intent.action.ALARM_NOTIFICATION";
     
     public static final String EXTRA_WEEK =
             "com.synergy.android.timetable.intent.extra.WEEK";
@@ -140,6 +148,7 @@ public class TimetableApplication extends Application {
                 if (result == null) {
                     Toast.makeText(TimetableApplication.this, getString(R.string.error_connection),
                             Toast.LENGTH_SHORT).show();
+                    sendBroadcast(new Intent(ACTION_DATA_LOADED));
                     return;
                 }
                 

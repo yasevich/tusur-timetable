@@ -17,6 +17,12 @@ public class AndroidUtils {
         notificationManager.notify(id, notification);
     }
     
+    public static void dismissNotification(Context context, int id) {
+        NotificationManager manager = (NotificationManager) context.getSystemService(
+                Context.NOTIFICATION_SERVICE);
+        manager.cancel(id);
+    }
+    
     public static NotificationCompat.Builder buildNotification(Context context,
             Class<?> cls, int icon, int title, String text) {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

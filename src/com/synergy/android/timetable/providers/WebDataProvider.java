@@ -1,7 +1,6 @@
 package com.synergy.android.timetable.providers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.TimetableApplication;
@@ -73,10 +72,6 @@ public class WebDataProvider {
             if (index == TimetableApplication.NUMBER_OF_DAYS * 2) {
                 index = 0;
             }
-        }
-        
-        for (int i = 0; i < urls.length; ++i) {
-            Log.v("url", urls[i]);
         }
     }
     

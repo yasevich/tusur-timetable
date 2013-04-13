@@ -1,6 +1,7 @@
 package com.synergy.android.timetable.services;
 
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
@@ -24,8 +25,16 @@ public class AlarmNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        sendNotification(intent);
-        ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+        String action = intent.getAction();
+        if (action.equals(TimetableApplication.ACTION_ALARM_NOTIFICATION)) {
+            sendNotification(intent);
+            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
+        } else if (action.equals(TimetableApplication.ACTION_DISMISS)) {
+            AndroidUtils.dismissNotification(this, TimetableApplication.ALARM_NOTIFICATION_ID);
+        } else if (action.equals(TimetableApplication.ACTION_OPEN)) {
+            AndroidUtils.dismissNotification(this, TimetableApplication.ALARM_NOTIFICATION_ID);
+            MainActivity.startActivity(this, Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
     }
     
     private void sendNotification(Intent intent) {
@@ -44,7 +53,20 @@ public class AlarmNotificationService extends IntentService {
         while (iterator.hasNext()) {
             style.addLine(iterator.next());
         }
-        builder.setStyle(style);
+        
+        Intent dismiss = new Intent(this, AlarmNotificationService.class);
+        dismiss.setAction(TimetableApplication.ACTION_DISMISS);
+        PendingIntent actionDismiss = PendingIntent.getService(this, 0, dismiss, 0);
+        
+        Intent open = new Intent(this, AlarmNotificationService.class);
+        open.setAction(TimetableApplication.ACTION_OPEN);
+        PendingIntent actionOpen = PendingIntent.getService(this, 0, open, 0);
+        
+        builder.setStyle(style)
+                .addAction(R.drawable.ic_action_dismiss, getString(R.string.action_dismiss),
+                        actionDismiss)
+                .addAction(R.drawable.ic_action_open, getString(R.string.action_open),
+                        actionOpen);
         
         AndroidUtils.sendNotification(this, TimetableApplication.ALARM_NOTIFICATION_ID,
                 builder.build());

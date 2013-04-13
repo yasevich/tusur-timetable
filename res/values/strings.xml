@@ -3,6 +3,8 @@
     <!-- General -->
     <string name="app_name">Timetable</string>
     <string name="error_connection">Server not avaiable, try again later</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_open">Open</string>
     
     <!-- Group activity -->
     <string name="activity_group_caption">Please enter your group number</string>

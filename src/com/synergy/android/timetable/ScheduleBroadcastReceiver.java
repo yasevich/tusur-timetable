@@ -26,40 +26,39 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     }
     
     public static void scheduleTimetableMonitoringService(Context context) {
+        Intent intent = new Intent(context, TimetableMonitoringService.class);
+        intent.setAction(TimetableApplication.ACTION_MONITOR_TIMETABLE);
         PendingIntent operation = PendingIntent.getService(context, 0,
                 new Intent(context, TimetableMonitoringService.class),
                 PendingIntent.FLAG_CANCEL_CURRENT);
-        if (operation != null) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(
-                    Context.ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.RTC,
-                    System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR,
-                    AlarmManager.INTERVAL_DAY, operation);
-        }
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC,
+                System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR,
+                AlarmManager.INTERVAL_DAY, operation);
     }
     
     public static void scheduleAlarmNotificationService(Context context) {
-        TimeStruct time = getNextTriggerMillis(context);
+        TimeStruct time = getNextTriggerMillis(context,
+                - ApplicationSettings.getInstance(context).getNotificationsTimeInMinutes());
         Intent intent = new Intent(context, AlarmNotificationService.class);
+        intent.setAction(TimetableApplication.ACTION_ALARM_NOTIFICATION);
         intent.putExtra(TimetableApplication.EXTRA_WEEK, time.week);
         intent.putExtra(TimetableApplication.EXTRA_DAY, time.day);
         
         PendingIntent operation = PendingIntent.getService(context, 0, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
-        
-        if (operation != null) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(
-                    Context.ALARM_SERVICE);
-            ApplicationSettings settings = ApplicationSettings.getInstance(context);
-            if (settings.getNotificationsEnabled() && time.inMillis != -1L) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, time.inMillis, operation);
-            } else {
-                alarmManager.cancel(operation);
-            }
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(
+                Context.ALARM_SERVICE);
+        ApplicationSettings settings = ApplicationSettings.getInstance(context);
+        if (settings.getNotificationsEnabled() && time.inMillis != -1L) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time.inMillis, operation);
+        } else {
+            alarmManager.cancel(operation);
         }
     }
     
-    public static TimeStruct getNextTriggerMillis(Context context) {
+    public static TimeStruct getNextTriggerMillis(Context context, int minuteOffset) {
         TimeStruct time = new TimeStruct();
         Calendar calendar = new GregorianCalendar();
         time.week = NumberUtils.isOdd(calendar.get(Calendar.WEEK_OF_YEAR)) ?
@@ -75,7 +74,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         }
         
         int lesson = -1;
-        List<Calendar> candidates = prepareTimeCandidates(context, calendar);
+        List<Calendar> candidates = prepareTimeCandidates(context, minuteOffset);
         for (int i = 0; i < candidates.size(); ++i) {
             Calendar candidate = candidates.get(i);
             candidate.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
@@ -132,31 +131,10 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         return time;
     }
     
-    private static List<Calendar> prepareTimeCandidates(Context context, Calendar c) {
+    private static List<Calendar> prepareTimeCandidates(Context context, int minuteOffset) {
         List<Calendar> times = initCalendars();
-        ApplicationSettings settings = ApplicationSettings.getInstance(context);
-        switch (settings.getNotificationsTime()) {
-        case 0:
-            batchCalendarAdd(times, Calendar.MINUTE, -15);
-            break;
-        case 1:
-            batchCalendarAdd(times, Calendar.MINUTE, -30);
-            break;
-        case 2:
-            batchCalendarAdd(times, Calendar.MINUTE, -45);
-            break;
-        case 3:
-            batchCalendarAdd(times, Calendar.HOUR_OF_DAY, -1);
-            break;
-        case 4:
-            batchCalendarAdd(times, Calendar.MINUTE, -90);
-            break;
-        case 5:
-            batchCalendarAdd(times, Calendar.HOUR_OF_DAY, -2);
-            break;
-        case 6:
-            batchCalendarAdd(times, Calendar.HOUR_OF_DAY, -3);
-            break;
+        for (Calendar c : times) {
+            c.add(Calendar.MINUTE, minuteOffset);
         }
         return times;
     }
@@ -195,12 +173,6 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         times.get(6).set(Calendar.SECOND, 0);
         times.get(6).set(Calendar.MILLISECOND, 0);
         return times;
-    }
-    
-    private static void batchCalendarAdd(List<Calendar> list, int field, int value) {
-        for (Calendar calendar : list) {
-            calendar.add(field, value);
-        }
     }
     
     private static class TimeStruct {

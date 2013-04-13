@@ -3,6 +3,8 @@
     <!-- General -->
     <string name="app_name">Расписание</string>
     <string name="error_connection">Сервер недоступен, попробуйте позднее</string>
+    <string name="action_dismiss">Скрыть</string>
+    <string name="action_open">Открыть</string>
     
     <!-- Group activity -->
     <string name="activity_group_caption">Пожалуйста, введите номер группы</string>

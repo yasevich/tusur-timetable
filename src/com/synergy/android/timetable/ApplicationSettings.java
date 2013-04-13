@@ -79,6 +79,27 @@ public class ApplicationSettings {
         return preferences.getInt(NOTIFICATIONS_TIME, 4) - 1;
     }
     
+    public synchronized int getNotificationsTimeInMinutes() {
+        switch (getNotificationsTime()) {
+        case 0:
+            return 15;
+        case 1:
+            return 30;
+        case 2:
+            return 45;
+        case 3:
+            return 60;
+        case 4:
+            return 90;
+        case 5:
+            return 120;
+        case 6:
+            return 180;
+        default:
+            return 0;
+        }
+    }
+    
     public synchronized String getNotificationsTimeAsString() {
         return notificationsTimes[getNotificationsTime()];
     }

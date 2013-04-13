@@ -1,5 +1,6 @@
 package com.synergy.android.timetable;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -70,6 +71,15 @@ public class MainActivity extends FragmentActivity {
             TimetableApplication app = (TimetableApplication) getApplication();
             app.loadCache();
         }
+    }
+    
+    public static void startActivity(Context context, int flags) {
+        if (context == null) {
+            throw new NullPointerException("Context shoul not be null.");
+        }
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(flags);
+        context.startActivity(intent);
     }
     
     private void initViews(int orientation) {
