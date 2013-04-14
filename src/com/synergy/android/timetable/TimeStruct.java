@@ -18,7 +18,9 @@ public class TimeStruct {
         if (day == Calendar.SUNDAY) {
             day = 0;
             dayOffset++;
-            week ^= 1;
+            if (calendar.getFirstDayOfWeek() == Calendar.MONDAY) {
+                week ^= 1;
+            }
         } else {
             day -= 2;
         }

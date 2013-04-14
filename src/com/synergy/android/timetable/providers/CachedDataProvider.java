@@ -76,6 +76,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion) {
         case 1:
+            db.execSQL("ALTER TABLE b RENAME TO " + TABLE_LESSON);
             db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_SUBJECT_SHORT, SqlDataType.TEXT, false)));
             db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
