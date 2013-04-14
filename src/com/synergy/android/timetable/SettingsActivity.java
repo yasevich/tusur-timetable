@@ -26,7 +26,6 @@ public class SettingsActivity extends PreferenceActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        setContentView(R.layout.activity_settings);
         
         settings = ApplicationSettings.getInstance(this);
         settings.registerOnSharedPreferenceChangeListener(this);

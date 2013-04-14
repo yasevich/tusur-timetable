@@ -8,15 +8,22 @@
         android:title="@string/action_refresh" />
     
     <item
-        android:id="@+id/action_group"
+        android:id="@+id/action_table"
         android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:icon="?attr/menuActionTable"
+        android:title="@string/action_table" />
+    
+    <item
+        android:id="@+id/action_group"
+        android:orderInCategory="102"
         android:showAsAction="never"
         android:icon="?attr/menuActionGroup"
         android:title="@string/action_group" />
     
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="102"
+        android:orderInCategory="103"
         android:showAsAction="never"
         android:icon="?attr/menuActionSettings"
         android:title="@string/action_settings" />

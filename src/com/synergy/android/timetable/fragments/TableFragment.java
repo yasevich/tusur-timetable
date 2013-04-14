@@ -9,18 +9,17 @@ import android.view.ViewGroup;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 
-public class WeekTableFragment extends Fragment {
+public class TableFragment extends Fragment {
     private int resource;
     
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args.getInt(TimetableApplication.EXTRA_WEEK) == TimetableApplication.WEEK_EVEN) {
-            resource = R.layout.fragment_week_even;
+    public static TableFragment createInstance(int week) {
+        TableFragment fragment = new TableFragment();
+        if (week == TimetableApplication.WEEK_ODD) {
+            fragment.resource = R.layout.fragment_week_odd;
         } else {
-            resource = R.layout.fragment_week_odd;
+            fragment.resource = R.layout.fragment_week_even;
         }
+        return fragment;
     }
     
     @Override

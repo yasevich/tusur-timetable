@@ -43,6 +43,7 @@
     
     <!-- Menu -->
     <string name="action_refresh">Обновить</string>
+    <string name="action_table">Таблица</string>
     <string name="action_group">Группа</string>
     <string name="action_settings">Настройки</string>
     

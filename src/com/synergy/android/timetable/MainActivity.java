@@ -36,6 +36,9 @@ public class MainActivity extends FragmentActivity {
             TimetableApplication app = (TimetableApplication) getApplication();
             app.loadWebData();
             return true;
+        case R.id.action_table:
+            TableActivity.startActivity(this);
+            return true;
         case R.id.action_group:
             GroupActivity.startActivityForResult(this);
             return true;

@@ -43,6 +43,7 @@
     
     <!-- Menu -->
     <string name="action_refresh">Refresh</string>
+    <string name="action_table">Table</string>
     <string name="action_group">Group</string>
     <string name="action_settings">Settings</string>
     

@@ -11,6 +11,7 @@
             backward-compatibility can go here.
         -->
         <item name="menuActionUpdate">@drawable/ic_action_update_light</item>
+        <item name="menuActionTable">@drawable/ic_action_table_light</item>
         <item name="menuActionGroup">@drawable/ic_action_group_light</item>
         <item name="menuActionSettings">@drawable/ic_action_settings_light</item>
     </style>
