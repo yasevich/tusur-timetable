@@ -237,6 +237,10 @@ public class TimetableApplication extends Application {
     }
     
     private boolean compareData(Week[] cache, Week[] weeks) {
+        if (cache == null || weeks == null) {
+            return false;
+        }
+        
         boolean isEqual = true;
         for (int i = 0; i < cache.length; ++i) {
             Week w1 = cache[i];
