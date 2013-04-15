@@ -81,7 +81,7 @@ public class RingerModeService extends Service {
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_silentmode)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.notification_content_silentmode_title))
                 .setContentText(getString(R.string.notification_content_silentmode_text))
                 .setContentIntent(pendingIntent);
