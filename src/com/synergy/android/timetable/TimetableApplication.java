@@ -20,6 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TimetableApplication extends Application {
+    public static final String TAG = TimetableApplication.class.getSimpleName();
+    
     public static final String ACTION_DATA_LOADING =
             "com.synergy.android.timetable.intent.action.DATA_LOADING";
     public static final String ACTION_DATA_LOADED =

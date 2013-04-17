@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
@@ -22,6 +23,8 @@ public class RingerModeService extends Service {
     private static final String ACTION_RESET_MODE =
             "com.synergy.android.timetable.intent.action.RESET_MODE";
     
+    private static final int NORMAL_MODE = -1;
+    
     private static BroadcastReceiver receiver;
 
     @Override
@@ -31,6 +34,15 @@ public class RingerModeService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent == null || intent.getAction() == null) {
+            Log.w(TimetableApplication.TAG, "Unable to start the service: " +
+                    RingerModeService.class.getSimpleName());
+            if (ApplicationSettings.getInstance(this).getPreviousRingerMode() == NORMAL_MODE) {
+                stopSelf();
+            }
+            return START_STICKY;
+        }
+        
         String action = intent.getAction();
         if (action.equals(TimetableApplication.ACTION_RINGER_MODE_SILENT)) {
             showNotification();
@@ -65,6 +77,7 @@ public class RingerModeService extends Service {
         ApplicationSettings settings = ApplicationSettings.getInstance(context);
         AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
         audioManager.setRingerMode(settings.getPreviousRingerMode());
+        settings.setPreviousRingerMode(NORMAL_MODE);
     }
     
     private static void cancelNotification(NotificationManager notificationManager) {
