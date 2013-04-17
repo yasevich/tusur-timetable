@@ -65,7 +65,6 @@ public class RingerModeService extends Service {
         ApplicationSettings settings = ApplicationSettings.getInstance(context);
         AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
         audioManager.setRingerMode(settings.getPreviousRingerMode());
-        settings.setPreviousRingerMode(-1);
     }
     
     private static void cancelNotification(NotificationManager notificationManager) {

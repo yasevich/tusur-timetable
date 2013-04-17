@@ -114,7 +114,7 @@ public class ApplicationSettings {
         return notificationsTimes[index];
     }
     
-    public String getNotificationsTimeSummary() {
+    public synchronized String getNotificationsTimeSummary() {
         String format = context.getString(R.string.activity_settings_notifications_time_summary);
         return String.format(format, getNotificationsTimeAsString());
     }
@@ -136,6 +136,7 @@ public class ApplicationSettings {
         editor.putString(key, value);
         editor.commit();
     }
+    
     private synchronized void putInt(String key, int value) {
         Editor editor = preferences.edit();
         editor.putInt(key, value);
