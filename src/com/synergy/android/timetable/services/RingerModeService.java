@@ -39,16 +39,16 @@ public class RingerModeService extends Service {
             settings.setPreviousRingerMode(audioManager.getRingerMode());
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             registerReceiver(this);
-            ScheduleBroadcastReceiver.scheduleRingerModeService(this,
+            ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RESET_RINGER_MODE);
         } else if (action.equals(TimetableApplication.ACTION_RESET_RINGER_MODE)) {
             resetRingerMode(this);
-            ScheduleBroadcastReceiver.scheduleRingerModeService(this,
+            ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);
             stopSelf();
         } else if (action.equals(ACTION_RESET_MODE)) {
-            ScheduleBroadcastReceiver.cancelRingerModeService(this);
-            ScheduleBroadcastReceiver.scheduleRingerModeService(this,
+            ScheduleBroadcastReceiver.cancelRingerMode(this);
+            ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);
             stopSelf();
         }

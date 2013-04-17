@@ -27,7 +27,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         scheduleTimetableMonitoringService(context);
         scheduleAlarmNotificationService(context);
-        scheduleRingerModeService(context, TimetableApplication.ACTION_RINGER_MODE_SILENT);
+        scheduleRingerModeService(context);
     }
     
     public static void scheduleTimetableMonitoringService(Context context) {
@@ -44,6 +44,15 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     }
     
     public static void scheduleAlarmNotificationService(Context context) {
+        ApplicationSettings settings = ApplicationSettings.getInstance(context);
+        if (settings.isNotificationsEnabled()) {
+            ScheduleBroadcastReceiver.scheduleAlarmNotification(context);
+        } else {
+            ScheduleBroadcastReceiver.cancelAlarmNotification(context);
+        }
+    }
+    
+    public static void scheduleAlarmNotification(Context context) {
         TimeStruct time = getNextTriggerTime(context,
                 - ApplicationSettings.getInstance(context).getNotificationsTimeInMinutes(), true);
         Intent intent = new Intent(context, AlarmNotificationService.class);
@@ -60,12 +69,22 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         }
     }
     
-    public static void cancelAlarmNotificationService(Context context) {
+    public static void cancelAlarmNotification(Context context) {
         cancelScheduledIntent(context, AlarmNotificationService.class,
                 TimetableApplication.ACTION_ALARM_NOTIFICATION);
     }
     
-    public static void scheduleRingerModeService(Context context, String action) {
+    public static void scheduleRingerModeService(Context context) {
+        ApplicationSettings settings = ApplicationSettings.getInstance(context);
+        if (settings.isSilentModeEnabled()) {
+            ScheduleBroadcastReceiver.scheduleRingerMode(context,
+                    TimetableApplication.ACTION_RINGER_MODE_SILENT);
+        } else {
+            ScheduleBroadcastReceiver.cancelRingerMode(context);
+        }
+    }
+    
+    public static void scheduleRingerMode(Context context, String action) {
         int timeOffset = 0;
         if (action.equals(TimetableApplication.ACTION_RESET_RINGER_MODE)) {
             timeOffset = TimetableApplication.MINUTES_IN_LESSON;
@@ -83,7 +102,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         }
     }
     
-    public static void cancelRingerModeService(Context context) {
+    public static void cancelRingerMode(Context context) {
         cancelScheduledIntent(context, RingerModeService.class,
                 TimetableApplication.ACTION_RESET_RINGER_MODE);
         cancelScheduledIntent(context, RingerModeService.class,

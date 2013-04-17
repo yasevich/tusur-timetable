@@ -55,12 +55,12 @@ public class SettingsActivity extends PreferenceActivity
         if (key.equals(ApplicationSettings.APP_EMPTY)) {
             setResult(RESULT_EMPTY_CHANGED);
         } else if (key.equals(ApplicationSettings.NOTIFICATIONS_ENABLED)) {
-            scheduleAlarmNotificationService();
+            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
         } else if (key.equals(ApplicationSettings.NOTIFICATIONS_TIME)) {
             notificationsTime.setSummary(settings.getNotificationsTimeSummary());
-            scheduleAlarmNotificationService();
+            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
         } else if (key.equals(ApplicationSettings.SILENT_MODE_ENABLED)) {
-            scheduleRingerModeService();
+            ScheduleBroadcastReceiver.scheduleRingerModeService(this);
         }
     }
     
@@ -82,22 +82,5 @@ public class SettingsActivity extends PreferenceActivity
         
         notificationsTime = findPreference(ApplicationSettings.NOTIFICATIONS_TIME);
         notificationsTime.setSummary(settings.getNotificationsTimeSummary());
-    }
-    
-    private void scheduleAlarmNotificationService() {
-        if (settings.isNotificationsEnabled()) {
-            ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
-        } else {
-            ScheduleBroadcastReceiver.cancelAlarmNotificationService(this);
-        }
-    }
-    
-    private void scheduleRingerModeService() {
-        if (settings.isSilentModeEnabled()) {
-            ScheduleBroadcastReceiver.scheduleRingerModeService(this,
-                    TimetableApplication.ACTION_RINGER_MODE_SILENT);
-        } else {
-            ScheduleBroadcastReceiver.cancelRingerModeService(this);
-        }
     }
 }

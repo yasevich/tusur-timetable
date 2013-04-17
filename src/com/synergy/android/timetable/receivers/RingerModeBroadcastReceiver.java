@@ -12,8 +12,8 @@ public class RingerModeBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getExtras().getInt(AudioManager.EXTRA_RINGER_MODE) !=
                 AudioManager.RINGER_MODE_SILENT) {
-            ScheduleBroadcastReceiver.cancelRingerModeService(context);
-            ScheduleBroadcastReceiver.scheduleRingerModeService(context,
+            ScheduleBroadcastReceiver.cancelRingerMode(context);
+            ScheduleBroadcastReceiver.scheduleRingerMode(context,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);
         }
     }

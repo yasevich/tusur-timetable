@@ -21,7 +21,7 @@
     <string name="activity_settings_notifications">Уведомления</string>
     <string name="activity_settings_notifications_enabled">Включить уведомления</string>
     <string name="activity_settings_notifications_time">Уведомлять за</string>
-    <string name="activity_settings_notifications_time_summary">%1$s до начала занятия</string>
+    <string name="activity_settings_notifications_time_summary">%1$s до начала занятий</string>
     
     <!-- Fragment week -->
     <string name="fragment_week_odd">Нечетная</string>

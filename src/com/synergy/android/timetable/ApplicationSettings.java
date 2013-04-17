@@ -103,7 +103,15 @@ public class ApplicationSettings {
     }
     
     public synchronized String getNotificationsTimeAsString() {
-        return notificationsTimes[getNotificationsTime()];
+        int index = getNotificationsTime();
+        if (index < 0) {
+            index = 0;
+            putInt(NOTIFICATIONS_TIME, index);
+        } else if (index >= notificationsTimes.length) {
+            index = notificationsTimes.length - 1;
+            putInt(NOTIFICATIONS_TIME, index);
+        }
+        return notificationsTimes[index];
     }
     
     public String getNotificationsTimeSummary() {

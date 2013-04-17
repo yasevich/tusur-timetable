@@ -99,8 +99,8 @@ public class TimetableApplication extends Application {
                         TimetableApplication.this);
                 ScheduleBroadcastReceiver.scheduleAlarmNotificationService(
                         TimetableApplication.this);
-                ScheduleBroadcastReceiver.scheduleRingerModeService(TimetableApplication.this,
-                        ACTION_RINGER_MODE_SILENT);
+                ScheduleBroadcastReceiver.scheduleRingerModeService(
+                        TimetableApplication.this);
             } 
         });
         
@@ -224,7 +224,7 @@ public class TimetableApplication extends Application {
     
     public static void onDataUpdated(Context context) {
         ScheduleBroadcastReceiver.scheduleAlarmNotificationService(context);
-        ScheduleBroadcastReceiver.scheduleRingerModeService(context, ACTION_RINGER_MODE_SILENT);
+        ScheduleBroadcastReceiver.scheduleRingerModeService(context);
     }
     
     private void initResources() {

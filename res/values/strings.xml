@@ -21,7 +21,7 @@
     <string name="activity_settings_notifications">Notifications</string>
     <string name="activity_settings_notifications_enabled">Enable notifications</string>
     <string name="activity_settings_notifications_time">Notify me</string>
-    <string name="activity_settings_notifications_time_summary">%1$s before class</string>
+    <string name="activity_settings_notifications_time_summary">%1$s before classes</string>
     
     <!-- Fragment week -->
     <string name="fragment_week_odd">Odd</string>
