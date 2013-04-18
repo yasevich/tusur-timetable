@@ -50,9 +50,18 @@ public class DayListFragment extends ListFragment {
         return view;
     }
     
+    private static final String KEY_DAY_INDEX = "dayIndex";
+    private static final String KEY_WEEK_INDEX = "weekIndex";
+    
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        
+        if (savedInstanceState != null) {
+            weekIndex = savedInstanceState.getInt(KEY_WEEK_INDEX);
+            dayIndex = savedInstanceState.getInt(KEY_DAY_INDEX);
+        }
+        
         registerDateLoadedBroadcastReceiver();
         if (app.getWeeks() != null) {
             day = app.getWeek(weekIndex).days[dayIndex];
@@ -73,6 +82,15 @@ public class DayListFragment extends ListFragment {
                 }
             }
         });
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_WEEK_INDEX, weekIndex);
+        outState.putInt(KEY_DAY_INDEX, dayIndex);
+        
+        app.unregisterReceiver(receiver);
+        receiver = null;
     }
     
     private void populateData() {
