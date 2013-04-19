@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -62,26 +61,17 @@ public class DayListFragment extends ListFragment {
             dayIndex = savedInstanceState.getInt(KEY_DAY_INDEX);
         }
         
-        registerDateLoadedBroadcastReceiver();
         if (app.getWeeks() != null) {
             day = app.getWeek(weekIndex).days[dayIndex];
             populateData();
         }
     }
     
-    private void registerDateLoadedBroadcastReceiver() {
-        app.getBackgroundExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (receiver == null) {
-                    receiver = new DataLoadedBroadcastReceiver();
-                    IntentFilter filter = new IntentFilter();
-                    filter.addAction(TimetableApplication.ACTION_DATA_LOADING);
-                    filter.addAction(TimetableApplication.ACTION_DATA_LOADED);
-                    app.registerReceiver(receiver, filter);
-                }
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        receiver = new DataLoadedBroadcastReceiver();
+        app.registerReceiver(receiver);
     }
     
     @Override

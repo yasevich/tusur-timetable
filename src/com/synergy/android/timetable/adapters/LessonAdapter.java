@@ -3,7 +3,6 @@ package com.synergy.android.timetable.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -14,6 +13,8 @@ import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.listeners.LessonOnClickListener;
+import com.synergy.android.timetable.listeners.SwitchableView;
 import com.synergy.android.timetable.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -78,12 +79,10 @@ public class LessonAdapter extends BaseAdapter {
     }
     
     private static class ViewBuilder {
-        private View view;
-        private ViewHolder viewHolder = new ViewHolder();
+        private ViewHolder viewHolder;
         
         public ViewBuilder(View view) {
-            this.view = view;
-            initViews();
+            viewHolder = new ViewHolder(view);
         }
         
         public View build(Lesson lesson, String beginTime, String endTime) {
@@ -91,23 +90,24 @@ public class LessonAdapter extends BaseAdapter {
             viewHolder.endTime.setText(endTime);
             
             if (lesson.subject == null) {
-                view.setOnClickListener(null);
+                viewHolder.root.setOnClickListener(null);
                 viewHolder.exists.setVisibility(View.GONE);
                 viewHolder.empty.setVisibility(View.VISIBLE);
             } else {
-                view.setOnClickListener(new ItemOnClickListener(lesson, viewHolder));
+                viewHolder.root.setOnClickListener(new LessonOnClickListener(lesson, viewHolder));
                 
                 int color = TimetableApplication.getLessonTypeIndex(lesson.kind);
                 if (color != -1) {
                     color = TimetableApplication.LESSON_COLORS[color];
-                    view.setBackgroundResource(color);
+                    viewHolder.root.setBackgroundResource(color);
                 }
                 
                 viewHolder.subject.setText(lesson.subject);
                 viewHolder.kind.setText(lesson.kind);
                 if (!lesson.enabled) {
-                    color = view.getContext().getResources().getColor(R.color.data_empty);
-                    switchTextColors(viewHolder, color);
+                    color = viewHolder.root.getContext().getResources().getColor(
+                            R.color.data_empty);
+                    viewHolder.switchTextColor(color);
                 }
                 
                 if (StringUtils.isNullOrEmpty(lesson.classroom)) {
@@ -129,33 +129,12 @@ public class LessonAdapter extends BaseAdapter {
                 }
             }
             
-            return view;
-        }
-        
-        private void initViews() {
-            viewHolder.exists = (LinearLayout) view.findViewById(
-                    R.id.listItemLessonExistsLinearLayout);
-            viewHolder.beginTime = (TextView) view.findViewById(
-                    R.id.listItemLessonBeginTimeTextView);
-            viewHolder.endTime = (TextView) view.findViewById(
-                    R.id.listItemLessonEndTimeTextView);
-            viewHolder.subject = (TextView) view.findViewById(
-                    R.id.listItemLessonSubjectTextView);
-            viewHolder.kind = (TextView) view.findViewById(
-                    R.id.listItemLessonKindTextView);
-            viewHolder.classroom = (TextView) view.findViewById(
-                    R.id.listItemLessonClassroomTextView);
-            viewHolder.teacher = (TextView) view.findViewById(
-                    R.id.listItemLessonTeacherTextView);
-            viewHolder.note = (TextView) view.findViewById(
-                    R.id.listItemLessonNoteTextView);
-            viewHolder.empty = (TextView) view.findViewById(
-                    R.id.listItemLessonEmptyTextView);
-            viewHolder.defaultTextColor = viewHolder.subject.getCurrentTextColor();
+            return viewHolder.root;
         }
     }
     
-    private static class ViewHolder {
+    private static class ViewHolder implements SwitchableView {
+        private View root;
         private LinearLayout exists;
         private TextView beginTime;
         private TextView endTime;
@@ -166,46 +145,31 @@ public class LessonAdapter extends BaseAdapter {
         private TextView note;
         private TextView empty;
         private int defaultTextColor;
-    }
-    
-    private static void switchTextColors(ViewHolder viewHolder, int color) {
-        if (color == -1) {
-            color = viewHolder.defaultTextColor;
-        }
-        viewHolder.subject.setTextColor(color);
-        viewHolder.kind.setTextColor(color);
-        viewHolder.classroom.setTextColor(color);
-        viewHolder.teacher.setTextColor(color);
-        viewHolder.note.setTextColor(color);
-    }
-    
-    private static class ItemOnClickListener implements OnClickListener {
-        private Lesson lesson;
-        private ViewHolder viewHolder;
         
-        public ItemOnClickListener(Lesson lesson, ViewHolder viewHolder) {
-            this.lesson = lesson;
-            this.viewHolder = viewHolder;
+        public ViewHolder(View view) {
+            this.root = view;
+            exists = (LinearLayout) view.findViewById(R.id.listItemLessonExistsLinearLayout);
+            beginTime = (TextView) view.findViewById(R.id.listItemLessonBeginTimeTextView);
+            endTime = (TextView) view.findViewById(R.id.listItemLessonEndTimeTextView);
+            subject = (TextView) view.findViewById(R.id.listItemLessonSubjectTextView);
+            kind = (TextView) view.findViewById(R.id.listItemLessonKindTextView);
+            classroom = (TextView) view.findViewById(R.id.listItemLessonClassroomTextView);
+            teacher = (TextView) view.findViewById(R.id.listItemLessonTeacherTextView);
+            note = (TextView) view.findViewById(R.id.listItemLessonNoteTextView);
+            empty = (TextView) view.findViewById(R.id.listItemLessonEmptyTextView);
+            defaultTextColor = subject.getCurrentTextColor();
         }
         
         @Override
-        public void onClick(View v) {
-            if (!lesson.enabled) {
-                switchTextColors(viewHolder, -1);
-            } else {
-                int color = v.getContext().getResources().getColor(R.color.data_empty);
-                switchTextColors(viewHolder, color);
+        public void switchTextColor(int color) {
+            if (color == -1) {
+                color = defaultTextColor;
             }
-            
-            final TimetableApplication app = TimetableApplication.getInstance();
-            app.getBackgroundExecutor().execute(new Runnable() {
-                @Override
-                public void run() {
-                    lesson.enabled = !lesson.enabled;
-                    app.updateLesson(lesson);
-                    TimetableApplication.onDataUpdated(app);
-                }
-            });
+            subject.setTextColor(color);
+            kind.setTextColor(color);
+            classroom.setTextColor(color);
+            teacher.setTextColor(color);
+            note.setTextColor(color);
         }
     }
 }

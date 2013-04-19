@@ -1,8 +1,10 @@
 package com.synergy.android.timetable;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -107,6 +109,18 @@ public class TimetableApplication extends Application {
         });
         
         instance = this;
+    }
+    
+    public void registerReceiver(final BroadcastReceiver receiver) {
+        backgroundExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                IntentFilter filter = new IntentFilter();
+                filter.addAction(TimetableApplication.ACTION_DATA_LOADING);
+                filter.addAction(TimetableApplication.ACTION_DATA_LOADED);
+                registerReceiver(receiver, filter);
+            }
+        });
     }
     
     public Calendar getTimestamp() {

@@ -1,379 +1,386 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:stretchColumns="*" >
     
-    <TableLayout
+    <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_monday" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_tuesday" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_wednesday" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_thursday" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_friday" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:layout_marginBottom="@dimen/standard_padding"
+            android:text="@string/fragment_weektable_saturday" />
+    </TableRow>
+    
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*" >
+        android:layout_height="match_parent" >
         
-        <TableRow>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_monday" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_tuesday" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_wednesday" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_thursday" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_friday" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:layout_marginBottom="@dimen/standard_padding"
-                android:text="@string/fragment_weektable_saturday" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h1" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="211" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="221" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="231" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="241" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="251" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="261" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h2" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="212" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="222" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="232" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="242" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="252" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="262" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h3" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="213" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="223" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="233" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="243" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="253" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="263" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h4" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="214" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="224" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="234" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="244" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="254" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="264" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h5" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="215" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="225" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="235" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="245" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="255" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="265" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h6" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="216" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="226" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="236" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="246" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="256" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="266" />
-        </TableRow>
-        
-        <TableRow>
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="2h7" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="217" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="227" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="237" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="247" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="257" />
-            <fragment
-                android:name="com.synergy.android.timetable.fragments.CellFragment"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:tag="267" />
-        </TableRow>
-        
-    </TableLayout>
-
-</ScrollView>
+        <TableLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:stretchColumns="*" >
+      
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h1" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="211" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="221" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="231" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="241" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="251" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="261" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h2" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="212" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="222" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="232" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="242" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="252" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="262" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h3" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="213" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="223" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="233" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="243" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="253" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="263" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h4" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="214" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="224" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="234" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="244" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="254" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="264" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h5" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="215" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="225" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="235" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="245" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="255" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="265" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h6" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="216" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="226" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="236" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="246" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="256" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="266" />
+			</TableRow>
+			
+			<TableRow>
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="2h7" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="217" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="227" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="237" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="247" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="257" />
+			    <fragment
+			        android:name="com.synergy.android.timetable.fragments.CellFragment"
+			        android:layout_width="0dp"
+			        android:layout_height="match_parent"
+			        android:layout_weight="1"
+			        android:tag="267" />
+			</TableRow>
+      
+    	</TableLayout>
+    	
+    </ScrollView>
+    
+</TableLayout>

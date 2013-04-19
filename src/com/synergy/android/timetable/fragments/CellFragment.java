@@ -1,10 +1,8 @@
 package com.synergy.android.timetable.fragments;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import android.widget.TextView;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.listeners.LessonOnClickListener;
+import com.synergy.android.timetable.listeners.SwitchableView;
 
 public class CellFragment extends Fragment {
     private ViewHolder viewHolder;
@@ -22,57 +22,36 @@ public class CellFragment extends Fragment {
     private TimetableApplication app;
     private Lesson.PrimaryKey primaryKey;
     private int lessonIndex;
+    
     private BroadcastReceiver receiver;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cell, null);
-        viewHolder = initViews(root);
+        viewHolder = new ViewHolder(root);
         return root;
     }
     
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        app = (TimetableApplication) activity.getApplication();
+    public void onResume() {
+        super.onResume();
+        
         String tag = getTag();
         if (tag.contains("h")) {
             lessonIndex = Integer.parseInt(tag.substring(2)) - 1;
         } else {
             primaryKey = Lesson.PrimaryKey.getPrimaryKey(tag);
         }
-    }
-    
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        registerDateLoadedBroadcastReceiver();
-        if (app.getWeeks() != null) {
+        
+        app = TimetableApplication.getInstance();
+        if (app.getWeeks() == null) {
+            receiver = new DataLoadedBroadcastReceiver();
+            app.registerReceiver(receiver);
+            app.loadCache();
+        } else {
             populateData();
         }
-    }
-    
-    private ViewHolder initViews(View root) {
-        ViewHolder result = new ViewHolder(root);
-        result.line1 = (TextView) result.findViewById(R.id.fragmentCellLine1TextView);
-        result.line2 = (TextView) result.findViewById(R.id.fragmentCellLine2TextView);
-        result.defaultTextColor = result.line1.getCurrentTextColor();
-        return result;
-    }
-    
-    private void registerDateLoadedBroadcastReceiver() {
-        app.getBackgroundExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (receiver == null) {
-                    receiver = new DataLoadedBroadcastReceiver();
-                    IntentFilter filter = new IntentFilter();
-                    filter.addAction(TimetableApplication.ACTION_DATA_LOADED);
-                    app.registerReceiver(receiver, filter);
-                }
-            }
-        });
     }
     
     private void populateData() {
@@ -83,11 +62,12 @@ public class CellFragment extends Fragment {
             Lesson l = app.getWeek(primaryKey.getWeek()).days[primaryKey.getDay()]
                     .lessons[primaryKey.getLesson()];
             if (l.subject != null) {
+                viewHolder.root.setOnClickListener(new LessonOnClickListener(l, viewHolder));
                 viewHolder.line1.setText(l.subjectShort);
                 viewHolder.line2.setText(l.classroomShort);
                 
                 if (!l.enabled) {
-                    switchTextColors(viewHolder, viewHolder.root.getContext().getResources()
+                    viewHolder.switchTextColor(viewHolder.root.getContext().getResources()
                             .getColor(R.color.data_empty));
                 }
                 
@@ -100,17 +80,21 @@ public class CellFragment extends Fragment {
                 viewHolder.root.setBackgroundResource(R.drawable.cell_borders);
             }
         }
-    }
+    } 
     
-    private static void switchTextColors(ViewHolder viewHolder, int color) {
-        if (color == -1) {
-            color = viewHolder.defaultTextColor;
+    private class DataLoadedBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(TimetableApplication.ACTION_DATA_LOADED)) {
+                populateData();
+                app.unregisterReceiver(receiver);
+                receiver = null;
+            }
         }
-        viewHolder.line1.setTextColor(color);
-        viewHolder.line2.setTextColor(color);
     }
     
-    private static class ViewHolder {
+    private static class ViewHolder implements SwitchableView {
         private View root;
         private TextView line1;
         private TextView line2;
@@ -118,21 +102,18 @@ public class CellFragment extends Fragment {
         
         public ViewHolder(View root) {
             this.root = root;
+            line1 = (TextView) root.findViewById(R.id.fragmentCellLine1TextView);
+            line2 = (TextView) root.findViewById(R.id.fragmentCellLine2TextView);
+            defaultTextColor = line1.getCurrentTextColor();
         }
-        
-        public View findViewById(int id) {
-            return root.findViewById(id);
-        }
-    }
-    
-    private class DataLoadedBroadcastReceiver extends BroadcastReceiver {
+
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(TimetableApplication.ACTION_DATA_LOADED) &&
-                    app.getWeeks() != null) {
-                populateData();
+        public void switchTextColor(int color) {
+            if (color == -1) {
+                color = defaultTextColor;
             }
+            line1.setTextColor(color);
+            line2.setTextColor(color);
         }
     }
 }

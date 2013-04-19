@@ -22,9 +22,19 @@ public class TableFragment extends Fragment {
         return fragment;
     }
     
+    private static final String KEY_RESOURCE = "resource";
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            resource = savedInstanceState.getInt(KEY_RESOURCE);
+        }
         return inflater.inflate(resource, null);
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_RESOURCE, resource);
     }
 }
