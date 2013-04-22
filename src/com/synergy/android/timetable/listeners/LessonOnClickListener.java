@@ -6,8 +6,11 @@ import android.view.View.OnClickListener;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.events.Event;
+import com.synergy.android.timetable.events.LessonStateChanged;
+import com.synergy.android.timetable.events.Subscriber;
 
-public class LessonOnClickListener implements OnClickListener {
+public class LessonOnClickListener extends Subscriber implements OnClickListener {
     private Lesson lesson;
     private SwitchableView view;
     
@@ -34,5 +37,19 @@ public class LessonOnClickListener implements OnClickListener {
                 TimetableApplication.onDataUpdated(app);
             }
         });
+        app.getEventBus().fireEvent(new LessonStateChanged(this, lesson.getPrimaryKey(),
+                lesson.enabled));
+    }
+
+    @Override
+    public void handleEvent(Event event) {
+        if (event instanceof LessonStateChanged) {
+            LessonStateChanged e = (LessonStateChanged) event;
+            if (e.getPrimaryKey().hashCode() == lesson.getPrimaryKey().hashCode()) {
+                TimetableApplication app = TimetableApplication.getInstance();
+                int color = e.isEnabled() ? -1 : app.getDataEmptyColor();
+                view.switchTextColor(color);
+            }
+        }
     }
 }

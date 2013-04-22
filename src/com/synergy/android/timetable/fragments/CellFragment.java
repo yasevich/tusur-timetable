@@ -13,17 +13,19 @@ import android.widget.TextView;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.events.LessonStateChanged;
 import com.synergy.android.timetable.listeners.LessonOnClickListener;
 import com.synergy.android.timetable.listeners.SwitchableView;
 
 public class CellFragment extends Fragment {
     private ViewHolder viewHolder;
     
-    private TimetableApplication app;
     private Lesson.PrimaryKey primaryKey;
     private int lessonIndex;
-    
+
+    private TimetableApplication app;
     private BroadcastReceiver receiver;
+    private LessonOnClickListener listener;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,15 @@ public class CellFragment extends Fragment {
         }
     }
     
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (listener != null) {
+            app.getEventBus().unsubscribe(listener);
+            listener = null;
+        }
+    }
+    
     private void populateData() {
         if (primaryKey == null) {
             viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
@@ -62,13 +73,18 @@ public class CellFragment extends Fragment {
             Lesson l = app.getWeek(primaryKey.getWeek()).days[primaryKey.getDay()]
                     .lessons[primaryKey.getLesson()];
             if (l.subject != null) {
-                viewHolder.root.setOnClickListener(new LessonOnClickListener(l, viewHolder));
+                if (listener == null) {
+                    listener = new LessonOnClickListener(l, viewHolder);
+                    listener.subscribe(new LessonStateChanged());
+                    app.getEventBus().subscribe(listener);
+                }
+                
+                viewHolder.root.setOnClickListener(listener);
                 viewHolder.line1.setText(l.subjectShort);
                 viewHolder.line2.setText(l.classroomShort);
                 
                 if (!l.enabled) {
-                    viewHolder.switchTextColor(viewHolder.root.getContext().getResources()
-                            .getColor(R.color.data_empty));
+                    viewHolder.switchTextColor(app.getDataEmptyColor());
                 }
                 
                 int shape = TimetableApplication.getLessonTypeIndex(l.kind);

@@ -21,6 +21,7 @@ public class DayListFragment extends ListFragment {
     private Day day;
     
     private View progressView;
+    private LessonAdapter adapter;
     
     private TimetableApplication app;
     private BroadcastReceiver receiver;
@@ -70,8 +71,10 @@ public class DayListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        receiver = new DataLoadedBroadcastReceiver();
-        app.registerReceiver(receiver);
+        if (receiver == null) {
+            receiver = new DataLoadedBroadcastReceiver();
+            app.registerReceiver(receiver);
+        }
     }
     
     @Override
@@ -79,13 +82,24 @@ public class DayListFragment extends ListFragment {
         outState.putInt(KEY_WEEK_INDEX, weekIndex);
         outState.putInt(KEY_DAY_INDEX, dayIndex);
         
-        app.unregisterReceiver(receiver);
-        receiver = null;
+        if (receiver != null) {
+            app.unregisterReceiver(receiver);
+            receiver = null;
+        }
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.unsubcribeAll();
     }
     
     private void populateData() {
-        setListAdapter(new LessonAdapter(getActivity(), day, app.getBeginTimes(),
-                app.getEndTimes()));
+        if (adapter != null) {
+            adapter.unsubcribeAll();
+        }
+        adapter = new LessonAdapter(getActivity(), day, app.getBeginTimes(), app.getEndTimes());
+        setListAdapter(adapter);
         progressView.setVisibility(View.GONE);
     }
     

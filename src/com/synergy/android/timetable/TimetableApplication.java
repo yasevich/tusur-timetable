@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
+import com.synergy.android.timetable.events.EventBus;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
 import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
@@ -81,6 +82,7 @@ public class TimetableApplication extends Application {
     
     private static TimetableApplication instance;
     
+    private EventBus eventBus;
     private ExecutorService backgroundExecutor;
     
     private Calendar timestamp;
@@ -89,11 +91,13 @@ public class TimetableApplication extends Application {
     private String[] beginTimes;
     private String[] endTimes;
     private CachedDataProvider provider;
+    private int dataEmptyColor;
     
     @Override
     public void onCreate() {
         super.onCreate();
         initResources();
+        eventBus = new EventBus();
         backgroundExecutor = Executors.newScheduledThreadPool(Runtime.getRuntime()
                 .availableProcessors());
         backgroundExecutor.execute(new Runnable() {
@@ -146,6 +150,14 @@ public class TimetableApplication extends Application {
     
     public String[] getEndTimes() {
         return endTimes;
+    }
+    
+    public int getDataEmptyColor() {
+        return dataEmptyColor;
+    }
+    
+    public EventBus getEventBus() {
+        return eventBus;
     }
     
     public ExecutorService getBackgroundExecutor() {
@@ -250,6 +262,7 @@ public class TimetableApplication extends Application {
         beginTimes = getResources().getStringArray(R.array.beginTimes);
         endTimes = getResources().getStringArray(R.array.endTimes);
         provider = CachedDataProvider.getInstance(this);
+        dataEmptyColor = getResources().getColor(R.color.data_empty);
     }
     
     private boolean compareData(Week[] cache, Week[] weeks) {
