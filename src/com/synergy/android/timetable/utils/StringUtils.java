@@ -1,6 +1,7 @@
 package com.synergy.android.timetable.utils;
 
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class StringUtils {
     public static boolean isNullOrEmpty(String str) {
@@ -25,6 +26,10 @@ public class StringUtils {
     }
     
     public static Pattern compilePattern(String regex) {
-        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+        try {
+            return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+        } catch (PatternSyntaxException e) {
+            return null;
+        }
     }
 }

@@ -69,7 +69,9 @@ public class LessonAdapter extends BaseAdapter {
                 index = i;
             }
         }
-        Common.switchView(views[index], lessons[index].enabled);
+        if (views[index] != null) {
+            Common.switchView(views[index], lessons[index].enabled);
+        }
     }
     
     private void prepareArrays() {

@@ -97,6 +97,7 @@ public class DayListFragment extends ListFragment {
     
     @Override
     public void onDestroy() {
+        super.onDestroy();
         app.getEventBus().unsubscribe(observer);
     }
     

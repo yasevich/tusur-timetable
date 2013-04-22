@@ -9,8 +9,16 @@ import java.util.regex.Pattern;
 
 public class GroupValidator {
     public static String getGroupNumber(List<Group> groups, String group) {
+        if (group == null) {
+            return null;
+        }
+        
         group = getGroupFormatString(group);
         Pattern pattern = StringUtils.compilePattern(group);
+        if (pattern == null) {
+            return null;
+        }
+        
         Iterator<Group> iterator = groups.iterator();
         while (iterator.hasNext()) {
             Matcher matcher = pattern.matcher(iterator.next().number);

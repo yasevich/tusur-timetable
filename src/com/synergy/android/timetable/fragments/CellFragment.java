@@ -59,6 +59,12 @@ public class CellFragment extends Fragment {
         }
     }
     
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        TimetableApplication.getInstance().getEventBus().unsubscribe(observer);
+    }
+    
     private void populateData() {
         if (primaryKey == null) {
             viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
