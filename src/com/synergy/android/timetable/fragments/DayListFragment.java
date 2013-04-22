@@ -14,6 +14,9 @@ import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.adapters.LessonAdapter;
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.events.Event;
+import com.synergy.android.timetable.events.LessonStateChanged;
+import com.synergy.android.timetable.events.Observer;
 
 public class DayListFragment extends ListFragment {
     private int weekIndex;
@@ -21,10 +24,12 @@ public class DayListFragment extends ListFragment {
     private Day day;
     
     private View progressView;
-    private LessonAdapter adapter;
     
     private TimetableApplication app;
     private BroadcastReceiver receiver;
+    private Observer observer;
+    
+    private LessonAdapter adapter;
     
     public static DayListFragment createInstance(int weekIndex, int dayIndex) {
         DayListFragment fragment = new DayListFragment();
@@ -75,6 +80,8 @@ public class DayListFragment extends ListFragment {
             receiver = new DataLoadedBroadcastReceiver();
             app.registerReceiver(receiver);
         }
+        observer = new LessonChangedObserver();
+        app.getEventBus().subscribe(observer);
     }
     
     @Override
@@ -90,14 +97,10 @@ public class DayListFragment extends ListFragment {
     
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        adapter.unsubcribeAll();
+        app.getEventBus().unsubscribe(observer);
     }
     
     private void populateData() {
-        if (adapter != null) {
-            adapter.unsubcribeAll();
-        }
         adapter = new LessonAdapter(getActivity(), day, app.getBeginTimes(), app.getEndTimes());
         setListAdapter(adapter);
         progressView.setVisibility(View.GONE);
@@ -113,6 +116,24 @@ public class DayListFragment extends ListFragment {
                     app.getWeeks() != null) {
                 day = app.getWeek(weekIndex).days[dayIndex];
                 populateData();
+            }
+        }
+    }
+    
+    private class LessonChangedObserver extends Observer {
+        public LessonChangedObserver() {
+            subscribe(new LessonStateChanged());
+        }
+        
+        @Override
+        public void handleEvent(Event event) {
+            if (event instanceof LessonStateChanged) {
+                LessonStateChanged e = (LessonStateChanged) event;
+                int week = e.getPrimaryKey().getWeek();
+                int day = e.getPrimaryKey().getDay();
+                if (week == weekIndex && day == dayIndex) {
+                    adapter.switchPosition(e.getPrimaryKey().getLesson());
+                }
             }
         }
     }

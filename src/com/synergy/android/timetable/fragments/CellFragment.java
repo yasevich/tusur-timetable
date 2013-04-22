@@ -13,9 +13,12 @@ import android.widget.TextView;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Lesson;
+import com.synergy.android.timetable.events.Event;
 import com.synergy.android.timetable.events.LessonStateChanged;
+import com.synergy.android.timetable.events.Observer;
 import com.synergy.android.timetable.listeners.LessonOnClickListener;
 import com.synergy.android.timetable.listeners.SwitchableView;
+import com.synergy.android.timetable.utils.Common;
 
 public class CellFragment extends Fragment {
     private ViewHolder viewHolder;
@@ -25,7 +28,7 @@ public class CellFragment extends Fragment {
 
     private TimetableApplication app;
     private BroadcastReceiver receiver;
-    private LessonOnClickListener listener;
+    private Observer observer;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,15 +59,6 @@ public class CellFragment extends Fragment {
         }
     }
     
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (listener != null) {
-            app.getEventBus().unsubscribe(listener);
-            listener = null;
-        }
-    }
-    
     private void populateData() {
         if (primaryKey == null) {
             viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
@@ -73,13 +67,10 @@ public class CellFragment extends Fragment {
             Lesson l = app.getWeek(primaryKey.getWeek()).days[primaryKey.getDay()]
                     .lessons[primaryKey.getLesson()];
             if (l.subject != null) {
-                if (listener == null) {
-                    listener = new LessonOnClickListener(l, viewHolder);
-                    listener.subscribe(new LessonStateChanged());
-                    app.getEventBus().subscribe(listener);
-                }
+                viewHolder.root.setOnClickListener(new LessonOnClickListener(l));
+                observer = new LessonChangedObserver(l, viewHolder);
+                TimetableApplication.getInstance().getEventBus().subscribe(observer);
                 
-                viewHolder.root.setOnClickListener(listener);
                 viewHolder.line1.setText(l.subjectShort);
                 viewHolder.line2.setText(l.classroomShort);
                 
@@ -88,7 +79,7 @@ public class CellFragment extends Fragment {
                 }
                 
                 int shape = TimetableApplication.getLessonTypeIndex(l.kind);
-                if (shape != -1) {
+                if (shape != TimetableApplication.UNKNOWN_LESSON_TYPE) {
                     shape = TimetableApplication.LESSON_SHAPES[shape];
                     viewHolder.root.setBackgroundResource(shape);
                 }
@@ -110,6 +101,27 @@ public class CellFragment extends Fragment {
         }
     }
     
+    private class LessonChangedObserver extends Observer {
+        private Lesson lesson;
+        private SwitchableView view;
+        
+        public LessonChangedObserver(Lesson lesson, SwitchableView view) {
+            this.lesson = lesson;
+            this.view = view;
+            subscribe(new LessonStateChanged());
+        }
+        
+        @Override
+        public void handleEvent(Event event) {
+            if (event instanceof LessonStateChanged) {
+                LessonStateChanged e = (LessonStateChanged) event;
+                if (lesson.getPrimaryKey().hashCode() == e.getPrimaryKey().hashCode()) {
+                    Common.switchView(view, e.isEnabled());
+                }
+            }
+        }
+    }
+    
     private static class ViewHolder implements SwitchableView {
         private View root;
         private TextView line1;
@@ -125,7 +137,7 @@ public class CellFragment extends Fragment {
 
         @Override
         public void switchTextColor(int color) {
-            if (color == -1) {
+            if (color == DEFAULT_COLOR) {
                 color = defaultTextColor;
             }
             line1.setTextColor(color);

@@ -55,6 +55,8 @@ public class TimetableApplication extends Application {
     
     public static final int WEEK_ODD = 0;
     public static final int WEEK_EVEN = 1;
+    
+    public static final int UNKNOWN_LESSON_TYPE = -1;
 
     public static final int MONITORING_NOTIFICATION_ID = 101;
     public static final int ALARM_NOTIFICATION_ID = 102;
@@ -247,7 +249,7 @@ public class TimetableApplication extends Application {
         } else if (kind.startsWith("Зач")) {
             return 6;
         }
-        return -1;
+        return UNKNOWN_LESSON_TYPE;
     }
     
     public static void onDataUpdated(Context context) {

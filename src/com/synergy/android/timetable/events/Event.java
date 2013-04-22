@@ -1,15 +1,6 @@
 package com.synergy.android.timetable.events;
 
-public class Event {
-    private Subscriber subscriber;
-    
-    public Event() {
-    }
-    
-    public Event(Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
-    
+public abstract class Event {
     @Override
     public int hashCode() {
         return getClass().hashCode();
@@ -18,9 +9,5 @@ public class Event {
     @Override
     public boolean equals(Object o) {
         return getClass().equals(o.getClass());
-    }
-    
-    public Subscriber sentBy() {
-        return subscriber;
     }
 }

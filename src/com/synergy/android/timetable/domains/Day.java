@@ -3,6 +3,8 @@ package com.synergy.android.timetable.domains;
 import com.synergy.android.timetable.TimetableApplication;
 
 public class Day {
+    public int week;
+    public int day;
     public Lesson[] lessons;
     
     public Day() {
@@ -13,6 +15,8 @@ public class Day {
     }
     
     public Day(int week, int day) {
+        this.week = week;
+        this.day = day;
         lessons = new Lesson[TimetableApplication.NUMBER_OF_LESSONS];
         for (int lesson = 0; lesson < TimetableApplication.NUMBER_OF_LESSONS; ++lesson) {
             lessons[lesson] = new Lesson(new Lesson.PrimaryKey(week, day, lesson));

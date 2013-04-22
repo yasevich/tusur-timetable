@@ -13,10 +13,9 @@ import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
-import com.synergy.android.timetable.events.LessonStateChanged;
-import com.synergy.android.timetable.events.Subscriber;
 import com.synergy.android.timetable.listeners.LessonOnClickListener;
 import com.synergy.android.timetable.listeners.SwitchableView;
+import com.synergy.android.timetable.utils.Common;
 import com.synergy.android.timetable.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -27,14 +26,13 @@ public class LessonAdapter extends BaseAdapter {
     private Lesson[] lessons;
     private String[] begins;
     private String[] ends;
-    private List<LessonOnClickListener> subscribers;
+    private ViewHolder[] views;
     
     public LessonAdapter(Context context, Day day, String[] begins, String[] ends) {
         this.context = context;
         this.lessons = day.isEmpty() ? null : day.lessons;
         this.begins = begins;
         this.ends = ends;
-        this.subscribers = new ArrayList<LessonOnClickListener>();
         prepareArrays();
     }
     
@@ -58,15 +56,20 @@ public class LessonAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
-        ViewBuilder builder = new ViewBuilder(inflater.inflate(R.layout.list_item_lesson, parent,
-                false));
-        return builder.build(lessons[position], begins[position], ends[position], subscribers);
+        ViewBuilder builder = new ViewBuilder(inflater.inflate(R.layout.list_item_lesson,
+                parent, false));
+        views[position] = builder.build(lessons[position], begins[position], ends[position]);
+        return views[position].root;
     }
     
-    public void unsubcribeAll() {
-        for (Subscriber s : subscribers) {
-            TimetableApplication.getInstance().getEventBus().unsubscribe(s);
+    public void switchPosition(int position) {
+        int index = 0;
+        for (int i = 0; i < lessons.length; ++i) {
+            if (lessons[i].getPrimaryKey().getLesson() == position) {
+                index = i;
+            }
         }
+        Common.switchView(views[index], lessons[index].enabled);
     }
     
     private void prepareArrays() {
@@ -86,6 +89,9 @@ public class LessonAdapter extends BaseAdapter {
             begins = beginsList.toArray(new String[lessonsList.size()]);
             ends = endsList.toArray(new String[lessonsList.size()]);
         }
+        if (lessons != null) {
+            views = new ViewHolder[lessons.length];
+        }
     }
     
     private static class ViewBuilder {
@@ -95,8 +101,7 @@ public class LessonAdapter extends BaseAdapter {
             viewHolder = new ViewHolder(view);
         }
         
-        public View build(Lesson lesson, String beginTime, String endTime,
-                List<LessonOnClickListener> listeners) {
+        public ViewHolder build(Lesson lesson, String beginTime, String endTime) {
             viewHolder.beginTime.setText(beginTime);
             viewHolder.endTime.setText(endTime);
             
@@ -105,14 +110,10 @@ public class LessonAdapter extends BaseAdapter {
                 viewHolder.exists.setVisibility(View.GONE);
                 viewHolder.empty.setVisibility(View.VISIBLE);
             } else {
-                LessonOnClickListener listener = new LessonOnClickListener(lesson, viewHolder);
-                listeners.add(listener);
-                listener.subscribe(new LessonStateChanged());
-                TimetableApplication.getInstance().getEventBus().subscribe(listener);
-                viewHolder.root.setOnClickListener(listener);
+                viewHolder.root.setOnClickListener(new LessonOnClickListener(lesson));
                 
                 int color = TimetableApplication.getLessonTypeIndex(lesson.kind);
-                if (color != -1) {
+                if (color != TimetableApplication.UNKNOWN_LESSON_TYPE) {
                     color = TimetableApplication.LESSON_COLORS[color];
                     viewHolder.root.setBackgroundResource(color);
                 }
@@ -143,7 +144,7 @@ public class LessonAdapter extends BaseAdapter {
                 }
             }
             
-            return viewHolder.root;
+            return viewHolder;
         }
     }
     
@@ -176,7 +177,7 @@ public class LessonAdapter extends BaseAdapter {
         
         @Override
         public void switchTextColor(int color) {
-            if (color == -1) {
+            if (color == DEFAULT_COLOR) {
                 color = defaultTextColor;
             }
             subject.setTextColor(color);

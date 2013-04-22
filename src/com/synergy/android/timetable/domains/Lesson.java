@@ -24,6 +24,11 @@ public class Lesson {
     }
     
     @Override
+    public int hashCode() {
+        return primaryKey.hashCode();
+    }
+    
+    @Override
     public boolean equals(Object o) {
         Lesson other = (Lesson) o;
         return StringUtils.nullEqual(subject, other.subject) &&
@@ -40,6 +45,10 @@ public class Lesson {
     @Override
     public String toString() {
         return subject + " (" + subjectShort + ")";
+    }
+    
+    public void changeState() {
+        enabled = !enabled;
     }
     
     public void setPrimaryKey(PrimaryKey primaryKey) {

@@ -9,10 +9,9 @@ public class LessonStateChanged extends Event {
     public LessonStateChanged() {
     }
 
-    public LessonStateChanged(Subscriber subscriber, Lesson.PrimaryKey pk, boolean state) {
-        super(subscriber);
-        primaryKey = pk;
-        enabled = state;
+    public LessonStateChanged(Lesson lesson) {
+        primaryKey = lesson.getPrimaryKey();
+        enabled = lesson.enabled;
     }
     
     public boolean isEnabled() {

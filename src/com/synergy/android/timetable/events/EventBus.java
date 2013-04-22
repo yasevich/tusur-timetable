@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class EventBus {
-    private Set<Subscriber> subscribers;
+    private Set<Observer> observers;
     
     public EventBus() {
-        subscribers = new HashSet<Subscriber>();
+        observers = new HashSet<Observer>();
     }
     
     public synchronized void fireEvent(Event event) {
@@ -15,18 +15,18 @@ public class EventBus {
             throw new NullPointerException("Event is null.");
         }
         
-        for (Subscriber s : subscribers) {
-            if (s != event.sentBy() && s.isSubscribed(event)) {
-                s.handleEvent(event);
+        for (Observer o : observers) {
+            if (o.isSubscribed(event)) {
+                o.handleEvent(event);
             }
         }
     }
     
-    public synchronized void subscribe(Subscriber subscriber) {
-        subscribers.add(subscriber);
+    public synchronized void subscribe(Observer observer) {
+        observers.add(observer);
     }
     
-    public synchronized void unsubscribe(Subscriber subscriber) {
-        subscribers.remove(subscriber);
+    public synchronized void unsubscribe(Observer observer) {
+        observers.remove(observer);
     }
 }
