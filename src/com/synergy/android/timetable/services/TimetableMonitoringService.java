@@ -71,6 +71,7 @@ public class TimetableMonitoringService extends IntentService {
             for (int j = 0; j < w1.days.length; ++j) {
                 Day d1 = w1.days[j];
                 Day d2 = w2.days[j];
+                boolean daysAreEqual = true;
                 for (int k = 0; k < d1.lessons.length; ++k) {
                     Lesson l1 = d1.lessons[k];
                     Lesson l2 = d2.lessons[k];
@@ -78,9 +79,10 @@ public class TimetableMonitoringService extends IntentService {
                         l2.enabled = l1.enabled;
                     } else {
                         isEqual = false;
+                        daysAreEqual = false;
                     }
                 }
-                if (!isEqual && !d2.isEmpty()) {
+                if (!daysAreEqual && !d2.isEmpty()) {
                     isNotificationNeeded = true;
                 }
             }

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class GroupValidator {
     public static String getGroupNumber(List<Group> groups, String group) {
-        if (group == null) {
+        if (group == null || groups == null) {
             return null;
         }
         

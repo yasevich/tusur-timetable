@@ -49,7 +49,7 @@
     
     <!-- Notifications -->
     <string name="notification_content_title">TUSUR timetable</string>
-    <string name="notification_content_text_newtimetable">New timetable available</string>
+    <string name="notification_content_text_newtimetable">Changes in timetable</string>
     <string name="notification_content_text_alarm">Classes start in %1$s</string>
     <string name="notification_content_inbox_title_alarm">Today\'s classes</string>
     <string name="notification_content_silentmode_title">Silent mode</string>

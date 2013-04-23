@@ -49,7 +49,7 @@
     
     <!-- Notifications -->
     <string name="notification_content_title">Расписание ТУСУР</string>
-    <string name="notification_content_text_newtimetable">Доступно новое расписание</string>
+    <string name="notification_content_text_newtimetable">В расписании произошли изменения</string>
     <string name="notification_content_text_alarm">Через %1$s начнутся занятия</string>
     <string name="notification_content_inbox_title_alarm">Сегодня</string>
     <string name="notification_content_silentmode_title">Звук отключен</string>
