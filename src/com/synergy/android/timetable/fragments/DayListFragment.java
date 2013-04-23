@@ -1,9 +1,13 @@
 package com.synergy.android.timetable.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -23,10 +27,11 @@ public class DayListFragment extends ListFragment {
     private int dayIndex;
     private Day day;
     
+    private View listView;
     private View progressView;
+    private int animTime;
     
     private TimetableApplication app;
-    private BroadcastReceiver receiver;
     private Observer observer;
     
     private LessonAdapter adapter;
@@ -48,6 +53,7 @@ public class DayListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day, null);
+        listView = view.findViewById(R.id.fragmentDayListLinearLayout);
         progressView = view.findViewById(R.id.fragmentDayProgressRelativeLayout);
         if (day != null) {
             progressView.setVisibility(View.GONE);
@@ -61,7 +67,9 @@ public class DayListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        app.registerReceiver(new DataLoadedBroadcastReceiver());
         
+        animTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
         if (savedInstanceState != null) {
             weekIndex = savedInstanceState.getInt(KEY_WEEK_INDEX);
             dayIndex = savedInstanceState.getInt(KEY_DAY_INDEX);
@@ -76,10 +84,6 @@ public class DayListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (receiver == null) {
-            receiver = new DataLoadedBroadcastReceiver();
-            app.registerReceiver(receiver);
-        }
         observer = new LessonChangedObserver();
         app.getEventBus().subscribe(observer);
     }
@@ -88,11 +92,6 @@ public class DayListFragment extends ListFragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_WEEK_INDEX, weekIndex);
         outState.putInt(KEY_DAY_INDEX, dayIndex);
-        
-        if (receiver != null) {
-            app.unregisterReceiver(receiver);
-            receiver = null;
-        }
     }
     
     @Override
@@ -104,7 +103,36 @@ public class DayListFragment extends ListFragment {
     private void populateData() {
         adapter = new LessonAdapter(getActivity(), day, app.getBeginTimes(), app.getEndTimes());
         setListAdapter(adapter);
-        progressView.setVisibility(View.GONE);
+        showContentOrLoadingIndicator(true);
+    }
+    
+    @SuppressLint("NewApi")
+    private void showContentOrLoadingIndicator(boolean contentLoaded) {
+        final View showView = contentLoaded ? listView : progressView;
+        final View hideView = contentLoaded ? progressView : listView;
+            
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            showView.setAlpha(0f);
+            showView.setVisibility(View.VISIBLE);
+            
+            showView.animate()
+                    .alpha(1f)
+                    .setDuration(animTime)
+                    .setListener(null);
+            
+            hideView.animate()
+                    .alpha(0f)
+                    .setDuration(animTime)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            hideView.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+            showView.setVisibility(View.VISIBLE);
+            hideView.setVisibility(View.GONE);
+        }
     }
     
     private class DataLoadedBroadcastReceiver extends BroadcastReceiver {
@@ -112,7 +140,7 @@ public class DayListFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(TimetableApplication.ACTION_DATA_LOADING)) {
-                progressView.setVisibility(View.VISIBLE);
+                showContentOrLoadingIndicator(false);
             } else if (action.equals(TimetableApplication.ACTION_DATA_LOADED) &&
                     app.getWeeks() != null) {
                 day = app.getWeek(weekIndex).days[dayIndex];

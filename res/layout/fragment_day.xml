@@ -17,19 +17,27 @@
         
     </RelativeLayout>
     
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    
-    <TextView
-        android:id="@android:id/empty"
-        style="?android:textAppearanceLarge"
+    <LinearLayout
+        android:id="@+id/fragmentDayListLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="@color/data_empty"
-        android:text="@string/fragment_day_empty" />
+        android:orientation="vertical" >
+    
+	    <ListView
+	        android:id="@android:id/list"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+	    
+	    <TextView
+	        android:id="@android:id/empty"
+	        style="?android:textAppearanceLarge"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:textStyle="bold"
+	        android:textColor="@color/data_empty"
+	        android:text="@string/fragment_day_empty" />
+    
+    </LinearLayout>
     
 </LinearLayout>
