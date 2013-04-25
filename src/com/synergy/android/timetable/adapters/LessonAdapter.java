@@ -114,14 +114,14 @@ public class LessonAdapter extends BaseAdapter {
             } else {
                 viewHolder.root.setOnClickListener(new LessonOnClickListener(lesson));
                 
-                int color = TimetableApplication.getLessonTypeIndex(lesson.kind);
+                int color = TimetableApplication.getLessonTypeIndex(lesson.kindTitle);
                 if (color != TimetableApplication.UNKNOWN_LESSON_TYPE) {
                     color = TimetableApplication.LESSON_COLORS[color];
                     viewHolder.root.setBackgroundResource(color);
                 }
                 
                 viewHolder.subject.setText(lesson.subject);
-                viewHolder.kind.setText(lesson.kind);
+                viewHolder.kind.setText(lesson.kindTitle);
                 if (!lesson.enabled) {
                     viewHolder.switchTextColor(TimetableApplication.getInstance()
                             .getDataEmptyColor());

@@ -36,7 +36,7 @@
     <string name="fragment_weektable_saturday">Sat.</string>
     
     <!-- Fragment day -->
-    <string name="fragment_day_empty">No classes today</string>
+    <string name="fragment_day_empty">No classes</string>
     
     <!-- List item lesson -->
     <string name="list_item_lesson_empty">Empty</string>

@@ -7,7 +7,7 @@ public class Lesson {
     
     public String subject;
     public String subjectShort;
-    public String kind;
+    public String kindTitle;
     public String kindShort;
     public String classroom;
     public String classroomShort;
@@ -33,7 +33,7 @@ public class Lesson {
         Lesson other = (Lesson) o;
         return StringUtils.nullEqual(subject, other.subject) &&
                 StringUtils.nullEqual(subjectShort, other.subjectShort) &&
-                StringUtils.nullEqual(kind, other.kind) &&
+                StringUtils.nullEqual(kindTitle, other.kindTitle) &&
                 StringUtils.nullEqual(kindShort, other.kindShort) &&
                 StringUtils.nullEqual(classroom, other.classroom) &&
                 StringUtils.nullEqual(classroomShort, other.classroomShort) &&

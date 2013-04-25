@@ -49,10 +49,10 @@ public class TimetableParser extends WebDataParser<Week[]> {
                     data = dataMatcher.group(2);
                     abbrMatcher = ABBR_PATTERN.matcher(data);
                     if (abbrMatcher.find()) {
-                        lesson.kind = abbrMatcher.group(1);
+                        lesson.kindTitle = abbrMatcher.group(1);
                         lesson.kindShort = abbrMatcher.group(2);
                     } else {
-                        lesson.kind = data;
+                        lesson.kindTitle = data;
                         lesson.kindShort = data;
                     }
                     

@@ -27,7 +27,7 @@ public class LessonsParser extends WebDataParser<Day> {
                 l.subjectShort = inner.getString("abbr").trim();
                 
                 inner = lesson.getJSONObject("kind");
-                l.kind = inner.getString("title").trim();
+                l.kindTitle = inner.getString("title").trim();
                 l.kindShort = inner.getString("abbr").trim();
                 
                 JSONArray teachers = lesson.getJSONArray("lecturers");
@@ -44,7 +44,7 @@ public class LessonsParser extends WebDataParser<Day> {
                     }
                 }
                 
-                l.note = lesson.getString("note");
+                l.note = lesson.getString("note").trim();
             }
             return day;
         } catch (JSONException e) {
