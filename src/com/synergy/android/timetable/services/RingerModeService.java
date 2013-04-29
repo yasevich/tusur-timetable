@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
@@ -34,17 +33,8 @@ public class RingerModeService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent == null || intent.getAction() == null) {
-            Log.w(TimetableApplication.TAG, "Unable to start the service: " +
-                    RingerModeService.class.getSimpleName());
-            if (ApplicationSettings.getInstance(this).getPreviousRingerMode() == NORMAL_MODE) {
-                stopSelf();
-            }
-            return START_STICKY;
-        }
-        
         String action = intent.getAction();
-        if (action.equals(TimetableApplication.ACTION_RINGER_MODE_SILENT)) {
+        if (TimetableApplication.ACTION_RINGER_MODE_SILENT.equals(action)) {
             showNotification();
             ApplicationSettings settings = ApplicationSettings.getInstance(this);
             AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -53,12 +43,12 @@ public class RingerModeService extends Service {
             registerReceiver(this);
             ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RESET_RINGER_MODE);
-        } else if (action.equals(TimetableApplication.ACTION_RESET_RINGER_MODE)) {
+        } else if (TimetableApplication.ACTION_RESET_RINGER_MODE.equals(action)) {
             resetRingerMode(this);
             ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);
             stopSelf();
-        } else if (action.equals(ACTION_RESET_MODE)) {
+        } else if (ACTION_RESET_MODE.equals(action)) {
             ScheduleBroadcastReceiver.cancelRingerMode(this);
             ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);

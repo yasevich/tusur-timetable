@@ -139,9 +139,9 @@ public class DayListFragment extends ListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(TimetableApplication.ACTION_DATA_LOADING)) {
+            if (TimetableApplication.ACTION_DATA_LOADING.equals(action)) {
                 showContentOrLoadingIndicator(false);
-            } else if (action.equals(TimetableApplication.ACTION_DATA_LOADED) &&
+            } else if (TimetableApplication.ACTION_DATA_LOADED.equals(action) &&
                     app.getWeeks() != null) {
                 day = app.getWeek(weekIndex).days[dayIndex];
                 populateData();

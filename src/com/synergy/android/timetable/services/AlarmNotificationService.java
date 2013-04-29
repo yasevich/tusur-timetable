@@ -26,12 +26,12 @@ public class AlarmNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent.getAction();
-        if (action.equals(TimetableApplication.ACTION_ALARM_NOTIFICATION)) {
+        if (TimetableApplication.ACTION_ALARM_NOTIFICATION.equals(action)) {
             sendNotification(intent);
             ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
-        } else if (action.equals(TimetableApplication.ACTION_DISMISS)) {
+        } else if (TimetableApplication.ACTION_DISMISS.equals(action)) {
             AndroidUtils.dismissNotification(this, TimetableApplication.ALARM_NOTIFICATION_ID);
-        } else if (action.equals(TimetableApplication.ACTION_OPEN)) {
+        } else if (TimetableApplication.ACTION_OPEN.equals(action)) {
             AndroidUtils.dismissNotification(this, TimetableApplication.ALARM_NOTIFICATION_ID);
             MainActivity.startActivity(this, Intent.FLAG_ACTIVITY_NEW_TASK);
         }

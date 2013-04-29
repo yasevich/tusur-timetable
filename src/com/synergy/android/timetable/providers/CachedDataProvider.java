@@ -22,7 +22,7 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
     private static final String DATABASE_NAME = "timetable";
     private static final int DATABASE_VERSION = 3;
     
-    private static final String TABLE_LESSON = Lesson.class.getSimpleName();
+    private static final String TABLE_LESSON = "Lesson";
     
     private static final String KEY_ID = "ID";
     private static final String KEY_SUBJECT = "SUBJECT";

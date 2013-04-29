@@ -52,14 +52,14 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(ApplicationSettings.APP_EMPTY)) {
+        if (ApplicationSettings.APP_EMPTY.equals(key)) {
             setResult(RESULT_EMPTY_CHANGED);
-        } else if (key.equals(ApplicationSettings.NOTIFICATIONS_ENABLED)) {
+        } else if (ApplicationSettings.NOTIFICATIONS_ENABLED.equals(key)) {
             ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
-        } else if (key.equals(ApplicationSettings.NOTIFICATIONS_TIME)) {
+        } else if (ApplicationSettings.NOTIFICATIONS_TIME.equals(key)) {
             notificationsTime.setSummary(settings.getNotificationsTimeSummary());
             ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
-        } else if (key.equals(ApplicationSettings.SILENT_MODE_ENABLED)) {
+        } else if (ApplicationSettings.SILENT_MODE_ENABLED.equals(key)) {
             ScheduleBroadcastReceiver.scheduleRingerModeService(this);
         }
     }

@@ -86,7 +86,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     
     public static void scheduleRingerMode(Context context, String action) {
         int timeOffset = 0;
-        if (action.equals(TimetableApplication.ACTION_RESET_RINGER_MODE)) {
+        if (TimetableApplication.ACTION_RESET_RINGER_MODE.equals(action)) {
             timeOffset = TimetableApplication.MINUTES_IN_LESSON;
         }
         

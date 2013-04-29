@@ -99,7 +99,7 @@ public class CellFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(TimetableApplication.ACTION_DATA_LOADED)) {
+            if (TimetableApplication.ACTION_DATA_LOADED.equals(action)) {
                 populateData();
                 app.unregisterReceiver(receiver);
                 receiver = null;
