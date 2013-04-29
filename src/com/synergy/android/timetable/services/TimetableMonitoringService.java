@@ -44,6 +44,10 @@ public class TimetableMonitoringService extends IntentService {
                 Week[] cache = cacheProvider.getWeeks();
                 Week[] weeks = webProvider.getWeeks();
                 
+                if (cache == null || weeks == null) {
+                    return;
+                }
+                
                 boolean isEqual = compareData(cache, weeks);
                 if (!isEqual) {
                     cacheProvider.insertOrUpdateWeeks(weeks);

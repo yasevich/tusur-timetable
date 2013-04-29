@@ -233,25 +233,6 @@ public class TimetableApplication extends Application {
         return instance;
     }
     
-    public static int getLessonTypeIndex(String kind) {
-        if (kind.startsWith("Лек")) {
-            return 0;
-        } else if (kind.startsWith("Пра")) {
-            return 1;
-        } else if (kind.startsWith("Лаб")) {
-            return 2;
-        } else if (kind.startsWith("Курсовая")) {
-            return 3;
-        } else if (kind.startsWith("Курсовое")) {
-            return 4;
-        } else if (kind.startsWith("Экз")) {
-            return 5;
-        } else if (kind.startsWith("Зач")) {
-            return 6;
-        }
-        return UNKNOWN_LESSON_TYPE;
-    }
-    
     public static void onDataUpdated(Context context) {
         ScheduleBroadcastReceiver.scheduleAlarmNotificationService(context);
         ScheduleBroadcastReceiver.scheduleRingerModeService(context);

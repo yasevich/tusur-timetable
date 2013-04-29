@@ -12,6 +12,7 @@ import com.synergy.android.timetable.ApplicationSettings;
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Kind;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.listeners.LessonOnClickListener;
 import com.synergy.android.timetable.listeners.SwitchableView;
@@ -114,10 +115,9 @@ public class LessonAdapter extends BaseAdapter {
             } else {
                 viewHolder.root.setOnClickListener(new LessonOnClickListener(lesson));
                 
-                int color = TimetableApplication.getLessonTypeIndex(lesson.kindTitle);
-                if (color != TimetableApplication.UNKNOWN_LESSON_TYPE) {
-                    color = TimetableApplication.LESSON_COLORS[color];
-                    viewHolder.root.setBackgroundResource(color);
+                if (lesson.kind != Kind.UNKNOWN) {
+                    viewHolder.root.setBackgroundResource(
+                            TimetableApplication.LESSON_COLORS[lesson.kind.ordinal()]);
                 }
                 
                 viewHolder.subject.setText(lesson.subject);

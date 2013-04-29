@@ -1,6 +1,7 @@
 package com.synergy.android.timetable.parsers;
 
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Kind;
 import com.synergy.android.timetable.domains.Lesson;
 
 import org.json.JSONArray;
@@ -27,6 +28,7 @@ public class LessonsParser extends WebDataParser<Day> {
                 l.subjectShort = inner.getString("abbr").trim();
                 
                 inner = lesson.getJSONObject("kind");
+                l.kind = Kind.getKind(inner.getString("kind").trim());
                 l.kindTitle = inner.getString("title").trim();
                 l.kindShort = inner.getString("abbr").trim();
                 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
+import com.synergy.android.timetable.domains.Kind;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.events.Event;
 import com.synergy.android.timetable.events.LessonStateChanged;
@@ -84,10 +85,9 @@ public class CellFragment extends Fragment {
                     viewHolder.switchTextColor(app.getDataEmptyColor());
                 }
                 
-                int shape = TimetableApplication.getLessonTypeIndex(l.kindTitle);
-                if (shape != TimetableApplication.UNKNOWN_LESSON_TYPE) {
-                    shape = TimetableApplication.LESSON_SHAPES[shape];
-                    viewHolder.root.setBackgroundResource(shape);
+                if (l.kind != Kind.UNKNOWN) {
+                    viewHolder.root.setBackgroundResource(
+                            TimetableApplication.LESSON_SHAPES[l.kind.ordinal()]);
                 }
             } else {
                 viewHolder.root.setBackgroundResource(R.drawable.cell_borders);

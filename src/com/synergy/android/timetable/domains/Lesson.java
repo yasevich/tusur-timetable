@@ -15,6 +15,8 @@ public class Lesson {
     public String teacherShort;
     public String note;
     
+    public Kind kind = Kind.UNKNOWN;
+    
     public boolean enabled = true;
     public boolean original = true;
     public boolean isNew = false;
@@ -33,13 +35,12 @@ public class Lesson {
         Lesson other = (Lesson) o;
         return StringUtils.nullEqual(subject, other.subject) &&
                 StringUtils.nullEqual(subjectShort, other.subjectShort) &&
-                StringUtils.nullEqual(kindTitle, other.kindTitle) &&
-                StringUtils.nullEqual(kindShort, other.kindShort) &&
                 StringUtils.nullEqual(classroom, other.classroom) &&
                 StringUtils.nullEqual(classroomShort, other.classroomShort) &&
                 StringUtils.nullEqual(teacher, other.teacher) &&
                 StringUtils.nullEqual(teacherShort, other.teacherShort) &&
-                StringUtils.nullEqual(note, other.note);
+                StringUtils.nullEqual(note, other.note) &&
+                kind == other.kind;
     }
     
     @Override

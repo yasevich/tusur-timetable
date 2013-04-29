@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.domains.Kind;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
 import com.synergy.android.timetable.utils.NumberUtils;
@@ -17,15 +18,16 @@ import com.synergy.sql.SqlQueryHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CachedDataProvider extends SQLiteOpenHelper {
+public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
     private static final String DATABASE_NAME = "timetable";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     
     private static final String TABLE_LESSON = Lesson.class.getSimpleName();
     
     private static final String KEY_ID = "ID";
     private static final String KEY_SUBJECT = "SUBJECT";
     private static final String KEY_SUBJECT_SHORT = "SUBJECT_SHORT";
+    private static final String KEY_KIND = "KIND_TYPE";
     private static final String KEY_KIND_TITLE = "KIND";
     private static final String KEY_KIND_SHORT = "KIND_SHORT";
     private static final String KEY_CLASSROOM = "CLASSROOM";
@@ -59,6 +61,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         columns.add(new SqlColumnInfo(KEY_ID, SqlDataType.INTEGER, true, true));
         columns.add(new SqlColumnInfo(KEY_SUBJECT, SqlDataType.TEXT, false));
         columns.add(new SqlColumnInfo(KEY_SUBJECT_SHORT, SqlDataType.TEXT, false));
+        columns.add(new SqlColumnInfo(KEY_KIND, SqlDataType.TEXT, false));
         columns.add(new SqlColumnInfo(KEY_KIND_TITLE, SqlDataType.TEXT, false));
         columns.add(new SqlColumnInfo(KEY_KIND_SHORT, SqlDataType.TEXT, false));
         columns.add(new SqlColumnInfo(KEY_CLASSROOM, SqlDataType.TEXT, false));
@@ -87,6 +90,9 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                     new SqlColumnInfo(KEY_TEACHER_SHORT, SqlDataType.TEXT, false)));
             db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_IS_NEW, SqlDataType.INTEGER, false)));
+        case 2:
+            db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
+                    new SqlColumnInfo(KEY_KIND, SqlDataType.TEXT, false)));
             WebDataProvider provider = new WebDataProvider(context);
             Week[] weeks = provider.getWeeks();
             if (weeks != null) {
@@ -99,6 +105,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         }
     }
     
+    @Override
     public synchronized Week[] getWeeks() {
         SQLiteDatabase db = getReadableDatabase();
         String sql = SqlQueryHelper.selectAll(TABLE_LESSON);
@@ -126,7 +133,8 @@ public class CachedDataProvider extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 final int indexSubject = cursor.getColumnIndex(KEY_SUBJECT);
                 final int indexSubjectShort = cursor.getColumnIndex(KEY_SUBJECT_SHORT);
-                final int indexKind = cursor.getColumnIndex(KEY_KIND_TITLE);
+                final int indexKind = cursor.getColumnIndex(KEY_KIND);
+                final int indexKindTitle = cursor.getColumnIndex(KEY_KIND_TITLE);
                 final int indexKindShort = cursor.getColumnIndex(KEY_KIND_SHORT);
                 final int indexClassroom = cursor.getColumnIndex(KEY_CLASSROOM);
                 final int indexClassroomShort = cursor.getColumnIndex(KEY_CLASSROOM_SHORT);
@@ -140,7 +148,8 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                 result = new Lesson(new Lesson.PrimaryKey(week, day, lesson));
                 result.subject = getNullableString(cursor.getString(indexSubject));
                 result.subjectShort = getNullableString(cursor.getString(indexSubjectShort));
-                result.kindTitle = getNullableString(cursor.getString(indexKind));
+                result.kind = Kind.getKind(getNullableString(cursor.getString(indexKind)));
+                result.kindTitle = getNullableString(cursor.getString(indexKindTitle));
                 result.kindShort = getNullableString(cursor.getString(indexKindShort));
                 result.classroom = getNullableString(cursor.getString(indexClassroom));
                 result.classroomShort = getNullableString(cursor.getString(indexClassroomShort));
@@ -196,7 +205,8 @@ public class CachedDataProvider extends SQLiteOpenHelper {
             final int indexId = cursor.getColumnIndex(KEY_ID);
             final int indexSubject = cursor.getColumnIndex(KEY_SUBJECT);
             final int indexSubjectShort = cursor.getColumnIndex(KEY_SUBJECT_SHORT);
-            final int indexKind = cursor.getColumnIndex(KEY_KIND_TITLE);
+            final int indexKind = cursor.getColumnIndex(KEY_KIND);
+            final int indexKindTitle = cursor.getColumnIndex(KEY_KIND_TITLE);
             final int indexKindShort = cursor.getColumnIndex(KEY_KIND_SHORT);
             final int indexClassroom = cursor.getColumnIndex(KEY_CLASSROOM);
             final int indexClassroomShort = cursor.getColumnIndex(KEY_CLASSROOM_SHORT);
@@ -214,7 +224,8 @@ public class CachedDataProvider extends SQLiteOpenHelper {
                 Lesson lesson = day.lessons[pk.getLesson()];
                 lesson.subject = getNullableString(cursor.getString(indexSubject));
                 lesson.subjectShort = getNullableString(cursor.getString(indexSubjectShort));
-                lesson.kindTitle = getNullableString(cursor.getString(indexKind));
+                lesson.kind = Kind.getKind(getNullableString(cursor.getString(indexKind)));
+                lesson.kindTitle = getNullableString(cursor.getString(indexKindTitle));
                 lesson.kindShort = getNullableString(cursor.getString(indexKindShort));
                 lesson.classroom = getNullableString(cursor.getString(indexClassroom));
                 lesson.classroomShort = getNullableString(cursor.getString(indexClassroomShort));
@@ -243,6 +254,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         list.add(KEY_ID);
         list.add(KEY_SUBJECT);
         list.add(KEY_SUBJECT_SHORT);
+        list.add(KEY_KIND);
         list.add(KEY_KIND_TITLE);
         list.add(KEY_KIND_SHORT);
         list.add(KEY_CLASSROOM);
@@ -261,6 +273,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         list.add(Lesson.PrimaryKey.buildPrimaryKey(week, day, lesson));
         list.add(getQuotedString(data.subject));
         list.add(getQuotedString(data.subjectShort));
+        list.add(getQuotedString(data.kind.toString()));
         list.add(getQuotedString(data.kindTitle));
         list.add(getQuotedString(data.kindShort));
         list.add(getQuotedString(data.classroom));
@@ -282,6 +295,7 @@ public class CachedDataProvider extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_SUBJECT, lesson.subject);
         values.put(KEY_SUBJECT_SHORT, lesson.subjectShort);
+        values.put(KEY_KIND, lesson.kind.toString());
         values.put(KEY_KIND_TITLE, lesson.kindTitle);
         values.put(KEY_KIND_SHORT, lesson.kindShort);
         values.put(KEY_CLASSROOM, lesson.classroom);

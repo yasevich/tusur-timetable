@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class WebDataProvider {
+public class WebDataProvider implements Provider {
     private String[] urls;
     
     public WebDataProvider(Context context) {
@@ -26,6 +26,7 @@ public class WebDataProvider {
         initUrls(settings.getUrl());
     }
     
+    @Override
     public Week[] getWeeks() {
         Week[] weeks = Week.initWeeksArray(2);
         LessonsParser parser = new LessonsParser();
