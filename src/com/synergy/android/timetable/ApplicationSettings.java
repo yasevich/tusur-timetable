@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.media.AudioManager;
 import android.preference.PreferenceManager;
 
 import com.synergy.android.timetable.parsers.LessonsParser;
@@ -128,7 +129,7 @@ public class ApplicationSettings {
     }
     
     public synchronized int getPreviousRingerMode() {
-        return preferences.getInt(PREVOIUS_RINGER_MODE, -1);
+        return preferences.getInt(PREVOIUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL);
     }
     
     private synchronized void putString(String key, String value) {

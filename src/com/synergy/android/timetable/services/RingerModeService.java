@@ -22,8 +22,6 @@ public class RingerModeService extends Service {
     private static final String ACTION_RESET_MODE =
             "com.synergy.android.timetable.intent.action.RESET_MODE";
     
-    private static final int NORMAL_MODE = -1;
-    
     private static BroadcastReceiver receiver;
 
     @Override
@@ -67,7 +65,7 @@ public class RingerModeService extends Service {
         ApplicationSettings settings = ApplicationSettings.getInstance(context);
         AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
         audioManager.setRingerMode(settings.getPreviousRingerMode());
-        settings.setPreviousRingerMode(NORMAL_MODE);
+        settings.setPreviousRingerMode(AudioManager.RINGER_MODE_NORMAL);
     }
     
     private static void cancelNotification(NotificationManager notificationManager) {
