@@ -152,6 +152,10 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
                 result.enabled = NumberUtils.intToBoolean(cursor.getInt(indexEnabled));
                 result.original = NumberUtils.intToBoolean(cursor.getInt(indexOriginal));
                 result.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
+                
+                if (result.kind == Kind.UNKNOWN) {
+                    result.kind = Kind.getKindOld(result.kindTitle);
+                }
             }
         } finally {
             cursor.close();
@@ -257,6 +261,10 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
                 lesson.enabled = NumberUtils.intToBoolean(cursor.getInt(indexEnabled));
                 lesson.original = NumberUtils.intToBoolean(cursor.getInt(indexOriginal));
                 lesson.isNew = NumberUtils.intToBoolean(cursor.getInt(indexIsNew));
+                
+                if (lesson.kind == Kind.UNKNOWN) {
+                    lesson.kind = Kind.getKindOld(lesson.kindTitle);
+                }
             } while (cursor.moveToNext());
         } else {
             weeks = null;

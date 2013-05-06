@@ -75,7 +75,31 @@ public enum Kind {
         kinds = Collections.unmodifiableMap(temp);
     }
     
+    private static Map<String, Kind> oldKinds;
+    static {
+        Map<String, Kind> temp = new HashMap<String, Kind>();
+        temp.put("Лекция", LECTURE);
+        temp.put("Практика", PRACTICE);
+        temp.put("Лабораторная работа", LAB);
+        temp.put("Курсовая работа", COURSEWORK);
+        temp.put("Курсовое проектирование", COURSEPROJECT);
+        temp.put("Экзамен", FINALEXAM);
+        temp.put("Зачет", PASSFAILEXAM);
+        temp.put("unknown", UNKNOWN);
+        oldKinds = Collections.unmodifiableMap(temp);
+    }
+    
     public static Kind getKind(String kind) {
+        if (kind == null) {
+            return UNKNOWN;
+        }
         return kinds.get(kind);
+    }
+    
+    public static Kind getKindOld(String kindTitle) {
+        if (kindTitle == null) {
+            return UNKNOWN;
+        }
+        return oldKinds.get(kindTitle);
     }
 }
