@@ -94,8 +94,10 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
             db.execSQL(SqlQueryHelper.alterTableAddColumn(TABLE_LESSON,
                     new SqlColumnInfo(KEY_KIND, SqlDataType.TEXT, false)));
             WebDataProvider provider = new WebDataProvider(context);
+            Week[] cache = getWeeksFromDatabase(db);
             Week[] weeks = provider.getWeeks();
-            if (weeks != null) {
+            if (cache != null && weeks != null) {
+                disableLessons(cache, weeks);
                 insertOrUpdateWeeks(db, weeks);
             }
             break;
@@ -108,16 +110,7 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
     @Override
     public synchronized Week[] getWeeks() {
         SQLiteDatabase db = getReadableDatabase();
-        String sql = SqlQueryHelper.selectAll(TABLE_LESSON);
-        Week[] result = null;
-        
-        Cursor cursor = db.rawQuery(sql, null);
-        try {
-            result = getWeeksFromCursor(cursor);
-        } finally {
-            cursor.close();
-        }
-        
+        Week[] result = getWeeksFromDatabase(db);
         db.close();
         return result;
     }
@@ -194,6 +187,35 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
                     String sql = SqlQueryHelper.insertOrReplace(TABLE_LESSON,
                             columns, values);
                     db.execSQL(sql);
+                }
+            }
+        }
+    }
+    
+    private synchronized Week[] getWeeksFromDatabase(SQLiteDatabase db) {
+        String sql = SqlQueryHelper.selectAll(TABLE_LESSON);
+        Week[] result = null;
+        
+        Cursor cursor = db.rawQuery(sql, null);
+        try {
+            result = getWeeksFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+        return result;
+    }
+    
+    private static void disableLessons(Week[] cache, Week[] weeks) {
+        for (int w = 0; w < cache.length; ++w) {
+            Week weekCache = cache[w];
+            Week weekWeeks = weeks[w];
+            for (int d = 0; d < weekCache.days.length; ++d) {
+                Day dayCache = weekCache.days[d];
+                Day dayWeeks = weekWeeks.days[d];
+                for (int l = 0; l < dayCache.lessons.length; ++l) {
+                    Lesson lessonCache = dayCache.lessons[l];
+                    Lesson lessonWeeks = dayWeeks.lessons[l];
+                    lessonWeeks.enabled = lessonCache.enabled;
                 }
             }
         }
