@@ -31,6 +31,11 @@ public class RingerModeService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // if the service is being restarted after its process has gone away
+        if (intent == null) {
+            return START_STICKY;
+        }
+        
         String action = intent.getAction();
         if (TimetableApplication.ACTION_RINGER_MODE_SILENT.equals(action)) {
             showNotification();
