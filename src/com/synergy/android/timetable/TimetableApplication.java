@@ -17,7 +17,6 @@ import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
 import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,7 +86,7 @@ public class TimetableApplication extends Application {
     private EventBus eventBus;
     private ExecutorService backgroundExecutor;
     
-    private Calendar timestamp;
+    private TimeStruct timestamp;
     private Week[] weeks;
     private String[] weekDays;
     private String[] beginTimes;
@@ -129,7 +128,7 @@ public class TimetableApplication extends Application {
         });
     }
     
-    public Calendar getTimestamp() {
+    public TimeStruct getTimestamp() {
         return timestamp;
     }
     
@@ -240,7 +239,7 @@ public class TimetableApplication extends Application {
     
     private void initResources() {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        timestamp = new GregorianCalendar();
+        timestamp = new TimeStruct(new GregorianCalendar());
         weekDays = getResources().getStringArray(R.array.weekDays);
         beginTimes = getResources().getStringArray(R.array.beginTimes);
         endTimes = getResources().getStringArray(R.array.endTimes);

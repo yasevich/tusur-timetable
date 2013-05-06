@@ -27,5 +27,27 @@
         android:gravity="center"
         android:textIsSelectable="false"
         android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/fragmentCellLine3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/standard_padding_2"
+        android:paddingRight="@dimen/standard_padding_2"
+        android:paddingBottom="@dimen/standard_padding"
+        android:gravity="center"
+        android:textIsSelectable="false"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/fragmentCellLine4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/standard_padding_2"
+        android:paddingRight="@dimen/standard_padding_2"
+        android:paddingBottom="@dimen/standard_padding"
+        android:gravity="center"
+        android:textIsSelectable="false"
+        android:singleLine="true" />
     
 </LinearLayout>

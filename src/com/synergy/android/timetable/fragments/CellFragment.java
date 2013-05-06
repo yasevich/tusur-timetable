@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.synergy.android.timetable.R;
+import com.synergy.android.timetable.TimeStruct;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.domains.Kind;
 import com.synergy.android.timetable.domains.Lesson;
@@ -34,7 +35,7 @@ public class CellFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_cell, null);
+        View root = inflater.inflate(R.layout.cell, null);
         viewHolder = new ViewHolder(root);
         return root;
     }
@@ -70,6 +71,10 @@ public class CellFragment extends Fragment {
         if (primaryKey == null) {
             viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
             viewHolder.line2.setText(app.getEndTimes()[lessonIndex]);
+            if (viewHolder.isTablet()) {
+                viewHolder.line3.setVisibility(View.GONE);
+                viewHolder.line4.setVisibility(View.GONE);
+            }
         } else {
             Lesson l = app.getWeek(primaryKey.getWeek()).days[primaryKey.getDay()]
                     .lessons[primaryKey.getLesson()];
@@ -78,8 +83,15 @@ public class CellFragment extends Fragment {
                 observer = new LessonChangedObserver(l, viewHolder);
                 TimetableApplication.getInstance().getEventBus().subscribe(observer);
                 
-                viewHolder.line1.setText(l.subjectShort);
-                viewHolder.line2.setText(l.classroomShort);
+                if (viewHolder.isTablet()) {
+                    viewHolder.line1.setText(l.subjectShort);
+                    viewHolder.line2.setText(l.kindShort);
+                    viewHolder.line3.setText(l.classroomShort);
+                    viewHolder.line4.setText(l.teacherShort);
+                } else {
+                    viewHolder.line1.setText(l.subjectShort);
+                    viewHolder.line2.setText(l.classroomShort);
+                }
                 
                 if (!l.enabled) {
                     viewHolder.switchTextColor(app.getDataEmptyColor());
@@ -90,7 +102,12 @@ public class CellFragment extends Fragment {
                             TimetableApplication.LESSON_SHAPES[l.kind.ordinal()]);
                 }
             } else {
-                viewHolder.root.setBackgroundResource(R.drawable.cell_borders);
+                TimeStruct time = app.getTimestamp();
+                if (time.week == primaryKey.getWeek() && time.day == primaryKey.getDay()) {
+                    viewHolder.root.setBackgroundResource(R.drawable.cell_type_currentday);
+                } else {
+                    viewHolder.root.setBackgroundResource(R.drawable.cell_borders);
+                }
             }
         }
     } 
@@ -132,12 +149,16 @@ public class CellFragment extends Fragment {
         private View root;
         private TextView line1;
         private TextView line2;
+        private TextView line3;
+        private TextView line4;
         private int defaultTextColor;
         
         public ViewHolder(View root) {
             this.root = root;
             line1 = (TextView) root.findViewById(R.id.fragmentCellLine1TextView);
             line2 = (TextView) root.findViewById(R.id.fragmentCellLine2TextView);
+            line3 = (TextView) root.findViewById(R.id.fragmentCellLine3TextView);
+            line4 = (TextView) root.findViewById(R.id.fragmentCellLine4TextView);
             defaultTextColor = line1.getCurrentTextColor();
         }
 
@@ -148,6 +169,14 @@ public class CellFragment extends Fragment {
             }
             line1.setTextColor(color);
             line2.setTextColor(color);
+            if (isTablet()) {
+                line3.setTextColor(color);
+                line4.setTextColor(color);
+            }
+        }
+        
+        public boolean isTablet() {
+            return line3 != null && line4 != null;
         }
     }
 }

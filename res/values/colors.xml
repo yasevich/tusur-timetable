@@ -11,4 +11,6 @@
     <color name="class_type_courseproject">#ffffd5e5</color>
     <color name="class_type_finalexam">#fffcc1b5</color>
     <color name="class_type_passfailexam">#fffcc1b5</color>
+    
+    <color name="current_day">#ffe1ebf8</color>
 </resources>

@@ -199,7 +199,6 @@ public class CachedDataProvider extends SQLiteOpenHelper implements Provider {
     private synchronized Week[] getWeeksFromDatabase(SQLiteDatabase db) {
         String sql = SqlQueryHelper.selectAll(TABLE_LESSON);
         Week[] result = null;
-        
         Cursor cursor = db.rawQuery(sql, null);
         try {
             result = getWeeksFromCursor(cursor);

@@ -81,7 +81,7 @@ public class MainActivity extends FragmentActivity {
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
 
         TimetableApplication app = (TimetableApplication) getApplication();
-        TimeStruct time = new TimeStruct(app.getTimestamp());
+        TimeStruct time = app.getTimestamp();
         
         if (time.week == TimetableApplication.WEEK_ODD) {
             addTabSpec(tabHost, getString(R.string.fragment_week_odd),
