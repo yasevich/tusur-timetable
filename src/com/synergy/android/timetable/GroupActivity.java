@@ -129,13 +129,18 @@ public class GroupActivity extends Activity {
                     
                     GroupsParser parser = new GroupsParser();
                     List<Group> groups = parser.parse(pageData);
-                    group = GroupValidator.getGroupNumber(groups, group);
-                    if (group == null) {
+                    List<String> matchingGroups = GroupValidator.getGroupNumber(groups, group);
+                    if (matchingGroups == null) {
                         showError(R.string.activity_group_error_notfound);
                     } else {
-                        viewHolder.group.setText(group);
-                        url = String.format(LessonsParser.URL_FORMAT, group);
-                        submitSettings();
+                        if (matchingGroups.size() == 1) {
+                            group = matchingGroups.get(0);
+                            viewHolder.group.setText(group);
+                            url = String.format(LessonsParser.URL_FORMAT, group);
+                            submitSettings();
+                        } else {
+                            // TODO implement group selector
+                        }
                     }
                     viewHolder.progressBar.setVisibility(View.GONE);
                 }
