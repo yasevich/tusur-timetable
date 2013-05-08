@@ -5,12 +5,14 @@
     <string name="error_connection">Сервер недоступен, попробуйте позднее</string>
     <string name="action_dismiss">Скрыть</string>
     <string name="action_open">Открыть</string>
+    <string name="action_cancel">Отменить</string>
     
     <!-- Group activity -->
     <string name="activity_group_caption">Пожалуйста, введите номер группы</string>
-    <string name="activity_group_continue">Продолжить</string>
+    <string name="activity_group_continue">Найти</string>
     <string name="activity_group_error_invalid">Неверная группа</string>
     <string name="activity_group_error_notfound">Группа не найдена</string>
+    <string name="activity_group_dialog_title">Выберите вашу группу</string>
     
     <!-- Settings activity -->
     <string name="activity_settings_name">Настройки</string>

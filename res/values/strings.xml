@@ -5,12 +5,14 @@
     <string name="error_connection">Server not avaiable, try again later</string>
     <string name="action_dismiss">Dismiss</string>
     <string name="action_open">Open</string>
+    <string name="action_cancel">Cancel</string>
     
     <!-- Group activity -->
     <string name="activity_group_caption">Please enter your group number</string>
-    <string name="activity_group_continue">Continue</string>
+    <string name="activity_group_continue">Find</string>
     <string name="activity_group_error_invalid">Wrong group number</string>
     <string name="activity_group_error_notfound">Group not found</string>
+    <string name="activity_group_dialog_title">Choose your group</string>
     
     <!-- Settings activity -->
     <string name="activity_settings_name">Settings</string>

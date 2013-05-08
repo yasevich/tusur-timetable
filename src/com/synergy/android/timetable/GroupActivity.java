@@ -2,6 +2,8 @@ package com.synergy.android.timetable;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -134,12 +136,9 @@ public class GroupActivity extends Activity {
                         showError(R.string.activity_group_error_notfound);
                     } else {
                         if (matchingGroups.size() == 1) {
-                            group = matchingGroups.get(0);
-                            viewHolder.group.setText(group);
-                            url = String.format(LessonsParser.URL_FORMAT, group);
-                            submitSettings();
+                            submitSettings(matchingGroups.get(0));
                         } else {
-                            // TODO implement group selector
+                            showGroupSelector(matchingGroups);
                         }
                     }
                     viewHolder.progressBar.setVisibility(View.GONE);
@@ -154,10 +153,33 @@ public class GroupActivity extends Activity {
         }
     }
     
-    private void submitSettings() {
+    private void submitSettings(String selectedGroup) {
+        group = selectedGroup;
+        viewHolder.group.setText(group);
+        url = String.format(LessonsParser.URL_FORMAT, group);
         settings.setGroup(group);
         settings.setUrl(url);
         setResult(RESULT_OK);
         finish();
+    }
+    
+    private void showGroupSelector(final List<String> groups) {
+        String[] items = groups.toArray(new String[groups.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.activity_group_dialog_title)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        submitSettings(groups.get(which));
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
     }
 }
