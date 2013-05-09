@@ -37,7 +37,7 @@ public class GroupValidator {
         return result;
     }
     
-    public static String getGroupFormatString(String group) {
+    private static String getGroupFormatString(String group) {
         char[] chars = group.toCharArray();
         StringBuilder result = new StringBuilder()
                 .append(chars[0]);

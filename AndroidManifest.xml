@@ -69,6 +69,13 @@
             android:name="com.synergy.android.timetable.services.RingerModeService"
             android:enabled="true" />
         
+        <uses-library android:name="android.test.runner" />
+        
     </application>
+    
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.synergy.android.timetable"
+        android:label="Timetable Tests" />
 
 </manifest>
