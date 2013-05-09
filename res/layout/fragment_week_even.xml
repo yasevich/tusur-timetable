@@ -12,6 +12,7 @@
             android:layout_marginTop="@dimen/standard_padding"
             android:layout_marginBottom="@dimen/standard_padding" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -19,6 +20,7 @@
             android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/fragment_weektable_monday" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -26,6 +28,7 @@
             android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/fragment_weektable_tuesday" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -33,6 +36,7 @@
             android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/fragment_weektable_wednesday" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -40,6 +44,7 @@
             android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/fragment_weektable_thursday" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -47,6 +52,7 @@
             android:layout_marginBottom="@dimen/standard_padding"
             android:text="@string/fragment_weektable_friday" />
         <TextView
+            style="@style/TableHeader"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"

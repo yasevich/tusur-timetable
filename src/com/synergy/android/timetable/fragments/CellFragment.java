@@ -3,6 +3,7 @@ package com.synergy.android.timetable.fragments;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -72,6 +73,8 @@ public class CellFragment extends Fragment {
             viewHolder.line1.setText(app.getBeginTimes()[lessonIndex]);
             viewHolder.line2.setText(app.getEndTimes()[lessonIndex]);
             if (viewHolder.isTablet()) {
+                viewHolder.line1.setTypeface(null, Typeface.BOLD);
+                viewHolder.line2.setTypeface(null, Typeface.BOLD);
                 viewHolder.line3.setVisibility(View.GONE);
                 viewHolder.line4.setVisibility(View.GONE);
             }

@@ -9,7 +9,7 @@
     
     <!-- Group activity -->
     <string name="activity_group_caption">Please enter your group number</string>
-    <string name="activity_group_continue">Find</string>
+    <string name="activity_group_continue">Search</string>
     <string name="activity_group_error_invalid">Wrong group number</string>
     <string name="activity_group_error_notfound">Group not found</string>
     <string name="activity_group_dialog_title">Choose your group</string>

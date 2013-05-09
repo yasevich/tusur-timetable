@@ -20,5 +20,9 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="TableHeader" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+    </style>
 
 </resources>
