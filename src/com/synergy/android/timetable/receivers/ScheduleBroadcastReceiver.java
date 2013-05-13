@@ -107,7 +107,6 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
                 TimetableApplication.ACTION_RESET_RINGER_MODE);
         cancelScheduledIntent(context, RingerModeService.class,
                 TimetableApplication.ACTION_RINGER_MODE_SILENT);
-        RingerModeService.resetRingerMode(context);
     }
     
     private static void cancelScheduledIntent(Context context, Class<?> cls, String action) {

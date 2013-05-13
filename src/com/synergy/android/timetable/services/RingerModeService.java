@@ -52,6 +52,7 @@ public class RingerModeService extends Service {
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);
             stopSelf();
         } else if (ACTION_RESET_MODE.equals(action)) {
+            resetRingerMode(this);
             ScheduleBroadcastReceiver.cancelRingerMode(this);
             ScheduleBroadcastReceiver.scheduleRingerMode(this,
                     TimetableApplication.ACTION_RINGER_MODE_SILENT);

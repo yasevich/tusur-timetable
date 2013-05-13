@@ -41,6 +41,9 @@ public class ApplicationSettings {
             url = String.format(LessonsParser.URL_FORMAT, url.substring(index + 1));
             instance.setUrl(url);
         }
+        if (instance.getPreviousRingerMode() == -1) {
+            instance.setPreviousRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        }
         return instance;
     }
     
