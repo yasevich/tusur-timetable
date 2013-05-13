@@ -4,9 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -18,6 +15,8 @@ import com.synergy.android.timetable.R;
 import com.synergy.android.timetable.TimetableApplication;
 import com.synergy.android.timetable.adapters.LessonAdapter;
 import com.synergy.android.timetable.domains.Day;
+import com.synergy.android.timetable.events.DataIsBeingLoaded;
+import com.synergy.android.timetable.events.DataIsLoaded;
 import com.synergy.android.timetable.events.Event;
 import com.synergy.android.timetable.events.LessonStateChanged;
 import com.synergy.android.timetable.events.Observer;
@@ -67,7 +66,8 @@ public class DayListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        app.registerReceiver(new DataLoadedBroadcastReceiver());
+        observer = new DataChangedObserver();
+        app.getEventBus().subscribe(observer);
         
         animTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
         if (savedInstanceState != null) {
@@ -79,13 +79,6 @@ public class DayListFragment extends ListFragment {
             day = app.getWeek(weekIndex).days[dayIndex];
             populateData();
         }
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        observer = new LessonChangedObserver();
-        app.getEventBus().subscribe(observer);
     }
     
     @Override
@@ -135,23 +128,11 @@ public class DayListFragment extends ListFragment {
         }
     }
     
-    private class DataLoadedBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TimetableApplication.ACTION_DATA_LOADING.equals(action)) {
-                showContentOrLoadingIndicator(false);
-            } else if (TimetableApplication.ACTION_DATA_LOADED.equals(action) &&
-                    app.getWeeks() != null) {
-                day = app.getWeek(weekIndex).days[dayIndex];
-                populateData();
-            }
-        }
-    }
-    
-    private class LessonChangedObserver extends Observer {
-        public LessonChangedObserver() {
+    private class DataChangedObserver extends Observer {
+        public DataChangedObserver() {
             subscribe(new LessonStateChanged());
+            subscribe(new DataIsBeingLoaded());
+            subscribe(new DataIsLoaded());
         }
         
         @Override
@@ -163,6 +144,11 @@ public class DayListFragment extends ListFragment {
                 if (week == weekIndex && day == dayIndex) {
                     adapter.switchPosition(e.getPrimaryKey().getLesson());
                 }
+            } else if (event instanceof DataIsBeingLoaded) {
+                showContentOrLoadingIndicator(false);
+            } else if (event instanceof DataIsLoaded && app.getWeeks() != null) {
+                day = app.getWeek(weekIndex).days[dayIndex];
+                populateData();
             }
         }
     }

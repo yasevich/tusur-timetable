@@ -61,6 +61,7 @@ public class TimetableMonitoringService extends IntentService {
                                 TimetableApplication.MONITORING_NOTIFICATION_ID, builder.build());
                     }
                 }
+                TimetableApplication.onWebDataUpdated(this);
             }
         } catch (IOException e) {
             // do nothing

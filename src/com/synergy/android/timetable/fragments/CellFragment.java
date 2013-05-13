@@ -1,8 +1,5 @@
 package com.synergy.android.timetable.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +27,6 @@ public class CellFragment extends Fragment {
     private int lessonIndex;
 
     private TimetableApplication app;
-    private BroadcastReceiver receiver;
     private Observer observer;
     
     @Override
@@ -54,8 +50,6 @@ public class CellFragment extends Fragment {
         
         app = TimetableApplication.getInstance();
         if (app.getWeeks() == null) {
-            receiver = new DataLoadedBroadcastReceiver();
-            app.registerReceiver(receiver);
             app.loadCache();
         } else {
             populateData();
@@ -111,18 +105,6 @@ public class CellFragment extends Fragment {
                 } else {
                     viewHolder.root.setBackgroundResource(R.drawable.cell_borders);
                 }
-            }
-        }
-    } 
-    
-    private class DataLoadedBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (TimetableApplication.ACTION_DATA_LOADED.equals(action)) {
-                populateData();
-                app.unregisterReceiver(receiver);
-                receiver = null;
             }
         }
     }

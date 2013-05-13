@@ -1,10 +1,7 @@
 package com.synergy.android.timetable;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -12,11 +9,14 @@ import android.widget.Toast;
 import com.synergy.android.timetable.domains.Day;
 import com.synergy.android.timetable.domains.Lesson;
 import com.synergy.android.timetable.domains.Week;
+import com.synergy.android.timetable.events.DataIsBeingLoaded;
+import com.synergy.android.timetable.events.DataIsLoaded;
 import com.synergy.android.timetable.events.EventBus;
 import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.providers.WebDataProvider;
 import com.synergy.android.timetable.receivers.ScheduleBroadcastReceiver;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,10 +24,6 @@ import java.util.concurrent.Executors;
 public class TimetableApplication extends Application {
     public static final String TAG = TimetableApplication.class.getSimpleName();
     
-    public static final String ACTION_DATA_LOADING =
-            "com.synergy.android.timetable.intent.action.DATA_LOADING";
-    public static final String ACTION_DATA_LOADED =
-            "com.synergy.android.timetable.intent.action.DATA_LOADED";
     public static final String ACTION_DISMISS =
             "com.synergy.android.timetable.intent.action.DISMISS";
     public static final String ACTION_OPEN =
@@ -116,18 +112,6 @@ public class TimetableApplication extends Application {
         instance = this;
     }
     
-    public void registerReceiver(final BroadcastReceiver receiver) {
-        backgroundExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                IntentFilter filter = new IntentFilter();
-                filter.addAction(TimetableApplication.ACTION_DATA_LOADING);
-                filter.addAction(TimetableApplication.ACTION_DATA_LOADED);
-                registerReceiver(receiver, filter);
-            }
-        });
-    }
-    
     public TimeStruct getTimestamp() {
         return timestamp;
     }
@@ -173,7 +157,7 @@ public class TimetableApplication extends Application {
         new AsyncTask<Void, Void, Week[]>() {
             @Override
             protected void onPreExecute() {
-                sendBroadcast(new Intent(ACTION_DATA_LOADING));
+                eventBus.fireEvent(new DataIsBeingLoaded());
             }
             
             @Override
@@ -184,7 +168,7 @@ public class TimetableApplication extends Application {
             @Override
             protected void onPostExecute(Week[] result) {
                 weeks = result;
-                sendBroadcast(new Intent(ACTION_DATA_LOADED));
+                eventBus.fireEvent(new DataIsLoaded(weeks));
             }
         }.execute();
     }
@@ -194,7 +178,7 @@ public class TimetableApplication extends Application {
                 new AsyncTask<WebDataProvider, Void, Week[]>() {
             @Override
             public void onPreExecute() {
-                sendBroadcast(new Intent(ACTION_DATA_LOADING));
+                eventBus.fireEvent(new DataIsBeingLoaded());
             }
             
             @Override
@@ -207,7 +191,7 @@ public class TimetableApplication extends Application {
                 if (result == null) {
                     Toast.makeText(TimetableApplication.this, getString(R.string.error_connection),
                             Toast.LENGTH_SHORT).show();
-                    sendBroadcast(new Intent(ACTION_DATA_LOADED));
+                    eventBus.fireEvent(new DataIsLoaded(weeks));
                     return;
                 }
                 
@@ -221,8 +205,9 @@ public class TimetableApplication extends Application {
                         }
                     });
                 }
-                
-                sendBroadcast(new Intent(ACTION_DATA_LOADED));
+
+                onWebDataUpdated(TimetableApplication.this);
+                eventBus.fireEvent(new DataIsLoaded(weeks));
             }
         };
         task.execute(new WebDataProvider(this));
@@ -235,6 +220,11 @@ public class TimetableApplication extends Application {
     public static void onDataUpdated(Context context) {
         ScheduleBroadcastReceiver.scheduleAlarmNotificationService(context);
         ScheduleBroadcastReceiver.scheduleRingerModeService(context);
+    }
+    
+    public static void onWebDataUpdated(Context context) {
+        ApplicationSettings settings = ApplicationSettings.getInstance(context);
+        settings.setLastUpdateTime(new Date());
     }
     
     private void initResources() {

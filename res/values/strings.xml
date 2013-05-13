@@ -7,6 +7,10 @@
     <string name="action_open">Open</string>
     <string name="action_cancel">Cancel</string>
     
+    <!-- Main activity -->
+    <string name="activity_main_last_update">Last update: %1$s</string>
+    <string name="activity_main_last_update_unknown">not available</string>
+    
     <!-- Group activity -->
     <string name="activity_group_caption">Please enter your group number</string>
     <string name="activity_group_continue">Search</string>

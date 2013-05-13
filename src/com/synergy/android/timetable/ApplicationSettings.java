@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 
 import com.synergy.android.timetable.parsers.LessonsParser;
 
+import java.util.Date;
+
 public class ApplicationSettings {
     public static final String APP_EMPTY = "appEmpty";
     public static final String SILENT_MODE_ENABLED = "silentModeEnabled";
@@ -18,6 +20,7 @@ public class ApplicationSettings {
     private static final String GENERAL_GROUP = "generalGroup";
     private static final String GENERAL_URL = "generalUrl";
     private static final String PREVOIUS_RINGER_MODE = "previousRingerMode";
+    private static final String LAST_UPDATE = "lastUpdate";
     
     private static ApplicationSettings instance;
     
@@ -135,6 +138,14 @@ public class ApplicationSettings {
         return preferences.getInt(PREVOIUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL);
     }
     
+    public synchronized void setLastUpdateTime(Date date) {
+        putLong(LAST_UPDATE, date.getTime());
+    }
+    
+    public synchronized Date getLastUpdateTime() {
+        return new Date(preferences.getLong(LAST_UPDATE, 0L));
+    }
+    
     private synchronized void putString(String key, String value) {
         Editor editor = preferences.edit();
         editor.putString(key, value);
@@ -144,6 +155,12 @@ public class ApplicationSettings {
     private synchronized void putInt(String key, int value) {
         Editor editor = preferences.edit();
         editor.putInt(key, value);
+        editor.commit();
+    }
+    
+    private synchronized void putLong(String key, long value) {
+        Editor editor = preferences.edit();
+        editor.putLong(key, value);
         editor.commit();
     }
 }

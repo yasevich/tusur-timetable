@@ -7,11 +7,20 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.synergy.android.timetable.events.DataIsLoaded;
+import com.synergy.android.timetable.events.Event;
+import com.synergy.android.timetable.events.Observer;
 import com.synergy.android.timetable.fragments.WeekFragment;
 import com.synergy.android.timetable.utils.StringUtils;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class MainActivity extends FragmentActivity {
+    private TimetableApplication app;
+    private Observer observer;
     private ApplicationSettings settings;
     
     @Override
@@ -19,8 +28,19 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        app = TimetableApplication.getInstance();
+        observer = new DataUpdatedObserver();
+        app.getEventBus().subscribe(observer);
+        
         initViews();
         loadData();
+        loadLastUpdateTime();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        app.getEventBus().unsubscribe(observer);
     }
 
     @Override
@@ -54,7 +74,6 @@ public class MainActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GroupActivity.REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                TimetableApplication app = (TimetableApplication) getApplication();
                 app.loadWebData();
             } else if (resultCode == RESULT_CANCELED &&
                     StringUtils.isNullOrEmpty(settings.getGroup())) {
@@ -62,7 +81,6 @@ public class MainActivity extends FragmentActivity {
             }
         } else if (requestCode == SettingsActivity.REQUEST_CODE &&
                 resultCode == SettingsActivity.RESULT_EMPTY_CHANGED) {
-            TimetableApplication app = (TimetableApplication) getApplication();
             app.loadCache();
         }
     }
@@ -79,8 +97,7 @@ public class MainActivity extends FragmentActivity {
     private void initViews() {
         FragmentTabHost tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup(this, getSupportFragmentManager(), R.id.realTabContent);
-
-        TimetableApplication app = (TimetableApplication) getApplication();
+        
         TimeStruct time = app.getTimestamp();
         
         if (time.week == TimetableApplication.WEEK_ODD) {
@@ -104,7 +121,6 @@ public class MainActivity extends FragmentActivity {
         if (StringUtils.isNullOrEmpty(group)) {
             GroupActivity.startActivityForResult(this);
         } else {
-            TimetableApplication app = (TimetableApplication) getApplication();
             app.loadCache();
         }
     }
@@ -114,5 +130,32 @@ public class MainActivity extends FragmentActivity {
         bundle.putInt(TimetableApplication.EXTRA_WEEK, weekIndex);
         bundle.putInt(TimetableApplication.EXTRA_DAY, currentDay);
         tabHost.addTab(tabHost.newTabSpec(tag).setIndicator(tag), WeekFragment.class, bundle);
+    }
+    
+    private void loadLastUpdateTime() {
+        TextView lastUpdateTextView = (TextView) findViewById(R.id.activityLastTimeUpdatedTextView);
+        ApplicationSettings settings = ApplicationSettings.getInstance(this);
+        Date lastUpdateTime = settings.getLastUpdateTime();
+        if (lastUpdateTime.getTime() == 0L) {
+            lastUpdateTextView.setText(String.format(getString(R.string.activity_main_last_update),
+                    getString(R.string.activity_main_last_update_unknown)));
+        } else {
+            DateFormat format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
+            lastUpdateTextView.setText(String.format(getString(R.string.activity_main_last_update),
+                    format.format(lastUpdateTime)));
+        }
+    }
+    
+    private class DataUpdatedObserver extends Observer {
+        public DataUpdatedObserver() {
+            subscribe(new DataIsLoaded());
+        }
+        
+        @Override
+        public void handleEvent(Event event) {
+            if (event instanceof DataIsLoaded) {
+                loadLastUpdateTime();
+            }
+        }
     }
 }

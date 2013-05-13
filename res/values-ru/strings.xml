@@ -7,6 +7,10 @@
     <string name="action_open">Открыть</string>
     <string name="action_cancel">Отменить</string>
     
+    <!-- Main activity -->
+    <string name="activity_main_last_update">Обновлено: %1$s</string>
+    <string name="activity_main_last_update_unknown">недоступно</string>
+    
     <!-- Group activity -->
     <string name="activity_group_caption">Пожалуйста, введите номер группы</string>
     <string name="activity_group_continue">Найти</string>
