@@ -7,11 +7,24 @@
             android:key="appEmpty"
             android:title="@string/activity_settings_application_empty"
             android:defaultValue="true" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/activity_settings_silentmode">
+        
         <CheckBoxPreference
             android:key="silentModeEnabled"
-            android:title="@string/activity_settings_application_silentmode"
-            android:summary="@string/activity_settings_application_silentmode_summary"
+            android:title="@string/activity_settings_silentmode_silentmodeenabled"
+            android:summary="@string/activity_settings_silentmode_silentmodeenabled_summary"
             android:defaultValue="false" />
+        
+        <ListPreference
+            android:key="silentMode"
+            android:title="@string/activity_settings_silentmode_silentmode"
+            android:entries="@array/ringerModes"
+            android:entryValues="@array/ringerModesValues"
+            android:defaultValue="0"
+            android:dependency="silentModeEnabled" />
+        
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/activity_settings_notifications" >

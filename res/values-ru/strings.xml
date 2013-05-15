@@ -22,8 +22,10 @@
     <string name="activity_settings_name">Настройки</string>
     <string name="activity_settings_application">Приложение</string>
     <string name="activity_settings_application_empty">Показывать пары без занятий</string>
-    <string name="activity_settings_application_silentmode">Отключить звук</string>
-    <string name="activity_settings_application_silentmode_summary">во время занятий</string>
+    <string name="activity_settings_silentmode">Управление звуком</string>
+    <string name="activity_settings_silentmode_silentmode">Режим</string>
+    <string name="activity_settings_silentmode_silentmodeenabled">Отключить звук</string>
+    <string name="activity_settings_silentmode_silentmodeenabled_summary">во время занятий</string>
     <string name="activity_settings_notifications">Уведомления</string>
     <string name="activity_settings_notifications_enabled">Включить уведомления</string>
     <string name="activity_settings_notifications_time">Уведомлять за</string>

@@ -14,6 +14,7 @@ import java.util.Date;
 public class ApplicationSettings {
     public static final String APP_EMPTY = "appEmpty";
     public static final String SILENT_MODE_ENABLED = "silentModeEnabled";
+    public static final String SILENT_MODE = "silentMode";
     public static final String NOTIFICATIONS_ENABLED = "notificationsEnabled";
     public static final String NOTIFICATIONS_TIME = "notificationsTime";
     
@@ -38,12 +39,14 @@ public class ApplicationSettings {
         if (instance == null) {
             instance = new ApplicationSettings(context);
         }
+        // check for 3rd version code or lower
         String url = instance.getUrl();
         if (url != null && url.startsWith("http://timetable.tusur.ru/faculties/")) {
             int index = url.lastIndexOf('/');
             url = String.format(LessonsParser.URL_FORMAT, url.substring(index + 1));
             instance.setUrl(url);
         }
+        // check for 8th version code or lower 
         if (instance.getPreviousRingerMode() == -1) {
             instance.setPreviousRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
@@ -136,6 +139,19 @@ public class ApplicationSettings {
     
     public synchronized int getPreviousRingerMode() {
         return preferences.getInt(PREVOIUS_RINGER_MODE, AudioManager.RINGER_MODE_NORMAL);
+    }
+    
+    public synchronized int getSilentMode() {
+        String silentMode = preferences.getString(SILENT_MODE, null);
+        int result = AudioManager.RINGER_MODE_SILENT;
+        if (silentMode != null && silentMode.equals("1")) {
+            result = AudioManager.RINGER_MODE_VIBRATE;
+        }
+        return result;
+    }
+    
+    public synchronized String getSilentModeSummary() {
+        return context.getResources().getStringArray(R.array.ringerModes)[getSilentMode()];
     }
     
     public synchronized void setLastUpdateTime(Date date) {

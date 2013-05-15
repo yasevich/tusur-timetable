@@ -20,6 +20,7 @@ public class SettingsActivity extends PreferenceActivity
     
     private ApplicationSettings settings;
     private Preference notificationsTime;
+    private Preference silentMode;
     
     @SuppressWarnings("deprecation")
     @Override
@@ -61,6 +62,8 @@ public class SettingsActivity extends PreferenceActivity
             ScheduleBroadcastReceiver.scheduleAlarmNotificationService(this);
         } else if (ApplicationSettings.SILENT_MODE_ENABLED.equals(key)) {
             ScheduleBroadcastReceiver.scheduleRingerModeService(this);
+        } else if (ApplicationSettings.SILENT_MODE.equals(key)) {
+            silentMode.setSummary(settings.getSilentModeSummary());
         }
     }
     
@@ -82,5 +85,7 @@ public class SettingsActivity extends PreferenceActivity
         
         notificationsTime = findPreference(ApplicationSettings.NOTIFICATIONS_TIME);
         notificationsTime.setSummary(settings.getNotificationsTimeSummary());
+        silentMode = findPreference(ApplicationSettings.SILENT_MODE);
+        silentMode.setSummary(settings.getSilentModeSummary());
     }
 }

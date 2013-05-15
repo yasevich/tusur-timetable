@@ -38,14 +38,21 @@ public class RingerModeService extends Service {
         
         String action = intent.getAction();
         if (TimetableApplication.ACTION_RINGER_MODE_SILENT.equals(action)) {
-            showNotification();
             ApplicationSettings settings = ApplicationSettings.getInstance(this);
             AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-            settings.setPreviousRingerMode(audioManager.getRingerMode());
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            registerReceiver(this);
-            ScheduleBroadcastReceiver.scheduleRingerMode(this,
-                    TimetableApplication.ACTION_RESET_RINGER_MODE);
+            int currentRingerMode = audioManager.getRingerMode();
+            int targetRingerMode = settings.getSilentMode();
+            if (currentRingerMode > targetRingerMode) {
+                showNotification();
+                settings.setPreviousRingerMode(currentRingerMode);
+                audioManager.setRingerMode(targetRingerMode);
+                registerReceiver(this);
+                ScheduleBroadcastReceiver.scheduleRingerMode(this,
+                        TimetableApplication.ACTION_RESET_RINGER_MODE);
+            } else {
+                ScheduleBroadcastReceiver.scheduleRingerMode(this,
+                        TimetableApplication.ACTION_RINGER_MODE_SILENT);
+            }
         } else if (TimetableApplication.ACTION_RESET_RINGER_MODE.equals(action)) {
             resetRingerMode(this);
             ScheduleBroadcastReceiver.scheduleRingerMode(this,
