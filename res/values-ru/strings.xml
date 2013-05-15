@@ -8,7 +8,7 @@
     <string name="action_cancel">Отменить</string>
     
     <!-- Main activity -->
-    <string name="activity_main_last_update">Обновлено: %1$s</string>
+    <string name="activity_main_last_update">Синхронизировано: %1$s</string>
     <string name="activity_main_last_update_unknown">недоступно</string>
     
     <!-- Group activity -->

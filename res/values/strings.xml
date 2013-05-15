@@ -8,7 +8,7 @@
     <string name="action_cancel">Cancel</string>
     
     <!-- Main activity -->
-    <string name="activity_main_last_update">Last update: %1$s</string>
+    <string name="activity_main_last_update">Last sync: %1$s</string>
     <string name="activity_main_last_update_unknown">not available</string>
     
     <!-- Group activity -->
