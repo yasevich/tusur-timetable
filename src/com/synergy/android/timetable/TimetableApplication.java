@@ -106,7 +106,7 @@ public class TimetableApplication extends Application {
                         TimetableApplication.this);
                 ScheduleBroadcastReceiver.scheduleRingerModeService(
                         TimetableApplication.this);
-            } 
+            }
         });
         
         instance = this;

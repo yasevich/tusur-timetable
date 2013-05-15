@@ -81,7 +81,7 @@ public class MainActivity extends FragmentActivity {
             }
         } else if (requestCode == SettingsActivity.REQUEST_CODE &&
                 resultCode == SettingsActivity.RESULT_EMPTY_CHANGED) {
-            app.loadCache();
+            app.getEventBus().fireEvent(new DataIsLoaded());
         }
     }
     
