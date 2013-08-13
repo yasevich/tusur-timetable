@@ -1,2 +1,6 @@
 gen
 bin
+out
+*.iws
+.idea/workspace.xml
+.idea/tasks.xml
