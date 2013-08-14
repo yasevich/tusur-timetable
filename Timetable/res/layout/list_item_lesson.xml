@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    
+    <LinearLayout
+        android:id="@+id/listItemLessonTimeLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+    
+	    <TextView
+	        android:id="@+id/listItemLessonBeginTimeTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/standard_padding_2"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding"
+	        android:textIsSelectable="false" />
+    
+	    <TextView
+	        android:id="@+id/listItemLessonEndTimeTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/standard_padding"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding_2"
+	        android:textIsSelectable="false" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/listItemLessonExistsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/listItemLessonTimeLinearLayout"
+        android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/listItemLessonSubjectTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+	        android:paddingTop="@dimen/standard_padding"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:gravity="center"
+	        android:textStyle="bold"
+	        android:textIsSelectable="false" />
+	    
+	    <TextView
+	        android:id="@+id/listItemLessonKindTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+	        android:paddingTop="@dimen/standard_padding"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding"
+	        android:ellipsize="marquee"
+	        android:singleLine="true"
+	        android:textIsSelectable="false" />
+    
+	    <TextView
+	        android:id="@+id/listItemLessonClassroomTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding"
+	        android:gravity="center"
+	        android:textStyle="bold"
+	        android:textIsSelectable="false" />
+	    
+	    <TextView
+	        android:id="@+id/listItemLessonTeacherTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding"
+	        android:ellipsize="marquee"
+	        android:singleLine="true"
+	        android:textIsSelectable="false" />
+	    
+	    <TextView
+	        android:id="@+id/listItemLessonNoteTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        	android:layout_gravity="center"
+	        android:paddingLeft="@dimen/standard_padding_2"
+	        android:paddingRight="@dimen/standard_padding_2"
+	        android:paddingBottom="@dimen/standard_padding"
+	        android:ellipsize="marquee"
+	        android:singleLine="true"
+	        android:textIsSelectable="false" />
+    
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/listItemLessonEmptyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/listItemLessonTimeLinearLayout"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/list_item_lesson_empty"
+        android:textColor="@color/data_empty" />
+    
+</RelativeLayout>

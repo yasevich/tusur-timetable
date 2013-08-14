@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootViewGroup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/activityGroupGroupEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:inputType="text"
+        android:imeOptions="actionGo"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/activityGroupErrorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activityGroupGroupEditText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/error_critical"
+        android:textIsSelectable="false"
+        android:visibility="gone" />
+    
+    <TextView
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/activityGroupGroupEditText"
+        android:layout_marginBottom="@dimen/standard_padding_2"
+        android:text="@string/activity_group_caption" />
+    
+    <Button
+        android:id="@+id/activityGroupContinueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/activityGroupGroupEditText"
+        android:layout_marginTop="30dp"
+        android:text="@string/activity_group_continue" />
+
+    <ProgressBar
+        android:id="@+id/activityGroupProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activityGroupContinueButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

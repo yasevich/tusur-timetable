@@ -1,0 +1,1 @@
+java -jar C:\Development\androids-sdks\tools\proguard\lib\retrace.jar -verbose mapping.txt trace.txt > decoded.txt

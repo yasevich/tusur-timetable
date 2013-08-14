@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Расписание</string>
+    <string name="error_connection">Сервер недоступен, попробуйте позднее</string>
+    <string name="action_dismiss">Скрыть</string>
+    <string name="action_open">Открыть</string>
+    <string name="action_cancel">Отменить</string>
+    
+    <!-- Main activity -->
+    <string name="activity_main_last_update">Синхронизировано: %1$s</string>
+    <string name="activity_main_last_update_unknown">недоступно</string>
+    
+    <!-- Group activity -->
+    <string name="activity_group_caption">Пожалуйста, введите номер группы</string>
+    <string name="activity_group_continue">Найти</string>
+    <string name="activity_group_error_invalid">Неверная группа</string>
+    <string name="activity_group_error_notfound">Группа не найдена</string>
+    <string name="activity_group_dialog_title">Выберите вашу группу</string>
+    
+    <!-- Settings activity -->
+    <string name="activity_settings_name">Настройки</string>
+    <string name="activity_settings_application">Приложение</string>
+    <string name="activity_settings_application_empty">Показывать пары без занятий</string>
+    <string name="activity_settings_silentmode">Управление звуком</string>
+    <string name="activity_settings_silentmode_silentmode">Режим</string>
+    <string name="activity_settings_silentmode_silentmodeenabled">Отключить звук</string>
+    <string name="activity_settings_silentmode_silentmodeenabled_summary">во время занятий</string>
+    <string name="activity_settings_notifications">Уведомления</string>
+    <string name="activity_settings_notifications_enabled">Включить уведомления</string>
+    <string name="activity_settings_notifications_time">Уведомлять за</string>
+    <string name="activity_settings_notifications_time_summary">%1$s до начала занятий</string>
+    
+    <!-- Fragment week -->
+    <string name="fragment_week_odd">Нечетная</string>
+    <string name="fragment_week_even">Четная</string>
+    
+    <!-- Fragment week table -->
+    <string name="fragment_weektable_monday">ПН</string>
+    <string name="fragment_weektable_tuesday">ВТ</string>
+    <string name="fragment_weektable_wednesday">СР</string>
+    <string name="fragment_weektable_thursday">ЧТ</string>
+    <string name="fragment_weektable_friday">ПТ</string>
+    <string name="fragment_weektable_saturday">СБ</string>
+    
+    <!-- Fragment day -->
+    <string name="fragment_day_empty">Нет занятий</string>
+    
+    <!-- List item lesson -->
+    <string name="list_item_lesson_empty">Нет пары</string>
+    
+    <!-- Menu -->
+    <string name="action_refresh">Обновить</string>
+    <string name="action_table">Таблица</string>
+    <string name="action_group">Группа</string>
+    <string name="action_settings">Настройки</string>
+    
+    <!-- Notifications -->
+    <string name="notification_content_title">Расписание ТУСУР</string>
+    <string name="notification_content_text_newtimetable">В расписании произошли изменения</string>
+    <string name="notification_content_text_alarm">Через %1$s начнутся занятия</string>
+    <string name="notification_content_inbox_title_alarm">Сегодня</string>
+    <string name="notification_content_silentmode_title">Звук отключен</string>
+    <string name="notification_content_silentmode_text">Нажмите, чтобы включить</string>
+</resources>

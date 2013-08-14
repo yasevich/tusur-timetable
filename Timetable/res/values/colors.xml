@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="data_empty">#ffaaaaaa</color>
+    <color name="error_critical">#ffff4444</color>
+    <color name="border_color">#ffaaaaaa</color>
+    
+    <color name="class_type_lecture">#ffe2f0b6</color>
+    <color name="class_type_practice">#ffc5eaf8</color>
+    <color name="class_type_lab">#ffe5caf2</color>
+    <color name="class_type_coursework">#ffffd5e5</color>
+    <color name="class_type_courseproject">#ffffcaca</color>
+    <color name="class_type_finalexam">#ffffafaf</color>
+    <color name="class_type_passfailexam">#ffffafaf</color>
+    
+    <color name="current_day">#ffe2f4fb</color>
+</resources>

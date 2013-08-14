@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Timetable</string>
+    <string name="error_connection">Server not avaiable, try again later</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_open">Open</string>
+    <string name="action_cancel">Cancel</string>
+    
+    <!-- Main activity -->
+    <string name="activity_main_last_update">Last sync: %1$s</string>
+    <string name="activity_main_last_update_unknown">not available</string>
+    
+    <!-- Group activity -->
+    <string name="activity_group_caption">Please enter your group number</string>
+    <string name="activity_group_continue">Search</string>
+    <string name="activity_group_error_invalid">Wrong group number</string>
+    <string name="activity_group_error_notfound">Group not found</string>
+    <string name="activity_group_dialog_title">Choose your group</string>
+    
+    <!-- Settings activity -->
+    <string name="activity_settings_name">Settings</string>
+    <string name="activity_settings_application">Application</string>
+    <string name="activity_settings_application_empty">Show periods with no classes</string>
+    <string name="activity_settings_silentmode">Sound Management</string>
+    <string name="activity_settings_silentmode_silentmode">Mode</string>
+    <string name="activity_settings_silentmode_silentmodeenabled">Silent mode</string>
+    <string name="activity_settings_silentmode_silentmodeenabled_summary">during classes</string>
+    <string name="activity_settings_notifications">Notifications</string>
+    <string name="activity_settings_notifications_enabled">Enable notifications</string>
+    <string name="activity_settings_notifications_time">Notify me</string>
+    <string name="activity_settings_notifications_time_summary">%1$s before classes</string>
+    
+    <!-- Fragment week -->
+    <string name="fragment_week_odd">Odd</string>
+    <string name="fragment_week_even">Even</string>
+    
+    <!-- Fragment week table -->
+    <string name="fragment_weektable_monday">Mon.</string>
+    <string name="fragment_weektable_tuesday">Tue.</string>
+    <string name="fragment_weektable_wednesday">Wed.</string>
+    <string name="fragment_weektable_thursday">Thu.</string>
+    <string name="fragment_weektable_friday">Fri.</string>
+    <string name="fragment_weektable_saturday">Sat.</string>
+    
+    <!-- Fragment day -->
+    <string name="fragment_day_empty">No classes</string>
+    
+    <!-- List item lesson -->
+    <string name="list_item_lesson_empty">Empty</string>
+    
+    <!-- Menu -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_table">Table</string>
+    <string name="action_group">Group</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Notifications -->
+    <string name="notification_content_title">TUSUR timetable</string>
+    <string name="notification_content_text_newtimetable">Changes in timetable</string>
+    <string name="notification_content_text_alarm">Classes start in %1$s</string>
+    <string name="notification_content_inbox_title_alarm">Today\'s classes</string>
+    <string name="notification_content_silentmode_title">Silent mode</string>
+    <string name="notification_content_silentmode_text">Click to disable</string>
+</resources>
