@@ -78,9 +78,19 @@ public class WebDataProvider implements Provider {
     
     private Calendar getCalendarNoSunday() {
         Calendar calendar = GregorianCalendar.getInstance();
+
+        // Check if the 1st of September is in two weeks. If so we need to download full timetable
+        // for two weeks beginning from the 1st of September in advance.
+        if (calendar.get(Calendar.MONTH) == Calendar.AUGUST && calendar.get(Calendar.DATE) >= 18) {
+            calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
+            calendar.set(Calendar.DATE, 1);
+        }
+
+        // check if current day is Sunday
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             calendar.add(Calendar.DATE, 1);
         }
+
         return calendar;
     }
 }
