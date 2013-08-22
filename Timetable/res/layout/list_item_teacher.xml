@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/standard_padding_2"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/lastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/standard_padding"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/teacher_last_name_color"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/fullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/teacher_full_name_color"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/classes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/name"
+            android:gravity="right"
+            android:padding="@dimen/standard_padding_2"
+            android:textColor="@color/teacher_full_name_color"/>
+
+</RelativeLayout>

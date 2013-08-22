@@ -17,6 +17,9 @@
     <string name="activity_group_error_invalid">Неверная группа</string>
     <string name="activity_group_error_notfound">Группа не найдена</string>
     <string name="activity_group_dialog_title">Выберите вашу группу</string>
+
+    <!-- Teachers activity -->
+    <string name="activity_teachers_name">Преподаватели</string>
     
     <!-- Settings activity -->
     <string name="activity_settings_name">Настройки</string>
@@ -45,6 +48,9 @@
     
     <!-- Fragment day -->
     <string name="fragment_day_empty">Нет занятий</string>
+
+    <!-- Fragment teachers -->
+    <string name="fragment_teachers_empty">Список преподавателей недоступен</string>
     
     <!-- List item lesson -->
     <string name="list_item_lesson_empty">Нет пары</string>
@@ -52,6 +58,7 @@
     <!-- Menu -->
     <string name="action_refresh">Обновить</string>
     <string name="action_table">Таблица</string>
+    <string name="action_teachers">Преподаватели</string>
     <string name="action_group">Группа</string>
     <string name="action_settings">Настройки</string>
     

@@ -16,6 +16,7 @@ import com.synergy.android.timetable.providers.CachedDataProvider;
 import com.synergy.android.timetable.services.AlarmNotificationService;
 import com.synergy.android.timetable.services.RingerModeService;
 import com.synergy.android.timetable.services.TimetableMonitoringService;
+import com.synergy.android.timetable.utils.Common;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -120,10 +121,10 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     
     public static TimeStruct getNextTriggerTime(Context context, int minuteOffset,
             boolean firstLessonOnly) {
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Common.getCalendarNoSunday();
         TimeStruct time = new TimeStruct(calendar);
         
-        List<Calendar> candidates = prepareTimeCandidates(context, minuteOffset);
+        List<Calendar> candidates = prepareTimeCandidates(minuteOffset);
         for (int i = 0; i < candidates.size(); ++i) {
             Calendar candidate = candidates.get(i);
             candidate.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
@@ -193,7 +194,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         return time;
     }
     
-    private static List<Calendar> prepareTimeCandidates(Context context, int minuteOffset) {
+    private static List<Calendar> prepareTimeCandidates(int minuteOffset) {
         List<Calendar> times = initCalendars();
         for (Calendar c : times) {
             c.add(Calendar.MINUTE, minuteOffset);
@@ -211,27 +212,27 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
         times.get(0).set(Calendar.SECOND, 0);
         times.get(0).set(Calendar.MILLISECOND, 0);
         times.get(1).set(Calendar.HOUR_OF_DAY, 10);
-        times.get(1).set(Calendar.MINUTE, 40);;
+        times.get(1).set(Calendar.MINUTE, 40);
         times.get(1).set(Calendar.SECOND, 0);
         times.get(1).set(Calendar.MILLISECOND, 0);
         times.get(2).set(Calendar.HOUR_OF_DAY, 13);
-        times.get(2).set(Calendar.MINUTE, 15);;
+        times.get(2).set(Calendar.MINUTE, 15);
         times.get(2).set(Calendar.SECOND, 0);
         times.get(2).set(Calendar.MILLISECOND, 0);
         times.get(3).set(Calendar.HOUR_OF_DAY, 15);
-        times.get(3).set(Calendar.MINUTE, 0);;
+        times.get(3).set(Calendar.MINUTE, 0);
         times.get(3).set(Calendar.SECOND, 0);
         times.get(3).set(Calendar.MILLISECOND, 0);
         times.get(4).set(Calendar.HOUR_OF_DAY, 16);
-        times.get(4).set(Calendar.MINUTE, 45);;
+        times.get(4).set(Calendar.MINUTE, 45);
         times.get(4).set(Calendar.SECOND, 0);
         times.get(4).set(Calendar.MILLISECOND, 0);
         times.get(5).set(Calendar.HOUR_OF_DAY, 18);
-        times.get(5).set(Calendar.MINUTE, 30);;
+        times.get(5).set(Calendar.MINUTE, 30);
         times.get(5).set(Calendar.SECOND, 0);
         times.get(5).set(Calendar.MILLISECOND, 0);
         times.get(6).set(Calendar.HOUR_OF_DAY, 20);
-        times.get(6).set(Calendar.MINUTE, 15);;
+        times.get(6).set(Calendar.MINUTE, 15);
         times.get(6).set(Calendar.SECOND, 0);
         times.get(6).set(Calendar.MILLISECOND, 0);
         return times;

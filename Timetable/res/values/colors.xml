@@ -13,4 +13,7 @@
     <color name="class_type_passfailexam">#ffffafaf</color>
     
     <color name="current_day">#ffe2f4fb</color>
+
+    <color name="teacher_last_name_color">#ff555555</color>
+    <color name="teacher_full_name_color">#ff777777</color>
 </resources>

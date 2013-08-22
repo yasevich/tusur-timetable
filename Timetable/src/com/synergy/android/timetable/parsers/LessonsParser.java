@@ -35,14 +35,20 @@ public class LessonsParser extends WebDataParser<Day> {
                 JSONArray teachers = lesson.getJSONArray("lecturers");
                 for (int j = 0; j < teachers.length(); ++j) {
                     JSONObject teacher = teachers.getJSONObject(j);
-                    String name = teacher.getString("lastname").trim() + " " +
-                            teacher.getString("firstname").charAt(0) + ". " +
-                            teacher.getString("middlename").charAt(0) + ".";
+                    String lastName = teacher.getString("lastname");
+                    String firstName = teacher.getString("firstname");
+                    String middleName = teacher.getString("middlename");
+
+                    String name = lastName.trim() + " " + firstName.trim() + " " +
+                            middleName.trim();
+                    String nameShort = lastName.trim() + " " + firstName.charAt(0) + ". " +
+                            middleName.charAt(0) + ".";
                     if (l.teacher == null) {
                         l.teacher = name;
-                        l.teacherShort = shortenString(name);
+                        l.teacherShort = nameShort;
                     } else {
                         l.teacher += ", " + name;
+                        l.teacherShort += ", " + nameShort;
                     }
                 }
                 
@@ -50,6 +56,7 @@ public class LessonsParser extends WebDataParser<Day> {
             }
             return day;
         } catch (JSONException e) {
+            e.printStackTrace();
             return null;
         }
     }

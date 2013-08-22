@@ -55,19 +55,24 @@ public class MainActivity extends ActionBarActivity {
         case R.id.action_update:
             TimetableApplication app = (TimetableApplication) getApplication();
             app.loadWebData();
-            return true;
+            break;
         case R.id.action_table:
             TableActivity.startActivity(this);
-            return true;
+            break;
+        case R.id.action_teachers:
+            TeachersActivity.startActivity(this);
+            break;
         case R.id.action_group:
             GroupActivity.startActivityForResult(this);
-            return true;
+            break;
         case R.id.action_settings:
             SettingsActivity.startActivityForResult(this);
-            return true;
+            break;
         default:
             return super.onOptionsItemSelected(item);
         }
+
+        return true;
     }
     
     @Override
@@ -87,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
     
     public static void startActivity(Context context, int flags) {
         if (context == null) {
-            throw new NullPointerException("Context shoul not be null.");
+            throw new NullPointerException("Context should not be null.");
         }
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(flags);

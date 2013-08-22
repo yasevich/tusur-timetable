@@ -133,10 +133,10 @@ public class LessonAdapter extends BaseAdapter {
                     viewHolder.classroom.setText(lesson.classroom);
                 }
                 
-                if (StringUtils.isNullOrEmpty(lesson.teacher)) {
+                if (StringUtils.isNullOrEmpty(lesson.teacherShort)) {
                     viewHolder.teacher.setVisibility(View.GONE);
                 } else {
-                    viewHolder.teacher.setText(lesson.teacher);
+                    viewHolder.teacher.setText(lesson.teacherShort);
                 }
                 
                 if (StringUtils.isNullOrEmpty(lesson.note)) {

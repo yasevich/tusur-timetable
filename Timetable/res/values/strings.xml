@@ -17,6 +17,9 @@
     <string name="activity_group_error_invalid">Wrong group number</string>
     <string name="activity_group_error_notfound">Group not found</string>
     <string name="activity_group_dialog_title">Choose your group</string>
+
+    <!-- Teachers activity -->
+    <string name="activity_teachers_name">Teachers</string>
     
     <!-- Settings activity -->
     <string name="activity_settings_name">Settings</string>
@@ -45,6 +48,9 @@
     
     <!-- Fragment day -->
     <string name="fragment_day_empty">No classes</string>
+
+    <!-- Fragment teachers -->
+    <string name="fragment_teachers_empty">The list of teachers is not available</string>
     
     <!-- List item lesson -->
     <string name="list_item_lesson_empty">Empty</string>
@@ -52,6 +58,7 @@
     <!-- Menu -->
     <string name="action_refresh">Refresh</string>
     <string name="action_table">Table</string>
+    <string name="action_teachers">Teachers</string>
     <string name="action_group">Group</string>
     <string name="action_settings">Settings</string>
     

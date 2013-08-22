@@ -6,7 +6,7 @@ public class NumberUtils {
     }
     
     public static boolean intToBoolean(int value) {
-        return value == 0 ? false : true;
+        return value != 0;
     }
     
     public static int booleanToInt(boolean value) {

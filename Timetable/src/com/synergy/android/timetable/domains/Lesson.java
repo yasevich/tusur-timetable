@@ -32,6 +32,10 @@ public class Lesson {
     
     @Override
     public boolean equals(Object o) {
+        if (o == null || !(o instanceof Lesson)) {
+            return false;
+        }
+
         Lesson other = (Lesson) o;
         return StringUtils.nullEqual(subject, other.subject) &&
                 StringUtils.nullEqual(subjectShort, other.subjectShort) &&
