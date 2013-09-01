@@ -131,7 +131,7 @@ public class GroupActivity extends ActionBarActivity {
                     GroupsParser parser = new GroupsParser();
                     List<Group> groups = parser.parse(pageData);
                     List<String> matchingGroups = GroupValidator.getGroupNumber(groups, group);
-                    if (matchingGroups == null) {
+                    if (matchingGroups == null || matchingGroups.size() == 0) {
                         showError(R.string.activity_group_error_notfound);
                     } else {
                         if (matchingGroups.size() == 1) {

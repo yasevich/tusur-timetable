@@ -15,7 +15,7 @@ public class GroupValidator {
         }
         
         List<String> result = new ArrayList<String>();
-        group = getGroupFormatString(group);
+        group = StringUtils.toUpperCase(getGroupFormatString(group));
         Pattern pattern = StringUtils.compilePattern(group);
         if (pattern == null) {
             return null;
@@ -33,7 +33,7 @@ public class GroupValidator {
                 }
             }
         }
-        
+
         return result;
     }
     

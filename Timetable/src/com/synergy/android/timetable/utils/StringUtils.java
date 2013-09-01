@@ -27,7 +27,8 @@ public class StringUtils {
     
     public static Pattern compilePattern(String regex) {
         try {
-            return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+            return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL |
+                    Pattern.UNICODE_CASE);
         } catch (PatternSyntaxException e) {
             return null;
         }
