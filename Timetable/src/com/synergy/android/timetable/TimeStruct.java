@@ -1,5 +1,6 @@
 package com.synergy.android.timetable;
 
+import com.synergy.android.timetable.utils.Common;
 import com.synergy.android.timetable.utils.NumberUtils;
 
 import java.util.Calendar;
@@ -12,8 +13,8 @@ public class TimeStruct {
     public long inMillis = -1L;
     
     public TimeStruct(Calendar calendar) {
-        week = NumberUtils.isOdd(calendar.get(Calendar.WEEK_OF_YEAR)) ?
-                TimetableApplication.WEEK_ODD : TimetableApplication.WEEK_EVEN;
+        week = Common.isWeekOdd(calendar) ? TimetableApplication.WEEK_ODD :
+                TimetableApplication.WEEK_EVEN;
         day = calendar.get(Calendar.DAY_OF_WEEK);
         if (day == Calendar.SUNDAY) {
             day = 0;

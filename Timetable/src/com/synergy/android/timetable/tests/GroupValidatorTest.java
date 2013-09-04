@@ -23,7 +23,7 @@ public class GroupValidatorTest extends TestCase {
             numbers.add(g.number.replace("-", ""));
         }
     }
-    
+
     public void test() {
         for (String group : numbers) {
             List<String> validated = GroupValidator.getGroupNumber(groups, group);

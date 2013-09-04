@@ -121,7 +121,7 @@ public class ScheduleBroadcastReceiver extends BroadcastReceiver {
     
     public static TimeStruct getNextTriggerTime(Context context, int minuteOffset,
             boolean firstLessonOnly) {
-        Calendar calendar = Common.getCalendarNoSunday();
+        Calendar calendar = Common.getDateAwareCalendar();
         TimeStruct time = new TimeStruct(calendar);
         
         List<Calendar> candidates = prepareTimeCandidates(minuteOffset);

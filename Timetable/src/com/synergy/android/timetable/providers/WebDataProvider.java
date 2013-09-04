@@ -59,9 +59,9 @@ public class WebDataProvider implements Provider {
     
     private void initUrls(final String url) {
         urls = new String[TimetableApplication.NUMBER_OF_DAYS * 2];
-        Calendar calendar = Common.getCalendarNoSunday();
+        Calendar calendar = Common.getDateAwareCalendar();
         int index = calendar.get(Calendar.DAY_OF_WEEK) - 2;
-        if (!NumberUtils.isOdd(calendar.get(Calendar.WEEK_OF_YEAR))) {
+        if (!Common.isWeekOdd(calendar)) {
             index += 6;
         }
         for (int i = 0; i < TimetableApplication.NUMBER_OF_DAYS * 2; ++i) {
