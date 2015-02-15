@@ -4,5 +4,3 @@ out
 *.iws
 workspace.xml
 tasks.xml
-AndroidGUI
-AndroidSQL
