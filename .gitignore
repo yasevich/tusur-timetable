@@ -1,6 +1,8 @@
+.idea
 gen
 bin
 out
+*.iml
 *.iws
 workspace.xml
 tasks.xml
